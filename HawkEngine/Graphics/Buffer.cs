@@ -28,6 +28,11 @@ namespace HawkEngine.Graphics
         {
             Rendering.gl.BindBuffer(bufferType, 0);
         }
+        public void Delete()
+        {
+            GC.SuppressFinalize(this);
+            Rendering.gl.DeleteBuffer(id);
+        }
     }
 
     public class Buffer<T> : Buffer where T : unmanaged

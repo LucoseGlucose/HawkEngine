@@ -44,6 +44,14 @@ namespace HawkEngine.Core
                 light.strength = 3f;
                 light.transform.rotation = new(-30, 40, 0);
 
+                TextComponent text = scene.CreateObject("Text").AddComponent<TextComponent>();
+                text.shader = new(Graphics.Shader.Create("../../../Shaders/TextVert.glsl", ShaderType.VertexShader),
+                    Graphics.Shader.Create("../../../Shaders/TextFrag.glsl", ShaderType.FragmentShader));
+                text.font = new(256, 256, "../../../Resources/Fonts/Ubuntu/Ubuntu-Regular.ttf", 32f, CharacterRange.BasicLatin);
+                text.text = "Hello World!";
+                text.transform.scale = new(200f);
+                text.transform.position = new(-400f, 0f, 0f);
+
                 return scene;
             });
         }

@@ -50,5 +50,16 @@ namespace HawkEngine.Graphics
             Rendering.gl.BindVertexArray(id);
             indexBuffer.Bind();
         }
+        public void Delete()
+        {
+            GC.SuppressFinalize(this);
+            Rendering.gl.DeleteVertexArray(id);
+
+            indexBuffer.Delete();
+            for (int i = 0; i < attribBuffers.Length; i++)
+            {
+                attribBuffers[i].Delete();
+            }
+        }
     }
 }

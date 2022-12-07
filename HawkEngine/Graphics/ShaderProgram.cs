@@ -81,6 +81,11 @@ namespace HawkEngine.Graphics
         {
             Rendering.gl.UseProgram(id);
         }
+        public void Delete()
+        {
+            GC.SuppressFinalize(this);
+            Rendering.gl.DeleteProgram(id);
+        }
         public void BindTextures()
         {
             for (int i = 0; i < textures.Item1.Length; i++)

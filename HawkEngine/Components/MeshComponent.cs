@@ -21,6 +21,8 @@ namespace HawkEngine.Components
         }
         public unsafe virtual void Render()
         {
+            if (shader == null || mesh == null) return;
+
             shader.Bind();
             shader.BindTextures();
             mesh.vertexArray.Bind();

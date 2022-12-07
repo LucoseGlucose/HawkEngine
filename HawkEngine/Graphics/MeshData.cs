@@ -9,9 +9,9 @@ using Silk.NET.Maths;
 
 namespace HawkEngine.Graphics
 {
-    public struct MeshData
+    public readonly struct MeshData
     {
-        public static PostProcessSteps postProcessSteps = PostProcessSteps.CalculateTangentSpace | PostProcessSteps.JoinIdenticalVertices
+        public static PostProcessSteps postProcessSteps { get; set; } = PostProcessSteps.CalculateTangentSpace | PostProcessSteps.JoinIdenticalVertices
             | PostProcessSteps.Triangulate | PostProcessSteps.OptimizeMeshes;
 
         public readonly uint[] indices;
@@ -21,11 +21,15 @@ namespace HawkEngine.Graphics
         public readonly Vector3D<float>[] tangents;
         public readonly Vector3D<float>[] bitangents;
 
-        public MeshData(Vector3D<float>[] verts, Vector3D<float>[] normals, Vector2D<float>[] uvs)
+        public MeshData(uint[] indices, Vector3D<float>[] verts, Vector3D<float>[] normals,
+            Vector2D<float>[] uvs, Vector3D<float>[] tangents, Vector3D<float>[] bitangents)
         {
+            this.indices = indices;
             this.verts = verts;
             this.normals = normals;
             this.uvs = uvs;
+            this.tangents = tangents;
+            this.bitangents = bitangents;
         }
         public unsafe MeshData(string path)
         {

@@ -35,5 +35,10 @@ namespace HawkEngine.Graphics
         {
             Rendering.gl.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
         }
+        public void Delete()
+        {
+            GC.SuppressFinalize(this);
+            Rendering.gl.DeleteFramebuffer(id);
+        }
     }
 }

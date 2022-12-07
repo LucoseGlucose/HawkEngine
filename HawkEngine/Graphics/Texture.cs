@@ -32,6 +32,11 @@ namespace HawkEngine.Graphics
             Rendering.gl.ActiveTexture(TextureUnit.Texture0 + unit);
             Rendering.gl.BindTexture(textureType, 0);
         }
+        public void Delete()
+        {
+            GC.SuppressFinalize(this);
+            Rendering.gl.DeleteTexture(id);
+        }
     }
 
     public class Texture2D : Texture

@@ -21,9 +21,6 @@ uniform float uShininess = 32;
 uniform sampler2D uNormalTexN;
 uniform float uNormalStrength = 1;
 
-uniform sampler2D uHeightMapW;
-uniform float depth = 0;
-
 struct Light
 {
 	int uType;
@@ -47,6 +44,8 @@ void main()
 	normal.xy *= uNormalStrength;
 	normal = normalize(outTBNMat * normal);
 
+	vec3 viewDir = normalize(uCameraPos - outWorldPosition);
+
 	for (int i = 0; i < 5; i++)
 	{
 		if (uLights[i].uColor == vec3(0)) break;
@@ -55,7 +54,6 @@ void main()
 		float diffuseStrength = max(dot(lightDir, normal), 0.0);
 		vec3 diffuseColor = diffuseStrength * diffuse.xyz * uLights[i].uColor;
 
-		vec3 viewDir = normalize(uCameraPos - outWorldPosition);
 		vec3 reflectDir = reflect(-lightDir, normal);
 		vec3 halfwayDir = normalize(viewDir + lightDir);
 

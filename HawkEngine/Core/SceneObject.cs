@@ -50,7 +50,7 @@ namespace HawkEngine.Core
 
         public T GetComponent<T>()
         {
-            return components.OfType<T>().FirstOrDefault(null);
+            return components.OfType<T>().FirstOrDefault();
         }
         public IEnumerable<T> GetComponents<T>()
         {

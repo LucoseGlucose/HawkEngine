@@ -33,6 +33,7 @@ namespace HawkEngine.Core
             windowOptions.Title = "HawkEngine";
             windowOptions.PreferredDepthBufferBits = 0;
             windowOptions.PreferredStencilBufferBits = 0;
+            windowOptions.VSync = false;
 
 #if DEBUG
             GlfwProvider.GLFW.Value.WindowHint(WindowHintBool.OpenGLDebugContext, true);

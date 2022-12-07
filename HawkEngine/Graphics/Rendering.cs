@@ -47,12 +47,14 @@ namespace HawkEngine.Graphics
             gl.DebugMessageCallback(GLDebugMessage, nint.Zero);
 #endif
 
-            gl.Enable(EnableCap.CullFace);
+            gl.Disable(EnableCap.CullFace);
             gl.Enable(EnableCap.TextureCubeMapSeamless);
             gl.Enable(EnableCap.DepthTest);
             gl.Enable(EnableCap.Blend);
 
             gl.DepthFunc(DepthFunction.Lequal);
+            gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+            gl.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
 
             CreateStandardResources();
         }
