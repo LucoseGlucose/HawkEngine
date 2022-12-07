@@ -25,7 +25,7 @@ namespace HawkEngine.Graphics
         }
         ~Framebuffer()
         {
-            Rendering.gl.DeleteFramebuffer(id);
+            Rendering.deletedObjects.Enqueue(() => Rendering.gl.DeleteFramebuffer(id));
         }
         public void Bind()
         {
@@ -34,11 +34,6 @@ namespace HawkEngine.Graphics
         public void Unbind()
         {
             Rendering.gl.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
-        }
-        public void Delete()
-        {
-            GC.SuppressFinalize(this);
-            Rendering.gl.DeleteFramebuffer(id);
         }
     }
 }

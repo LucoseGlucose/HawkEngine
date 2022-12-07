@@ -18,7 +18,7 @@ namespace HawkEngine.Graphics
         }
         ~Buffer()
         {
-            Rendering.gl.DeleteBuffer(id);
+            Rendering.deletedObjects.Enqueue(() => Rendering.gl.DeleteBuffer(id));
         }
         public virtual void Bind()
         {
@@ -27,11 +27,6 @@ namespace HawkEngine.Graphics
         public virtual void Unbind()
         {
             Rendering.gl.BindBuffer(bufferType, 0);
-        }
-        public void Delete()
-        {
-            GC.SuppressFinalize(this);
-            Rendering.gl.DeleteBuffer(id);
         }
     }
 

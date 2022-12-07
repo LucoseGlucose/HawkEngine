@@ -43,23 +43,12 @@ namespace HawkEngine.Graphics
         }
         ~VertexArray()
         {
-            Rendering.gl.DeleteVertexArray(id);
+            Rendering.deletedObjects.Enqueue(() => Rendering.gl.DeleteVertexArray(id));
         }
         public void Bind()
         {
             Rendering.gl.BindVertexArray(id);
             indexBuffer.Bind();
-        }
-        public void Delete()
-        {
-            GC.SuppressFinalize(this);
-            Rendering.gl.DeleteVertexArray(id);
-
-            indexBuffer.Delete();
-            for (int i = 0; i < attribBuffers.Length; i++)
-            {
-                attribBuffers[i].Delete();
-            }
         }
     }
 }

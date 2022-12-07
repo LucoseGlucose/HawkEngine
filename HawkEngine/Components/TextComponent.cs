@@ -81,7 +81,6 @@ namespace HawkEngine.Components
                 textBitangents[i] = new(0f, 1f, 0f);
             }
 
-            mesh?.vertexArray?.Delete();
             MeshData meshData = new(textIndices.ToArray(), textVerts.ToArray(), textNorms, textUVs.ToArray(), textTangents, textBitangents);
             mesh = new(meshData, new(meshData));
         }

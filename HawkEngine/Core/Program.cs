@@ -42,7 +42,7 @@ namespace HawkEngine.Core
                 light.falloff = new(0f);
                 light.color = new(.94f, .97f, .85f);
                 light.strength = 3f;
-                light.transform.rotation = new(-30, 40, 0);
+                light.transform.rotation = new(-30, 20, 0);
 
                 TextComponent text = scene.CreateObject("Text").AddComponent<TextComponent>();
                 text.shader = new(Graphics.Shader.Create("../../../Shaders/TextVert.glsl", ShaderType.VertexShader),

@@ -20,7 +20,7 @@ namespace HawkEngine.Graphics
         }
         ~Texture()
         {
-            Rendering.gl.DeleteTexture(id);
+            Rendering.deletedObjects.Enqueue(() => Rendering.gl.DeleteTexture(id));
         }
         public void Bind(int unit)
         {
@@ -31,11 +31,6 @@ namespace HawkEngine.Graphics
         {
             Rendering.gl.ActiveTexture(TextureUnit.Texture0 + unit);
             Rendering.gl.BindTexture(textureType, 0);
-        }
-        public void Delete()
-        {
-            GC.SuppressFinalize(this);
-            Rendering.gl.DeleteTexture(id);
         }
     }
 

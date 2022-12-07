@@ -75,16 +75,11 @@ namespace HawkEngine.Graphics
         }
         ~ShaderProgram()
         {
-            Rendering.gl.DeleteProgram(id);
+            Rendering.deletedObjects.Enqueue(() => Rendering.gl.DeleteProgram(id));
         }
         public void Bind()
         {
             Rendering.gl.UseProgram(id);
-        }
-        public void Delete()
-        {
-            GC.SuppressFinalize(this);
-            Rendering.gl.DeleteProgram(id);
         }
         public void BindTextures()
         {

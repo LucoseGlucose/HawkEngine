@@ -21,6 +21,7 @@ namespace HawkEngine.Graphics
         public static GL gl { get; set; }
 
         public static event Action<DebugSource, DebugType, int, string> glDebugCallback;
+        public static Queue<Action> deletedObjects = new();
 
         public static CameraComponent outputCam { get; set; }
 
@@ -47,7 +48,7 @@ namespace HawkEngine.Graphics
             gl.DebugMessageCallback(GLDebugMessage, nint.Zero);
 #endif
 
-            gl.Disable(EnableCap.CullFace);
+            gl.Enable(EnableCap.CullFace);
             gl.Enable(EnableCap.TextureCubeMapSeamless);
             gl.Enable(EnableCap.DepthTest);
             gl.Enable(EnableCap.Blend);
@@ -146,6 +147,12 @@ namespace HawkEngine.Graphics
             outputModel.shader.SetFloatCache("uExposure", exposure);
             outputModel.shader.SetFloatCache("uTonemapStrength", tonemapStrength);
             outputModel.Render();
+
+            int deleteCount = deletedObjects.Count;
+            for (int i = 0; i < deleteCount; i++)
+            {
+                deletedObjects.Dequeue()?.Invoke();
+            }
         }
         private static unsafe void GLDebugMessage(GLEnum source, GLEnum type, int id, GLEnum severity, int length, nint message, nint userParam)
         {
