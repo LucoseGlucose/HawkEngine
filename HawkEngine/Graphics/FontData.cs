@@ -16,6 +16,7 @@ namespace HawkEngine.Graphics
         public readonly byte[] bitmap;
         public readonly int bitmapWidth, bitmapHeight;
         public readonly float scaleFactor;
+        public readonly float pixelHeight;
 
         public readonly Texture2D fontAtlas;
         public readonly Dictionary<int, GlyphInfo> glyphs = new();
@@ -29,13 +30,14 @@ namespace HawkEngine.Graphics
             bitmapHeight = height;
             bitmap = new byte[width * height];
             context = new();
+            pixelHeight = fontPixelHeight;
 
             fixed (byte* pixelsPtr = bitmap)
             {
                 StbTrueType.stbtt_PackBegin(context, pixelsPtr, width, height, width, 1, null);
             }
 
-            byte[] ttf = File.ReadAllBytes(Path.GetFullPath(path));
+            byte[] ttf = File.ReadAllBytes(Path.GetFullPath("../../../Resources/" + path));
             StbTrueType.stbtt_fontinfo fontInfo = StbTrueType.CreateFont(ttf, 0);
 
             scaleFactor = StbTrueType.stbtt_ScaleForPixelHeight(fontInfo, fontPixelHeight);

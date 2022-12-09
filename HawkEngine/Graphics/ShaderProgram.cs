@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Silk.NET.OpenGL;
 using Silk.NET.Maths;
+using HawkEngine.Core;
 
 namespace HawkEngine.Graphics
 {
@@ -21,6 +22,8 @@ namespace HawkEngine.Graphics
         private readonly Dictionary<string, Vector4D<float>> vec4Values = new();
         private readonly Dictionary<string, Matrix3X3<float>> mat3Values = new();
         private readonly Dictionary<string, Matrix4X4<float>> mat4Values = new();
+
+        public readonly Utils.ShaderFeature features = Utils.ShaderFeature.None;
 
         public unsafe ShaderProgram(params uint[] shaders)
         {
@@ -69,6 +72,9 @@ namespace HawkEngine.Graphics
                     }
                     else texs.Add(null);
                 }
+
+                if (name.Contains("uLights")) features |= Utils.ShaderFeature.Lighting;
+                if (name.Contains("uShadowMap")) features |= Utils.ShaderFeature.Shadows;
             }
 
             textures.Item1 = texs.ToArray();

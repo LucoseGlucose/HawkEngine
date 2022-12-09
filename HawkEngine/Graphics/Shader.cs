@@ -15,7 +15,7 @@ namespace HawkEngine.Graphics
             if (compiledShaders.ContainsKey(path)) return compiledShaders[path];
             uint id = Rendering.gl.CreateShader(type);
 
-            Rendering.gl.ShaderSource(id, File.ReadAllText(path));
+            Rendering.gl.ShaderSource(id, File.ReadAllText(Path.GetFullPath("../../../Resources/" + path)));
             Rendering.gl.CompileShader(id);
 
             compiledShaders.Add(path, id);

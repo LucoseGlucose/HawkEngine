@@ -33,15 +33,19 @@ namespace HawkEngine.Graphics
         public static Model skyboxModel { get; set; }
         public static TextureCubemap skyboxTexture { get; set; }
 
+        public static ShaderProgram shadowShader { get; private set; }
+
         public static float gamma { get; set; } = 2.2f;
         public static float exposure { get; set; } = 1f;
         public static float tonemapStrength { get; set; } = 1f;
+        public static Vector2D<float> shadowNormalBias { get; set; } = new(.005f, .05f);
+        public static Vector3D<float> ambientColor { get; set; } = new(.2f);
 
         public static void Init()
         {
             gl = App.window.CreateOpenGL();
 
-            App.window.FramebufferResize += OnWindowResize; ;
+            App.window.FramebufferResize += OnWindowResize;
 
 #if DEBUG
             gl.Enable(EnableCap.DebugOutputSynchronous);
@@ -73,25 +77,55 @@ namespace HawkEngine.Graphics
         {
             CreatePPFB();
 
-            quad = new("../../../Resources/Models/Quad.obj");
-            outputShader = new(Shader.Create("../../../Shaders/OutputVert.glsl", ShaderType.VertexShader),
-                Shader.Create("../../../Shaders/OutputFrag.glsl", ShaderType.FragmentShader));
+            quad = new("Models/Quad.obj");
+            outputShader = new(Shader.Create("Shaders/OutputVert.glsl", ShaderType.VertexShader),
+                Shader.Create("Shaders/OutputFrag.glsl", ShaderType.FragmentShader));
 
-            skyboxModel = new(new(Shader.Create("../../../Shaders/SkyboxVert.glsl", ShaderType.VertexShader),
-                Shader.Create("../../../Shaders/SkyboxFrag.glsl", ShaderType.FragmentShader)), new("../../../Resources/Models/Inverted Cube.obj"));
+            skyboxModel = new(new(Shader.Create("Shaders/SkyboxVert.glsl", ShaderType.VertexShader),
+                Shader.Create("Shaders/SkyboxFrag.glsl", ShaderType.FragmentShader)), new("Models/Inverted Cube.obj"));
             skyboxTexture = new(new string[6]
-                {
-                    "../../../Resources/Images/Skybox/right.jpg",
-                    "../../../Resources/Images/Skybox/left.jpg",
-                    "../../../Resources/Images/Skybox/bottom.jpg",
-                    "../../../Resources/Images/Skybox/top.jpg",
-                    "../../../Resources/Images/Skybox/front.jpg",
-                    "../../../Resources/Images/Skybox/back.jpg",
-                });
+            {
+                "Images/Skybox/right.jpg",
+                "Images/Skybox/left.jpg",
+                "Images/Skybox/bottom.jpg",
+                "Images/Skybox/top.jpg",
+                "Images/Skybox/front.jpg",
+                "Images/Skybox/back.jpg",
+            });
+
+            shadowShader = new(Shader.Create("Shaders/ShadowVert.glsl", ShaderType.VertexShader),
+                Shader.Create("Shaders/ShadowFrag.glsl", ShaderType.FragmentShader));
         }
         public static unsafe void Render()
         {
+            List<MeshComponent> meshes = App.scene.FindComponents<MeshComponent>();
+            List<LightComponent> lights = App.scene.FindComponents<LightComponent>();
+
+            for (int l = 0; l < lights.Count; l++)
+            {
+                if (lights[l] is not DirectionalLightComponent light || !light.shadowsEnabled) continue;
+
+                light.shadowMapBuffer.Bind();
+                gl.DrawBuffer(DrawBufferMode.None);
+                gl.Viewport(light.shadowResolution);
+                gl.Clear(ClearBufferMask.DepthBufferBit);
+
+                shadowShader.SetMat4Cache("uViewMat", light.viewMat);
+                shadowShader.SetMat4Cache("uProjMat", light.projectionMat);
+
+                for (int m = 0; m < meshes.Count; m++)
+                {
+                    if (!meshes[m].castShadows) continue;
+
+                    Model model = new(shadowShader, meshes[m].mesh);
+                    shadowShader.SetMat4Cache("uModelMat", meshes[m].transform.matrix);
+                    model.Render();
+                }
+            }
+
             outputCam.framebuffer.Bind();
+            gl.Viewport(outputCam.size);
+            gl.DrawBuffer(DrawBufferMode.ColorAttachment0);
             gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             skyboxModel.shader.SetMat4Cache("uViewMat", outputCam.viewMat);
@@ -99,29 +133,37 @@ namespace HawkEngine.Graphics
             skyboxModel.shader.textures.Item1[0] = skyboxTexture;
             skyboxModel.Render();
 
-            List<MeshComponent> meshes = App.scene.FindComponents<MeshComponent>();
-            List<LightComponent> lights = App.scene.FindComponents<LightComponent>();
-
             for (int m = 0; m < meshes.Count; m++)
             {
-                IOrderedEnumerable<LightComponent> orderedLights =
-                    lights.OrderBy(l => Math.Min((int)l.type, 1) * Vector3D.DistanceSquared(meshes[m].transform.position, l.transform.position));
-
-                for (int l = 0; l < 5; l++)
+                if (meshes[m].lightingEnabled)
                 {
-                    if (orderedLights.Count() > l)
-                    {
-                        LightComponent light = orderedLights.ElementAt(l);
+                    IOrderedEnumerable<LightComponent> orderedLights =
+                        lights.OrderBy(l => Math.Min(l.type, 1) * Vector3D.DistanceSquared(meshes[m].transform.position, l.transform.position));
 
-                        meshes[m].shader.SetIntCache($"uLights[{l}].uType", (int)light.type);
-                        meshes[m].shader.SetVec3Cache($"uLights[{l}].uPosition",
-                            light.type == LightType.Directional ? light.transform.forward : light.transform.position);
-                        meshes[m].shader.SetVec3Cache($"uLights[{l}].uColor", light.output);
-                        meshes[m].shader.SetVec2Cache($"uLights[{l}].uFalloff", light.falloff);
+                    for (int l = 0; l < 5; l++)
+                    {
+                        if (orderedLights.Count() > l)
+                        {
+                            LightComponent light = orderedLights.ElementAt(l);
+
+                            meshes[m].shader.SetIntCache($"uLights[{l}].uType", light.type);
+                            meshes[m].shader.SetVec3Cache($"uLights[{l}].uPosition", light.positionUniform);
+                            meshes[m].shader.SetVec3Cache($"uLights[{l}].uColor", light.output);
+                            meshes[m].shader.SetVec2Cache($"uLights[{l}].uFalloff", light.falloff);
+
+                            if (!meshes[m].recieveShadows || light is not DirectionalLightComponent dLight) continue;
+
+                            meshes[m].shader.SetTexture($"uLights[{l}].uShadowTexW", dLight.shadowMapBuffer.attachments[0]);
+                            meshes[m].shader.SetMat4Cache($"uLights[{l}].uViewMat", dLight.viewMat);
+                            meshes[m].shader.SetMat4Cache($"uLights[{l}].uProjMat", dLight.projectionMat);
+                            meshes[m].shader.SetVec2Cache("uShadowNormalBias", shadowNormalBias);
+                        }
+                        else meshes[m].shader.SetVec3Cache($"uLights[{l}].uColor", Vector3D<float>.Zero);
+
+                        meshes[m].shader.SetVec3Cache("uAmbientColor", ambientColor);
                     }
-                    else meshes[m].shader.SetVec3Cache($"uLights[{l}].uColor", Vector3D<float>.Zero);
                 }
-                
+
                 meshes[m].SetUniforms();
                 meshes[m].Render();
                 meshes[m].Cleanup();

@@ -71,7 +71,7 @@ namespace HawkEngine.Graphics
         public unsafe Texture2D(string path, bool sRGB = true, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat)
             : base(TextureTarget.Texture2D)
         {
-            using Stream file = File.OpenRead(Path.GetFullPath(path));
+            using Stream file = File.OpenRead(Path.GetFullPath("../../../Resources/" + path));
 
             StbImage.stbi__result_info result;
             int width;
@@ -134,7 +134,7 @@ namespace HawkEngine.Graphics
         {
             for (int i = 0; i < 6; i++)
             {
-                using Stream file = File.OpenRead(Path.GetFullPath(paths[i]));
+                using Stream file = File.OpenRead(Path.GetFullPath("../../../Resources/" + paths[i]));
 
                 StbImage.stbi__result_info result;
                 int width;

@@ -63,23 +63,9 @@ namespace HawkEngine.Components
                 textIndices.AddRange(indices);
             }
 
-            Vector3D<float>[] textNorms = new Vector3D<float>[_text.Length * 4];
-            for (int i = 0; i < textNorms.Length; i++)
-            {
-                textNorms[i] = new(0f, 0f, 1f);
-            }
-
-            Vector3D<float>[] textTangents = new Vector3D<float>[_text.Length * 4];
-            for (int i = 0; i < textNorms.Length; i++)
-            {
-                textTangents[i] = new(1f, 0f, 0f);
-            }
-
-            Vector3D<float>[] textBitangents = new Vector3D<float>[_text.Length * 4];
-            for (int i = 0; i < textNorms.Length; i++)
-            {
-                textBitangents[i] = new(0f, 1f, 0f);
-            }
+            Vector3D<float>[] textNorms = Utils.UniformArray(new Vector3D<float>(0f, 0f, 1f), _text.Length * 4);
+            Vector3D<float>[] textTangents = Utils.UniformArray(new Vector3D<float>(1f, 0f, 0f), _text.Length * 4);
+            Vector3D<float>[] textBitangents = Utils.UniformArray(new Vector3D<float>(0f, 1f, 0f), _text.Length * 4);
 
             MeshData meshData = new(textIndices.ToArray(), textVerts.ToArray(), textNorms, textUVs.ToArray(), textTangents, textBitangents);
             mesh = new(meshData, new(meshData));

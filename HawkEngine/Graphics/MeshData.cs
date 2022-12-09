@@ -34,7 +34,7 @@ namespace HawkEngine.Graphics
         public unsafe MeshData(string path)
         {
             Assimp assimp = Assimp.GetApi();
-            Silk.NET.Assimp.Scene* scene = assimp.ImportFile(Path.GetFullPath(path), (uint)postProcessSteps);
+            Silk.NET.Assimp.Scene* scene = assimp.ImportFile(Path.GetFullPath("../../../Resources/" + path), (uint)postProcessSteps);
 
             if (scene->MNumMeshes < 1) return;
             Silk.NET.Assimp.Mesh* mesh = scene->MMeshes[0];

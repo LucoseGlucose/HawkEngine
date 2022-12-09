@@ -12,6 +12,11 @@ namespace HawkEngine.Components
         public ShaderProgram shader;
         public Mesh mesh;
 
+        public bool lightingEnabled = true;
+        public bool castShadows = true;
+        public bool recieveShadows = true;
+        public bool transparent = false;
+
         public virtual void SetUniforms()
         {
             shader.SetVec3Cache("uCameraPos", Rendering.outputCam.transform.position);

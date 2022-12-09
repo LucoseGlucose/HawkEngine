@@ -27,30 +27,37 @@ namespace HawkEngine.Core
                 cam.transform.position = new(0f, 0f, -4f);
                 cam.owner.AddComponent<CameraControllerComponent>();
 
+                MeshComponent mesh1 = scene.CreateObject("Mesh").AddComponent<MeshComponent>();
+                mesh1.shader = new(Graphics.Shader.Create("Shaders/LitVert.glsl", ShaderType.VertexShader),
+                    Graphics.Shader.Create("Shaders/LitFrag.glsl", ShaderType.FragmentShader));
+                mesh1.shader.SetTexture("uDiffuseTexW", new Texture2D("Images/brickwall.jpg"));
+                mesh1.shader.SetTexture("uNormalTexN", new Texture2D("Images/brickwall_normal.jpg"));
+                mesh1.shader.SetVec3Cache("uSpecular", new(.1f));
+                mesh1.mesh = new("Models/Cube.obj");
+
+                MeshComponent mesh2 = scene.CreateObject("Mesh").AddComponent<MeshComponent>();
+                mesh2.shader = new(Graphics.Shader.Create("Shaders/LitVert.glsl", ShaderType.VertexShader),
+                    Graphics.Shader.Create("Shaders/LitFrag.glsl", ShaderType.FragmentShader));
+                mesh2.mesh = new("Models/Monkey.obj");
+                mesh2.transform.position = new(2f, 4f, 1f);
+                mesh2.shader.SetVec4Cache("uDiffuse", new(.5f, .5f, 1f, 1f));
+
                 MeshComponent mesh = scene.CreateObject("Mesh").AddComponent<MeshComponent>();
+                mesh.shader = new(Graphics.Shader.Create("Shaders/LitVert.glsl", ShaderType.VertexShader),
+                    Graphics.Shader.Create("Shaders/LitFrag.glsl", ShaderType.FragmentShader));
+                mesh.shader.SetVec4Cache("uDiffuse", new(.5f, .5f, .5f, 1f));
+                mesh.mesh = new("Models/Quad.obj");
+                mesh.transform.position = new(0f, -2f, 0f);
+                mesh.transform.scale = new(50f);
+                mesh.transform.rotation = new(90f, 0f, 0f);
 
-                mesh.shader = new(Graphics.Shader.Create("../../../Shaders/LitVert.glsl", ShaderType.VertexShader),
-                    Graphics.Shader.Create("../../../Shaders/LitFrag.glsl", ShaderType.FragmentShader));
-                mesh.shader.SetTexture("uDiffuseTexW", new Texture2D("../../../Resources/Images/brickwall.jpg"));
-                mesh.shader.SetTexture("uNormalTexN", new Texture2D("../../../Resources/Images/brickwall_normal.jpg"));
-                mesh.shader.SetVec3Cache("uSpecular", new(.1f));
-
-                mesh.mesh = new("../../../Resources/Models/Cube.obj");
-
-                LightComponent light = scene.CreateObject("Light").AddComponent<LightComponent>();
-                light.type = LightType.Directional;
-                light.falloff = new(0f);
+                DirectionalLightComponent light = scene.CreateObject("Light").AddComponent<DirectionalLightComponent>();
                 light.color = new(.94f, .97f, .85f);
                 light.strength = 3f;
                 light.transform.rotation = new(-30, 20, 0);
+                light.transform.position = new(20f, 20f, 20f);
 
-                TextComponent text = scene.CreateObject("Text").AddComponent<TextComponent>();
-                text.shader = new(Graphics.Shader.Create("../../../Shaders/TextVert.glsl", ShaderType.VertexShader),
-                    Graphics.Shader.Create("../../../Shaders/TextFrag.glsl", ShaderType.FragmentShader));
-                text.font = new(256, 256, "../../../Resources/Fonts/Ubuntu/Ubuntu-Regular.ttf", 32f, CharacterRange.BasicLatin);
-                text.text = "Hello World!";
-                text.transform.scale = new(200f);
-                text.transform.position = new(-400f, 0f, 0f);
+                FPSCounterComponent text = scene.CreateObject("FPS Counter").AddComponent<FPSCounterComponent>();
 
                 return scene;
             });
