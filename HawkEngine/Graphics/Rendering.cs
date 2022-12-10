@@ -39,7 +39,7 @@ namespace HawkEngine.Graphics
         public static float exposure { get; set; } = 1f;
         public static float tonemapStrength { get; set; } = 1f;
         public static Vector2D<float> shadowNormalBias { get; set; } = new(.005f, .05f);
-        public static Vector3D<float> ambientColor { get; set; } = new(.2f);
+        public static Vector3D<float> ambientColor { get; set; } = new(.03f);
 
         public static void Init()
         {

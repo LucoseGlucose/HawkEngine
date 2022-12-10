@@ -18,7 +18,7 @@ namespace HawkEngine.Components
         public override Vector3D<float> positionUniform => transform.forward;
 
         public bool shadowsEnabled = true;
-        public Vector2D<int> shadowResolution = new(2048);
+        public Vector2D<int> shadowResolution = new(1024);
         public Graphics.Framebuffer shadowMapBuffer { get; protected set; }
 
         public float nearClip = .1f;
