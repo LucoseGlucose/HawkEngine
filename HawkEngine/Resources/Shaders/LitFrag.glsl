@@ -23,6 +23,8 @@ uniform sampler2D uNormalMapN;
 uniform float uNormalStrength = 1;
 
 uniform vec2 uShadowNormalBias = vec2(.005, .05);
+uniform int uShadowMapSamples = 2;
+uniform float uShadowSoftness = .75;
 
 struct Light
 {
@@ -99,21 +101,41 @@ void main()
     vec3 Lo = vec3(0.0);
     for(int i = 0; i < 5; ++i) 
     {
+        if (uLights[i].uColor == vec3(0)) break;
+
         vec3 L = normalize(uLights[i].uPosition - outWorldPosition * min(uLights[i].uType, 1.0));
+        float shadow = 1.0;
+
+        if (uLights[i].uType == 0)
+        {
+            vec4 lightSpacePos = uLights[i].uProjMat * uLights[i].uViewMat * vec4(outWorldPosition, 1);
+		    vec3 lightCoords = lightSpacePos.xyz / lightSpacePos.w;
+		    lightCoords = lightCoords * .5 + .5;
+
+		    if (lightCoords.z > 1.0) shadow = 0.0;
+            else 
+            {
+                shadow = 0.0;
+                float lightDepth = texture(uLights[i].uShadowTexW, lightCoords.xy).r;
+		        float bias = max(uShadowNormalBias.y * (1.0 - dot(N, L)), uShadowNormalBias.x);
+
+		        vec2 pixelSize = 1.0 / textureSize(uLights[i].uShadowTexW, 0) * uShadowSoftness;
+		        for(int y = -uShadowMapSamples; y <= uShadowMapSamples; y++)
+		        {
+		            for(int x = -uShadowMapSamples; x <= uShadowMapSamples; x++)
+		            {
+		                float closestDepth = texture(uLights[i].uShadowTexW, lightCoords.xy + vec2(x, y) * pixelSize).r;
+		        		if (lightCoords.z > closestDepth + bias) shadow += 1.0f;     
+		            }    
+		        }
+		        shadow /= pow((uShadowMapSamples * 2 + 1), 2);
+            }
+
+            if (shadow >= 1.0) continue;
+        }
+        
         vec3 H = normalize(V + L);
         float dist = length(uLights[i].uPosition - outWorldPosition);
-
-        vec4 lightSpacePos = uLights[i].uProjMat * uLights[i].uViewMat * vec4(outWorldPosition, 1);
-
-		vec3 lightCoords = lightSpacePos.xyz / lightSpacePos.w;
-		lightCoords = lightCoords * .5 + .5;
-
-		float lightDepth = texture(uLights[i].uShadowTexW, lightCoords.xy).r;
-		float bias = max(uShadowNormalBias.y * (1.0 - dot(N, L)), uShadowNormalBias.x);
-
-        float shadow = lightCoords.z - bias > lightDepth ? 0.0 : 1.0;
-		if (lightCoords.z > 1.0) shadow = 1.0;
-        if (shadow <= 0.0) continue;
 
         float attenuation = 1.0 / (1 + uLights[i].uFalloff.x * dist + uLights[i].uFalloff.y * (dist * dist));
         vec3 radiance = uLights[i].uColor * attenuation;
@@ -132,7 +154,7 @@ void main()
 
         float NdotL = max(dot(N, L), 0.0);
 
-        Lo += (kD * albedo.rgb / PI + specular) * radiance * NdotL;
+        Lo += (kD * albedo.rgb / PI + specular) * radiance * NdotL * (1.0 - shadow);
     }   
     
     vec3 ambient = uAmbientColor * albedo.rgb;

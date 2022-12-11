@@ -23,6 +23,8 @@ uniform sampler2D uNormalMapN;
 uniform float uNormalStrength = 1;
 
 uniform vec2 uShadowNormalBias = vec2(.005, .05);
+uniform int uShadowMapSamples = 2;
+uniform float uShadowSoftness = .75;
 
 struct Light
 {
@@ -58,16 +60,36 @@ void main()
 		if (uLights[i].uColor == vec3(0)) break;
 
 		vec3 lightDir = normalize(uLights[i].uPosition - outWorldPosition * min(uLights[i].uType, 1.0));
-		vec4 lightSpacePos = uLights[i].uProjMat * uLights[i].uViewMat * vec4(outWorldPosition, 1);
 
-		vec3 lightCoords = lightSpacePos.xyz / lightSpacePos.w;
-		lightCoords = lightCoords * .5 + .5;
+		float shadow = 1.0;
 
-		float lightDepth = texture(uLights[i].uShadowTexW, lightCoords.xy).r;
-		float bias = max(uShadowNormalBias.y * (1.0 - dot(normal, lightDir)), uShadowNormalBias.x);
+        if (uLights[i].uType == 0)
+        {
+            vec4 lightSpacePos = uLights[i].uProjMat * uLights[i].uViewMat * vec4(outWorldPosition, 1);
+		    vec3 lightCoords = lightSpacePos.xyz / lightSpacePos.w;
+		    lightCoords = lightCoords * .5 + .5;
 
-		float shadow = lightCoords.z - bias > lightDepth ? 0.0 : 1.0;
-		if (lightCoords.z > 1.0) shadow = 1.0;
+		    if (lightCoords.z > 1.0) shadow = 0.0;
+            else 
+            {
+                shadow = 0.0;
+                float lightDepth = texture(uLights[i].uShadowTexW, lightCoords.xy).r;
+		        float bias = max(uShadowNormalBias.y * (1.0 - dot(normal, lightDir)), uShadowNormalBias.x);
+
+		        vec2 pixelSize = 1.0 / textureSize(uLights[i].uShadowTexW, 0) * uShadowSoftness;
+		        for(int y = -uShadowMapSamples; y <= uShadowMapSamples; y++)
+		        {
+		            for(int x = -uShadowMapSamples; x <= uShadowMapSamples; x++)
+		            {
+		                float closestDepth = texture(uLights[i].uShadowTexW, lightCoords.xy + vec2(x, y) * pixelSize).r;
+		        		if (lightCoords.z > closestDepth + bias) shadow += 1.0f;     
+		            }    
+		        }
+		        shadow /= pow((uShadowMapSamples * 2 + 1), 2);
+            }
+
+            if (shadow >= 1.0) continue;
+        }
 
 		float diffuseStrength = max(dot(lightDir, normal), 0.0);
 		vec3 diffuseColor = diffuseStrength * diffuse.xyz * uLights[i].uColor;
@@ -80,7 +102,7 @@ void main()
 
 		float lightDistance = distance(uLights[0].uPosition, outWorldPosition);
 		float attenuation = 1.0 / (1 + uLights[i].uFalloff.x * lightDistance + uLights[i].uFalloff.y * (lightDistance * lightDistance));
-		finalColor += (diffuseColor + specularColor) * shadow * attenuation;
+		finalColor += (diffuseColor + specularColor) * attenuation * (1.0 - shadow) / 2.5;
 	}
 
 	outColor = vec4(finalColor, diffuse.a);
