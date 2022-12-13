@@ -23,8 +23,6 @@ namespace HawkEngine.Graphics
         private readonly Dictionary<string, Matrix3X3<float>> mat3Values = new();
         private readonly Dictionary<string, Matrix4X4<float>> mat4Values = new();
 
-        public readonly Utils.ShaderFeature features = Utils.ShaderFeature.None;
-
         public unsafe ShaderProgram(params uint[] shaders)
         {
             id = Rendering.gl.CreateProgram();
@@ -72,9 +70,6 @@ namespace HawkEngine.Graphics
                     }
                     else texs.Add(null);
                 }
-
-                if (name.Contains("uLights")) features |= Utils.ShaderFeature.Lighting;
-                if (name.Contains("uShadowMap")) features |= Utils.ShaderFeature.Shadows;
             }
 
             textures.Item1 = texs.ToArray();

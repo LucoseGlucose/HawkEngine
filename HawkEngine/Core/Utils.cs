@@ -17,14 +17,15 @@ namespace HawkEngine.Core
             }
             return array;
         }
-
-        [Flags]
-        public enum ShaderFeature : ushort
+        public delegate TReturn IndexedFunc<TReturn, TIn>(TIn tIn);
+        public static T[] IndexedArray<T>(IndexedFunc<T, int> func, int length)
         {
-            None = 0x0000000000000000,
-            Lighting = 0x0000000000000001,
-            Shadows = 0x0000000000000010,
-            Transparency = 0x0000000000000100,
+            T[] array = new T[length];
+            for (int i = 0; i < length; i++)
+            {
+                array[i] = func(i);
+            }
+            return array;
         }
     }
 }

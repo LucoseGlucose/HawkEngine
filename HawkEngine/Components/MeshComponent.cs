@@ -21,8 +21,7 @@ namespace HawkEngine.Components
         {
             shader.SetVec3Cache("uCameraPos", Rendering.outputCam.transform.position);
             shader.SetMat4Cache("uModelMat", transform.matrix);
-            shader.SetMat4Cache("uViewMat", Rendering.outputCam.viewMat);
-            shader.SetMat4Cache("uProjMat", Rendering.outputCam.projectionMat);
+            shader.SetMat4Cache("uMat", transform.matrix * Rendering.outputCam.viewMat * Rendering.outputCam.projectionMat);
         }
         public unsafe virtual void Render()
         {

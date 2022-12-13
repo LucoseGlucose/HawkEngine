@@ -18,55 +18,49 @@ namespace HawkEngine.Components
         public override Vector3D<float> positionUniform => transform.forward;
 
         public bool shadowsEnabled = true;
-        public Vector2D<int> shadowResolution = new(1024);
+        public int shadowResolution = 2048;
+        public float shadowDistance = 50f;
         public Graphics.Framebuffer shadowMapBuffer { get; protected set; }
-
-        public float nearClip = .1f;
-        public float farClip = 50f;
-        public Vector2D<float> size = new(30f);
 
         public Matrix4X4<float> projectionMat
         {
-            get { return Matrix4X4.CreateOrthographic(size.X, size.Y, nearClip, farClip); }
-            /*get
+            get
             {
+                CameraComponent cam = Rendering.outputCam;
+
                 float ar = (float)App.window.FramebufferSize.X / App.window.FramebufferSize.Y;
                 float fov = Scalar.DegreesToRadians(Rendering.outputCam.fov);
-                float Hnear = 2 * Scalar.Tan(fov / 2) * nearClip;
+                float Hnear = 2f * Scalar.Tan(fov * .5f) * cam.nearClip;
                 float Wnear = Hnear * ar;
-                float Hfar = 2 * Scalar.Tan(fov / 2) * farClip;
+                float Hfar = 2f * Scalar.Tan(fov * .5f) * shadowDistance;
                 float Wfar = Hfar * ar;
-                Vector3D<float> centerFar = Rendering.outputCam.transform.position + Rendering.outputCam.transform.forward * farClip;
+                Vector3D<float> centerFar = cam.transform.position + cam.transform.forward * shadowDistance;
 
-                Vector3D<float> topLeftFar = centerFar + (Rendering.outputCam.transform.up * Hfar / 2) - (Rendering.outputCam.transform.right * Wfar / 2);
-                Vector3D<float> topRightFar = centerFar + (Rendering.outputCam.transform.up * Hfar / 2) + (Rendering.outputCam.transform.right * Wfar / 2);
-                Vector3D<float> bottomLeftFar = centerFar - (Rendering.outputCam.transform.up * Hfar / 2) - (Rendering.outputCam.transform.right * Wfar / 2);
-                Vector3D<float> bottomRightFar = centerFar - (Rendering.outputCam.transform.up * Hfar / 2) + (Rendering.outputCam.transform.right * Wfar / 2);
-                Vector3D<float> centerNear = Rendering.outputCam.transform.position + Rendering.outputCam.transform.forward * nearClip;
+                Vector3D<float> tlf = centerFar + (Rendering.outputCam.transform.up * Hfar * .5f) - (Rendering.outputCam.transform.right * Wfar * .5f);
+                Vector3D<float> trf = centerFar + (Rendering.outputCam.transform.up * Hfar * .5f) + (Rendering.outputCam.transform.right * Wfar * .5f);
+                Vector3D<float> blf = centerFar - (Rendering.outputCam.transform.up * Hfar * .5f) - (Rendering.outputCam.transform.right * Wfar * .5f);
+                Vector3D<float> brf = centerFar - (Rendering.outputCam.transform.up * Hfar * .5f) + (Rendering.outputCam.transform.right * Wfar * .5f);
+                Vector3D<float> centerNear = cam.transform.position + cam.transform.forward * cam.nearClip;
 
-                Vector3D<float> topLeftNear = centerNear + ((Rendering.outputCam.transform.up * Hnear / 2)
-                    - (Rendering.outputCam.transform.right * Wnear / 2));
-                Vector3D<float> topRightNear = centerNear + ((Rendering.outputCam.transform.up * Hnear / 2)
-                    + (Rendering.outputCam.transform.right * Wnear / 2));
-                Vector3D<float> bottomLeftNear = centerNear - ((Rendering.outputCam.transform.up * Hnear / 2)
-                    - (Rendering.outputCam.transform.right * Wnear / 2));
-                Vector3D<float> bottomRightNear = centerNear - ((Rendering.outputCam.transform.up * Hnear / 2)
-                    + (Rendering.outputCam.transform.right * Wnear / 2));
+                Vector3D<float> tln = centerNear + ((cam.transform.up * Hnear / 2) - (cam.transform.right * Wnear / 2));
+                Vector3D<float> trn = centerNear + ((cam.transform.up * Hnear / 2) + (cam.transform.right * Wnear / 2));
+                Vector3D<float> bln = centerNear - ((cam.transform.up * Hnear / 2) - (cam.transform.right * Wnear / 2));
+                Vector3D<float> brn = centerNear - ((cam.transform.up * Hnear / 2) + (cam.transform.right * Wnear / 2));
 
                 Vector4D<float>[] frustumToLightView = new Vector4D<float>[8]
                 {
-                    Vector4D.Transform(new Vector4D<float>(bottomRightNear, 1.0f), viewMat),
-                    Vector4D.Transform(new Vector4D<float>(topRightNear, 1.0f), viewMat),
-                    Vector4D.Transform(new Vector4D<float>(bottomLeftNear, 1.0f), viewMat),
-                    Vector4D.Transform(new Vector4D<float>(topLeftNear, 1.0f), viewMat),
-                    Vector4D.Transform(new Vector4D<float>(bottomRightFar, 1.0f), viewMat),
-                    Vector4D.Transform(new Vector4D<float>(topRightFar, 1.0f), viewMat),
-                    Vector4D.Transform(new Vector4D<float>(bottomLeftFar, 1.0f), viewMat),
-                    Vector4D.Transform(new Vector4D<float>(topLeftFar, 1.0f), viewMat),
+                    new Vector4D<float>(brn, 1.0f) * viewMat,
+                    new Vector4D<float>(trn, 1.0f) * viewMat,
+                    new Vector4D<float>(bln, 1.0f) * viewMat,
+                    new Vector4D<float>(tln, 1.0f) * viewMat,
+                    new Vector4D<float>(brf, 1.0f) * viewMat,
+                    new Vector4D<float>(trf, 1.0f) * viewMat,
+                    new Vector4D<float>(blf, 1.0f) * viewMat,
+                    new Vector4D<float>(tlf, 1.0f) * viewMat,
                 };
 
-                Vector3D<float> max = new(float.MaxValue);
-                Vector3D<float> min = new(float.MinValue);
+                Vector3D<float> max = new(float.MinValue);
+                Vector3D<float> min = new(float.MaxValue);
 
                 for (uint i = 0; i < frustumToLightView.Length; i++)
                 {
@@ -87,9 +81,9 @@ namespace HawkEngine.Components
                 float f = -min.Z;
 
                 return Matrix4X4.CreateOrthographicOffCenter(l, r, b, t, n, f);
-            }*/
+            }
         }
-        public Matrix4X4<float> viewMat { get { return Matrix4X4.CreateLookAt(transform.position, new(0f), transform.up); } }
+        public Matrix4X4<float> viewMat { get { return Matrix4X4.CreateLookAt(transform.forward, new(0f), transform.up); } }
 
         public override void Create(SceneObject owner)
         {
@@ -99,8 +93,8 @@ namespace HawkEngine.Components
         }
         public void CreateShadowBuffer()
         {
-            FramebufferTexture tex = new FramebufferTexture((uint)shadowResolution.X, (uint)shadowResolution.Y, FramebufferAttachment.DepthAttachment,
-                InternalFormat.DepthComponent16, PixelFormat.DepthComponent, wrap: GLEnum.ClampToBorder);
+            FramebufferTexture tex = new FramebufferTexture((uint)shadowResolution, (uint)shadowResolution, FramebufferAttachment.DepthAttachment,
+                InternalFormat.DepthComponent32f, PixelFormat.DepthComponent, wrap: GLEnum.ClampToBorder);
             Span<float> col = stackalloc float[4] { 1f, 1f, 1f, 1f };
 
             tex.Bind(0);

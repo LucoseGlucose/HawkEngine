@@ -4,15 +4,13 @@ in vec2 outUV;
 
 out vec4 outColor;
 
-uniform vec4 uDiffuse = vec4(1);
-layout(binding=0) uniform sampler2D uDiffuseTexW;
+uniform vec4 uColor = vec4(1);
+layout(binding=0) uniform sampler2D uColorTexW;
 uniform float uAlphaClip;
 
 void main()
 {
-	vec4 diffuse = uDiffuse * texture(uDiffuseTexW, outUV);
-
-	if (diffuse.a < uAlphaClip) discard;
-
-	outColor = diffuse;
+	vec4 col = uColor * texture(uColorTexW, outUV);
+	if (col.a < uAlphaClip) discard;
+	outColor = col;
 }

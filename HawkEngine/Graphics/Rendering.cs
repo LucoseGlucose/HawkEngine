@@ -12,7 +12,6 @@ using HawkEngine.Editor;
 using HawkEngine.Components;
 using System.Drawing;
 using Silk.NET.Maths;
-using Silk.NET.Assimp;
 
 namespace HawkEngine.Graphics
 {
@@ -21,7 +20,7 @@ namespace HawkEngine.Graphics
         public static GL gl { get; set; }
 
         public static event Action<DebugSource, DebugType, int, string> glDebugCallback;
-        public static Queue<Action> deletedObjects = new();
+        public static readonly Queue<Action> deletedObjects = new();
 
         public static CameraComponent outputCam { get; set; }
 
@@ -38,7 +37,7 @@ namespace HawkEngine.Graphics
         public static float gamma { get; set; } = 2.2f;
         public static float exposure { get; set; } = 1f;
         public static float tonemapStrength { get; set; } = 1f;
-        public static Vector2D<float> shadowNormalBias { get; set; } = new(.005f, .05f);
+        public static Vector2D<float> shadowNormalBias { get; set; } = new(.002f, .008f);
         public static Vector3D<float> ambientColor { get; set; } = new(.03f);
 
         public static void Init()
@@ -107,19 +106,18 @@ namespace HawkEngine.Graphics
 
                 light.shadowMapBuffer.Bind();
                 gl.DrawBuffer(DrawBufferMode.None);
-                gl.Viewport(light.shadowResolution);
+                gl.Viewport(new Vector2D<int>(light.shadowResolution));
                 gl.Clear(ClearBufferMask.DepthBufferBit);
 
-                shadowShader.SetMat4Cache("uViewMat", light.viewMat);
-                shadowShader.SetMat4Cache("uProjMat", light.projectionMat);
+                Matrix4X4<float> lightMat = light.viewMat * light.projectionMat;
 
                 for (int m = 0; m < meshes.Count; m++)
                 {
                     if (!meshes[m].castShadows) continue;
 
-                    Model model = new(shadowShader, meshes[m].mesh);
-                    shadowShader.SetMat4Cache("uModelMat", meshes[m].transform.matrix);
-                    model.Render();
+                    shadowShader.SetMat4Cache("uMat", meshes[m].transform.matrix * lightMat);
+                    meshes[m].mesh.vertexArray.Bind();
+                    gl.DrawElements(PrimitiveType.Triangles, (uint)meshes[m].mesh.meshData.indices.Length, DrawElementsType.UnsignedInt, null);
                 }
             }
 
@@ -130,7 +128,7 @@ namespace HawkEngine.Graphics
 
             skyboxModel.shader.SetMat4Cache("uViewMat", outputCam.viewMat);
             skyboxModel.shader.SetMat4Cache("uProjMat", outputCam.projectionMat);
-            skyboxModel.shader.textures.Item1[0] = skyboxTexture;
+            skyboxModel.shader.SetTexture("uSkybox", skyboxTexture);
             skyboxModel.Render();
 
             for (int m = 0; m < meshes.Count; m++)
@@ -154,8 +152,7 @@ namespace HawkEngine.Graphics
                             if (!meshes[m].recieveShadows || light is not DirectionalLightComponent dLight) continue;
 
                             meshes[m].shader.SetTexture($"uLights[{l}].uShadowTexW", dLight.shadowMapBuffer.attachments[0]);
-                            meshes[m].shader.SetMat4Cache($"uLights[{l}].uViewMat", dLight.viewMat);
-                            meshes[m].shader.SetMat4Cache($"uLights[{l}].uProjMat", dLight.projectionMat);
+                            meshes[m].shader.SetMat4Cache($"uLights[{l}].uMat", dLight.viewMat * dLight.projectionMat);
                             meshes[m].shader.SetVec2Cache("uShadowNormalBias", shadowNormalBias);
                         }
                         else meshes[m].shader.SetVec3Cache($"uLights[{l}].uColor", Vector3D<float>.Zero);

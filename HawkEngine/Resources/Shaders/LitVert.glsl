@@ -12,8 +12,7 @@ out vec3 outWorldPosition;
 out mat3 outTBNMat;
 
 uniform mat4 uModelMat;
-uniform mat4 uViewMat;
-uniform mat4 uProjMat;
+uniform mat4 uMat;
 
 void main()
 {
@@ -26,5 +25,5 @@ void main()
 	vec3 N = normalize(vec3(uModelMat * vec4(inNormal, 0.0)));
 	outTBNMat = mat3(T, B, N);
 
-	gl_Position =  uProjMat * uViewMat * uModelMat * vec4(inPosition, 1.0);
+	gl_Position =  uMat * vec4(inPosition, 1.0);
 }
