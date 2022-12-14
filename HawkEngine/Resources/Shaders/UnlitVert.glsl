@@ -5,13 +5,11 @@ layout (location = 2) in vec2 inUV;
 
 out vec2 outUV;
 
-uniform mat4 uModelMat;
-uniform mat4 uViewMat;
-uniform mat4 uProjMat;
+uniform mat4 uMat;
 
 void main()
 {
 	outUV = inUV;
 
-	gl_Position =  uProjMat * uViewMat * uModelMat * vec4(inPosition, 1);
+	gl_Position =  uMat * vec4(inPosition, 1);
 }

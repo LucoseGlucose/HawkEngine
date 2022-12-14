@@ -45,7 +45,7 @@ namespace HawkEngine.Components
                 (
                     new FramebufferTexture((uint)size.X, (uint)size.Y, FramebufferAttachment.ColorAttachment0, InternalFormat.Rgba16f, PixelFormat.Rgba, 4),
                     new FramebufferTexture((uint)size.X, (uint)size.Y, FramebufferAttachment.DepthAttachment,
-                        InternalFormat.DepthComponent16, PixelFormat.DepthComponent, 4)
+                        InternalFormat.DepthComponent24, PixelFormat.DepthComponent, 4)
                 );
         }
     }

@@ -1,5 +1,6 @@
 ﻿using HawkEngine.Core;
 using HawkEngine.Graphics;
+using Silk.NET.Assimp;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 using System;
@@ -14,13 +15,18 @@ namespace HawkEngine.Components
     public class DirectionalLightComponent : LightComponent
     {
         public override Vector2D<float> falloff { get => new(0f); }
-        public override int type => 0;
-        public override Vector3D<float> positionUniform => transform.forward;
+        public override int type => 1;
+        public override bool supportsShadows => true;
 
         public bool shadowsEnabled = true;
         public int shadowResolution = 2048;
         public float shadowDistance = 50f;
         public Graphics.Framebuffer shadowMapBuffer { get; protected set; }
+
+        public Vector2D<float> shadowNormalBias = new(.002f, .008f);
+        public int shadowMapSamples = 2;
+        public float shadowSoftness = .65f;
+        public float shadowNoise = 7000f;
 
         public Matrix4X4<float> projectionMat
         {
@@ -83,7 +89,7 @@ namespace HawkEngine.Components
                 return Matrix4X4.CreateOrthographicOffCenter(l, r, b, t, n, f);
             }
         }
-        public Matrix4X4<float> viewMat { get { return Matrix4X4.CreateLookAt(transform.forward, new(0f), transform.up); } }
+        public Matrix4X4<float> viewMat { get { return Matrix4X4.CreateLookAt(-transform.forward, new(0f), transform.up); } }
 
         public override void Create(SceneObject owner)
         {
@@ -93,13 +99,28 @@ namespace HawkEngine.Components
         }
         public void CreateShadowBuffer()
         {
-            FramebufferTexture tex = new FramebufferTexture((uint)shadowResolution, (uint)shadowResolution, FramebufferAttachment.DepthAttachment,
-                InternalFormat.DepthComponent32f, PixelFormat.DepthComponent, wrap: GLEnum.ClampToBorder);
+            FramebufferTexture tex = new((uint)shadowResolution, (uint)shadowResolution, FramebufferAttachment.DepthAttachment,
+                InternalFormat.DepthComponent24, PixelFormat.DepthComponent, wrap: GLEnum.ClampToBorder);
             Span<float> col = stackalloc float[4] { 1f, 1f, 1f, 1f };
 
             tex.Bind(0);
             Rendering.gl.TexParameter(tex.textureType, TextureParameterName.TextureBorderColor, col);
             shadowMapBuffer = new(tex);
+        }
+        public override void SetUniforms(string prefix, ShaderProgram shader)
+        {
+            shader.SetIntCache($"{prefix}.uType", type);
+            shader.SetVec3Cache($"{prefix}.uColor", output);
+            shader.SetVec2Cache($"{prefix}.uFalloff", falloff);
+            shader.SetVec3Cache($"{prefix}.uDirection", transform.forward);
+
+            shader.SetTexture($"{prefix}.uShadowTexW", shadowMapBuffer.attachments[0]);
+            shader.SetMat4Cache($"{prefix}.uShadowMat", viewMat * projectionMat);
+
+            shader.SetVec2Cache($"{prefix}.uShadowNormalBias", shadowNormalBias);
+            shader.SetIntCache($"{prefix}.uShadowMapSamples", shadowMapSamples);
+            shader.SetFloatCache($"{prefix}.uShadowSoftness", shadowSoftness);
+            shader.SetFloatCache($"{prefix}.uShadowNoise", shadowNoise);
         }
     }
 }

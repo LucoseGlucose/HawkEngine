@@ -33,7 +33,7 @@ namespace HawkEngine.Core
                 mesh1.shader.SetTexture("uAlbedoTexW", new Texture2D("Images/brickwall.jpg"));
                 mesh1.shader.SetTexture("uNormalMapN", new Texture2D("Images/brickwall_normal.jpg"));
                 mesh1.mesh = new("Models/Cube.obj");
-                mesh1.shader.SetFloatCache("uSmoothness", .1f);
+                mesh1.shader.SetFloatCache("uSmoothness", .2f);
 
                 MeshComponent mesh2 = scene.CreateObject("Mesh").AddComponent<MeshComponent>();
                 mesh2.shader = new(Graphics.Shader.Create("Shaders/LitVert.glsl", ShaderType.VertexShader),
@@ -54,11 +54,11 @@ namespace HawkEngine.Core
                 mesh.transform.rotation = new(90f, 0f, 0f);
                 mesh.shader.SetFloatCache("uSmoothness", .1f);
 
-                DirectionalLightComponent light = scene.CreateObject("Light").AddComponent<DirectionalLightComponent>();
+                LightComponent light = scene.CreateObject("Light").AddComponent<SpotLightComponent>();
                 light.color = new(.94f, .97f, .85f);
                 light.strength = 8f;
-                light.transform.rotation = new(-30, 20, 0);
-                light.transform.position = new(20f, 20f, 20f);
+                light.transform.rotation = new(50f, 0f, 0f);
+                light.transform.position = new(0f, 5f, -2f);
 
                 FPSCounterComponent text = scene.CreateObject("FPS Counter").AddComponent<FPSCounterComponent>();
 

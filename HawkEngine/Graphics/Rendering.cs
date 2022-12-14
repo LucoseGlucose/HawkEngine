@@ -64,7 +64,6 @@ namespace HawkEngine.Graphics
         }
         private static void OnWindowResize(Vector2D<int> size)
         {
-            gl.Viewport(size);
             CreatePPFB();
         }
         public static void CreatePPFB()
@@ -95,6 +94,22 @@ namespace HawkEngine.Graphics
             shadowShader = new(Shader.Create("Shaders/ShadowVert.glsl", ShaderType.VertexShader),
                 Shader.Create("Shaders/ShadowFrag.glsl", ShaderType.FragmentShader));
         }
+        private static unsafe void RenderShadowMap(List<MeshComponent> meshes, Framebuffer fb, Vector2D<int> res, Matrix4X4<float> lightMat)
+        {
+            fb.Bind();
+            gl.DrawBuffer(DrawBufferMode.None);
+            gl.Viewport(res);
+            gl.Clear(ClearBufferMask.DepthBufferBit);
+
+            for (int m = 0; m < meshes.Count; m++)
+            {
+                if (!meshes[m].castShadows) continue;
+
+                shadowShader.SetMat4Cache("uMat", meshes[m].transform.matrix * lightMat);
+                meshes[m].mesh.vertexArray.Bind();
+                gl.DrawElements(PrimitiveType.Triangles, (uint)meshes[m].mesh.meshData.indices.Length, DrawElementsType.UnsignedInt, null);
+            }
+        }
         public static unsafe void Render()
         {
             List<MeshComponent> meshes = App.scene.FindComponents<MeshComponent>();
@@ -102,23 +117,11 @@ namespace HawkEngine.Graphics
 
             for (int l = 0; l < lights.Count; l++)
             {
-                if (lights[l] is not DirectionalLightComponent light || !light.shadowsEnabled) continue;
+                if (lights[l] is DirectionalLightComponent dLight && dLight.shadowsEnabled)
+                    RenderShadowMap(meshes, dLight.shadowMapBuffer, new(dLight.shadowResolution), dLight.viewMat * dLight.projectionMat);
 
-                light.shadowMapBuffer.Bind();
-                gl.DrawBuffer(DrawBufferMode.None);
-                gl.Viewport(new Vector2D<int>(light.shadowResolution));
-                gl.Clear(ClearBufferMask.DepthBufferBit);
-
-                Matrix4X4<float> lightMat = light.viewMat * light.projectionMat;
-
-                for (int m = 0; m < meshes.Count; m++)
-                {
-                    if (!meshes[m].castShadows) continue;
-
-                    shadowShader.SetMat4Cache("uMat", meshes[m].transform.matrix * lightMat);
-                    meshes[m].mesh.vertexArray.Bind();
-                    gl.DrawElements(PrimitiveType.Triangles, (uint)meshes[m].mesh.meshData.indices.Length, DrawElementsType.UnsignedInt, null);
-                }
+                if (lights[l] is SpotLightComponent sLight && sLight.shadowsEnabled)
+                    RenderShadowMap(meshes, sLight.shadowMapBuffer, new(sLight.shadowResolution), sLight.viewMat * sLight.projectionMat);
             }
 
             outputCam.framebuffer.Bind();
@@ -140,24 +143,11 @@ namespace HawkEngine.Graphics
 
                     for (int l = 0; l < 5; l++)
                     {
-                        if (orderedLights.Count() > l)
-                        {
-                            LightComponent light = orderedLights.ElementAt(l);
-
-                            meshes[m].shader.SetIntCache($"uLights[{l}].uType", light.type);
-                            meshes[m].shader.SetVec3Cache($"uLights[{l}].uPosition", light.positionUniform);
-                            meshes[m].shader.SetVec3Cache($"uLights[{l}].uColor", light.output);
-                            meshes[m].shader.SetVec2Cache($"uLights[{l}].uFalloff", light.falloff);
-
-                            if (!meshes[m].recieveShadows || light is not DirectionalLightComponent dLight) continue;
-
-                            meshes[m].shader.SetTexture($"uLights[{l}].uShadowTexW", dLight.shadowMapBuffer.attachments[0]);
-                            meshes[m].shader.SetMat4Cache($"uLights[{l}].uMat", dLight.viewMat * dLight.projectionMat);
-                            meshes[m].shader.SetVec2Cache("uShadowNormalBias", shadowNormalBias);
-                        }
-                        else meshes[m].shader.SetVec3Cache($"uLights[{l}].uColor", Vector3D<float>.Zero);
+                        if (orderedLights.Count() > l) orderedLights.ElementAt(l).SetUniforms($"uLights[{l}]", meshes[m].shader);
+                        else meshes[m].shader.SetIntCache($"uLights[{l}].uType", 0);
 
                         meshes[m].shader.SetVec3Cache("uAmbientColor", ambientColor);
+                        meshes[m].shader.SetVec2Cache("uShadowNormalBias", shadowNormalBias);
                     }
                 }
 
