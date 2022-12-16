@@ -4,7 +4,7 @@ using Silk.NET.OpenGL;
 
 namespace HawkEngine.Graphics
 {
-    public class Mesh
+    public class Mesh : IDisposable
     {
         public MeshData meshData;
         public readonly VertexArray vertexArray;
@@ -18,6 +18,15 @@ namespace HawkEngine.Graphics
         {
             this.meshData = meshData;
             this.vertexArray = vertexArray;
+        }
+        public void Dispose()
+        {
+            for (int i = 0; i < vertexArray.attribBuffers.Length; i++)
+            {
+                vertexArray.attribBuffers[i].Dispose();
+            }
+            vertexArray.indexBuffer.Dispose();
+            vertexArray.Dispose();
         }
     }
 }

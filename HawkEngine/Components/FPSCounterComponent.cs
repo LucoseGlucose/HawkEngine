@@ -24,6 +24,7 @@ namespace HawkEngine.Components
         }
         public override void Update()
         {
+            mesh.Dispose();
             text = Math.Round(1f / App.deltaTime).ToString() + " FPS";
 
             transform.position = new(-App.window.FramebufferSize.X * .5f, App.window.FramebufferSize.Y * .5f

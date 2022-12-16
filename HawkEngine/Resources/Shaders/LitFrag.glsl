@@ -8,16 +8,16 @@ in mat3 outTBNMat;
 out vec4 outColor;
 
 uniform vec3 uCameraPos;
-uniform vec3 uAmbientColor = vec3(.03);
+uniform vec3 uAmbientColor = vec3(.05);
 
 uniform sampler2D uAlbedoTexW;
 uniform vec4 uAlbedo = vec4(1);
 uniform float uAlphaClip = 0;
 
 uniform sampler2D uMetallicMapW;
-uniform float uMetallic = .1;
-uniform sampler2D uSmoothnessMapW;
-uniform float uSmoothness = .8;
+uniform float uMetallic = .5;
+uniform sampler2D uRoughnessMapW;
+uniform float uRoughness = .5;
 
 uniform sampler2D uNormalMapN;
 uniform float uNormalStrength = 1;
@@ -109,18 +109,9 @@ float random(vec3 seed, int i)
 	return fract(sin(dot_product) * 43758.5453);
 }
 
-bool calcDirectionalLight(in Light l, in vec3 viewDir, in vec3 normal, out vec3 radiance, out vec3 lightDir, out float shadow)
+bool calcShadow(in Light l, in vec3 lightDir, in vec3 normal, in vec3 lightCoords, out float shadow)
 {
-	lightDir = -l.uDirection;
-	vec3 geometryNormal = outTBNMat * vec3(0, 0, 1);
-	if (dot(geometryNormal, lightDir) <= 0.0) return false;
-
-	shadow = 0.0;
-	vec4 lightSpacePos = l.uShadowMat * vec4(outWorldPosition, 1);
-	vec3 lightCoords = lightSpacePos.xyz / lightSpacePos.w;
-	lightCoords = lightCoords * .5 + .5;
-
-	if (lightCoords.z > 1.0) return false;
+	if (lightCoords.z > 1.0) return true;
 	else 
 	{
 		float lightDepth = texture(l.uShadowTexW, lightCoords.xy).r;
@@ -142,16 +133,28 @@ bool calcDirectionalLight(in Light l, in vec3 viewDir, in vec3 normal, out vec3 
 		shadow /= pow((l.uShadowMapSamples * 2 + 1), 2);
 	}
 
-	if (shadow >= 1.0) return false;
+	return shadow < 1.0;
+}
+
+bool calcDirectionalLight(in Light l, in vec3 viewDir, in vec3 normal, in vec3 geometryNormal, out vec3 radiance, out vec3 lightDir, out float shadow)
+{
+	lightDir = -l.uDirection;
+	if (dot(geometryNormal, lightDir) <= 0.0) return false;
+
+	shadow = 0.0;
+	vec4 lightSpacePos = l.uShadowMat * vec4(outWorldPosition, 1);
+	vec3 lightCoords = lightSpacePos.xyz / lightSpacePos.w;
+	lightCoords = lightCoords * .5 + .5;
+
+	if (l.uShadowMapSamples >= 0 && !calcShadow(l, lightDir, normal, lightCoords, shadow)) return false;
+
 	radiance = l.uColor;
 	return true;
 }
 
-bool calcPointLight(in Light l, in vec3 viewDir, in vec3 normal, out vec3 radiance, out vec3 lightDir)
+bool calcPointLight(in Light l, in vec3 viewDir, in vec3 normal, in vec3 geometryNormal, out vec3 radiance, out vec3 lightDir)
 {
 	lightDir = normalize(l.uPosition - outWorldPosition);
-
-	vec3 geometryNormal = outTBNMat * vec3(0, 0, 1);
 	if (dot(geometryNormal, lightDir) <= 0.0) return false;
 
 	float dist = length(l.uPosition - outWorldPosition);
@@ -161,11 +164,9 @@ bool calcPointLight(in Light l, in vec3 viewDir, in vec3 normal, out vec3 radian
 	return true;
 }
 
-bool calcSpotLight(in Light l, in vec3 viewDir, in vec3 normal, out vec3 radiance, out vec3 lightDir, out float shadow)
+bool calcSpotLight(in Light l, in vec3 viewDir, in vec3 normal, in vec3 geometryNormal, out vec3 radiance, out vec3 lightDir, out float shadow)
 {
 	lightDir = normalize(l.uPosition - outWorldPosition);
-
-	vec3 geometryNormal = outTBNMat * vec3(0, 0, 1);
 	if (dot(geometryNormal, lightDir) <= 0.0) return false;
 
 	shadow = 0.0;
@@ -173,29 +174,7 @@ bool calcSpotLight(in Light l, in vec3 viewDir, in vec3 normal, out vec3 radianc
 	vec3 lightCoords = lightSpacePos.xyz / lightSpacePos.w;
 	lightCoords = lightCoords * .5 + .5;
 
-	if (lightCoords.z > 1.0) return false;
-	else 
-	{
-		float lightDepth = texture(l.uShadowTexW, lightCoords.xy).r;
-		float bias = max(l.uShadowNormalBias.y * (1.0 - dot(normal, lightDir)), l.uShadowNormalBias.x);
-
-		vec2 pixelSize = 1.0 / textureSize(l.uShadowTexW, 0) * l.uShadowSoftness;
-
-		for(int y = -l.uShadowMapSamples; y <= l.uShadowMapSamples; y++)
-		{
-			for(int x = -l.uShadowMapSamples; x <= l.uShadowMapSamples; x++)
-			{
-				int index = int(16.0 * random(floor(outWorldPosition * 1000.0), 0)) % 16;
-				float closestDepth = texture(l.uShadowTexW, lightCoords.xy + vec2(x, y) * pixelSize + poissonDisk[index] / l.uShadowNoise).r;
-
-				float diff = lightCoords.z - (closestDepth + bias);
-				if (diff > 0.0) shadow += 1.0f;
-			}    
-		}
-		shadow /= pow((l.uShadowMapSamples * 2 + 1), 2);
-	}
-
-	if (shadow >= 1.0) return false;
+	if (!calcShadow(l, lightDir, normal, lightCoords, shadow)) return false;
 
 	float dist = length(l.uPosition - outWorldPosition);
 	float attenuation = 1.0 / (1 + l.uFalloff.x * dist + l.uFalloff.y * (dist * dist));
@@ -210,24 +189,24 @@ bool calcSpotLight(in Light l, in vec3 viewDir, in vec3 normal, out vec3 radianc
 	return true;
 }
 
-bool calcLight(in Light l, in vec3 viewDir, in vec3 normal, out vec3 radiance, out vec3 lightDir, out float shadow)
+bool calcLight(in Light l, in vec3 viewDir, in vec3 normal, in vec3 geometryNormal, out vec3 radiance, out vec3 lightDir, out float shadow)
 {
 	if (l.uType == 0) return false;
 
 	if (l.uType == 1) 
 	{
-		return calcDirectionalLight(l, viewDir, normal, radiance, lightDir, shadow);
+		return calcDirectionalLight(l, viewDir, normal, geometryNormal, radiance, lightDir, shadow);
 	}
 
 	if (l.uType == 2)
 	{
 		shadow = 0.0;
-		return calcPointLight(l, viewDir, normal, radiance, lightDir);
+		return calcPointLight(l, viewDir, normal, geometryNormal, radiance, lightDir);
 	}
 
 	if (l.uType == 3)
 	{
-		return calcSpotLight(l, viewDir, normal, radiance, lightDir, shadow);
+		return calcSpotLight(l, viewDir, normal, geometryNormal, radiance, lightDir, shadow);
 	}
 
 	return false;
@@ -239,11 +218,13 @@ void main()
 	if (albedo.a <= uAlphaClip) discard;
 
 	float metallic = texture(uMetallicMapW, outUV).r * uMetallic;
-	float roughness = 1 - (texture(uSmoothnessMapW, outUV).r * uSmoothness);
+	float roughness = texture(uRoughnessMapW, outUV).r * uRoughness;
 
-	vec3 normal = texture(uNormalMapN, outUV).xyz;
+	vec3 normal = texture(uNormalMapN, outUV).xyz * 2.0 - 1.0;
 	normal.xy *= uNormalStrength;
 	normal = normalize(outTBNMat * normal);
+
+	vec3 geometryNormal = normalize(outTBNMat * vec3(0.0, 0.0, 1.0));
 
 	vec3 viewDir = normalize(uCameraPos - outWorldPosition);
 
@@ -257,7 +238,7 @@ void main()
 		vec3 lightDir;
 		float shadow;
 
-		if (!calcLight(uLights[i], viewDir, normal, radiance, lightDir, shadow)) continue;
+		if (!calcLight(uLights[i], viewDir, normal, geometryNormal, radiance, lightDir, shadow)) continue;
 
 		vec3 halfwayVec = normalize(viewDir + lightDir);
 

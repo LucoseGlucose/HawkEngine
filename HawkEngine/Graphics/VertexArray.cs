@@ -6,7 +6,7 @@ using Silk.NET.OpenGL;
 
 namespace HawkEngine.Graphics
 {
-    public class VertexArray
+    public class VertexArray : IDisposable
     {
         public readonly uint id;
         public readonly Buffer indexBuffer;
@@ -49,6 +49,11 @@ namespace HawkEngine.Graphics
         {
             Rendering.gl.BindVertexArray(id);
             indexBuffer.Bind();
+        }
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            Rendering.gl.DeleteVertexArray(id);
         }
     }
 }

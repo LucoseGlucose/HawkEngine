@@ -31,9 +31,10 @@ namespace HawkEngine.Core
                 mesh1.shader = new(Graphics.Shader.Create("Shaders/LitVert.glsl", ShaderType.VertexShader),
                     Graphics.Shader.Create("Shaders/LitFrag.glsl", ShaderType.FragmentShader));
                 mesh1.shader.SetTexture("uAlbedoTexW", new Texture2D("Images/brickwall.jpg"));
-                mesh1.shader.SetTexture("uNormalMapN", new Texture2D("Images/brickwall_normal.jpg"));
+                mesh1.shader.SetTexture("uNormalMapN", new Texture2D("Images/brickwall_normal.jpg", false));
                 mesh1.mesh = new("Models/Cube.obj");
-                mesh1.shader.SetFloatCache("uSmoothness", .2f);
+                mesh1.shader.SetFloatCache("uMetallic", .1f);
+                mesh1.shader.SetFloatCache("uRoughness", .65f);
 
                 MeshComponent mesh2 = scene.CreateObject("Mesh").AddComponent<MeshComponent>();
                 mesh2.shader = new(Graphics.Shader.Create("Shaders/LitVert.glsl", ShaderType.VertexShader),
@@ -42,7 +43,7 @@ namespace HawkEngine.Core
                 mesh2.transform.position = new(2f, 4f, 1f);
                 mesh2.shader.SetVec4Cache("uAlbedo", new(.5f, .5f, 1f, 1f));
                 mesh2.shader.SetFloatCache("uMetallic", .2f);
-                mesh2.shader.SetFloatCache("uSmoothness", .6f);
+                mesh2.shader.SetFloatCache("uRoughness", .4f);
 
                 MeshComponent mesh = scene.CreateObject("Mesh").AddComponent<MeshComponent>();
                 mesh.shader = new(Graphics.Shader.Create("Shaders/LitVert.glsl", ShaderType.VertexShader),
@@ -52,15 +53,18 @@ namespace HawkEngine.Core
                 mesh.transform.position = new(0f, -2f, 0f);
                 mesh.transform.scale = new(50f);
                 mesh.transform.rotation = new(90f, 0f, 0f);
-                mesh.shader.SetFloatCache("uSmoothness", .1f);
+                mesh.shader.SetFloatCache("uRoughness", .9f);
 
-                LightComponent light = scene.CreateObject("Light").AddComponent<SpotLightComponent>();
+                LightComponent light = scene.CreateObject("Light").AddComponent<DirectionalLightComponent>();
                 light.color = new(.94f, .97f, .85f);
                 light.strength = 8f;
-                light.transform.rotation = new(50f, 0f, 0f);
+                light.transform.rotation = new(60f, 200f, 0f);
                 light.transform.position = new(0f, 5f, -2f);
 
                 FPSCounterComponent text = scene.CreateObject("FPS Counter").AddComponent<FPSCounterComponent>();
+
+                Rendering.postProcessShaders.Add("Color Adjustments", new(Graphics.Shader.Create("Shaders/OutputVert.glsl",
+                    ShaderType.VertexShader), Graphics.Shader.Create("Shaders/ColorAdjustmentFrag.glsl", ShaderType.FragmentShader)));
 
                 return scene;
             });

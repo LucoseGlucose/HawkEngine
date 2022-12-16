@@ -61,13 +61,17 @@ namespace HawkEngine.Components
             shader.SetVec3Cache($"{prefix}.uDirection", transform.forward);
             shader.SetVec2Cache($"{prefix}.uRadius", new(Scalar.Cos(Scalar.DegreesToRadians(angles.X)), Scalar.Cos(Scalar.DegreesToRadians(angles.Y))));
 
-            shader.SetTexture($"{prefix}.uShadowTexW", shadowMapBuffer.attachments[0]);
-            shader.SetMat4Cache($"{prefix}.uShadowMat", viewMat * projectionMat);
+            if (shadowsEnabled)
+            {
+                shader.SetTexture($"{prefix}.uShadowTexW", shadowMapBuffer[FramebufferAttachment.DepthAttachment]);
+                shader.SetMat4Cache($"{prefix}.uShadowMat", viewMat * projectionMat);
 
-            shader.SetVec2Cache($"{prefix}.uShadowNormalBias", shadowNormalBias);
-            shader.SetIntCache($"{prefix}.uShadowMapSamples", shadowMapSamples);
-            shader.SetFloatCache($"{prefix}.uShadowSoftness", shadowSoftness);
-            shader.SetFloatCache($"{prefix}.uShadowNoise", shadowNoise);
+                shader.SetVec2Cache($"{prefix}.uShadowNormalBias", shadowNormalBias);
+                shader.SetIntCache($"{prefix}.uShadowMapSamples", shadowMapSamples);
+                shader.SetFloatCache($"{prefix}.uShadowSoftness", shadowSoftness);
+                shader.SetFloatCache($"{prefix}.uShadowNoise", shadowNoise);
+            }
+            else shader.SetIntCache($"{prefix}.uShadowMapSamples", -1);
         }
     }
 }

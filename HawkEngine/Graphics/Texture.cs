@@ -8,7 +8,7 @@ using System.IO;
 
 namespace HawkEngine.Graphics
 {
-    public class Texture
+    public class Texture : IDisposable
     {
         public readonly uint id;
         public readonly TextureTarget textureType;
@@ -32,13 +32,18 @@ namespace HawkEngine.Graphics
             Rendering.gl.ActiveTexture(TextureUnit.Texture0 + unit);
             Rendering.gl.BindTexture(textureType, 0);
         }
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            Rendering.gl.DeleteTexture(id);
+        }
     }
 
     public class Texture2D : Texture
     {
         public static readonly Texture2D whiteTex = new(Vector4D<float>.One);
         public static readonly Texture2D blackTex = new(Vector4D<float>.Zero);
-        public static readonly Texture2D normalTex = new(new Vector4D<float>(0f, 0f, 1f, 1f));
+        public static readonly Texture2D normalTex = new(new Vector4D<float>(.5f, .5f, 1f, 1f));
 
         public Texture2D(uint width, uint height, byte[] data, InternalFormat internalFormat = InternalFormat.Rgba8,
             PixelFormat pixelFormat = PixelFormat.Rgba, uint samples = 1, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat)

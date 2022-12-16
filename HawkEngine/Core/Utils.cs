@@ -27,5 +27,15 @@ namespace HawkEngine.Core
             }
             return array;
         }
+        public enum TonemappingMode
+        {
+            None,
+            Aces,
+            Filmic,
+            Lottes,
+            Reinhard,
+            Uchimura,
+            Uncharted,
+        }
     }
 }

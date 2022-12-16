@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 
 namespace HawkEngine.Graphics
 {
-    public class Framebuffer
+    public class Framebuffer : IDisposable
     {
         public readonly uint id;
         public readonly FramebufferTexture[] attachments;
@@ -34,6 +35,15 @@ namespace HawkEngine.Graphics
         public void Unbind()
         {
             Rendering.gl.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+        }
+        public FramebufferTexture this[FramebufferAttachment attachment]
+        {
+            get { return attachments.FirstOrDefault(t => t.attachment == attachment); }
+        }
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            Rendering.gl.DeleteFramebuffer(id);
         }
     }
 }

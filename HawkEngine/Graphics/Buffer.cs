@@ -6,7 +6,7 @@ using Silk.NET.OpenGL;
 
 namespace HawkEngine.Graphics
 {
-    public unsafe class Buffer
+    public unsafe class Buffer : IDisposable
     {
         public readonly uint id;
         protected readonly GLEnum bufferType;
@@ -27,6 +27,11 @@ namespace HawkEngine.Graphics
         public virtual void Unbind()
         {
             Rendering.gl.BindBuffer(bufferType, 0);
+        }
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            Rendering.gl.DeleteBuffer(id);
         }
     }
 

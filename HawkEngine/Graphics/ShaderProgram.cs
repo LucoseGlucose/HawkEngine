@@ -7,7 +7,7 @@ using HawkEngine.Core;
 
 namespace HawkEngine.Graphics
 {
-    public unsafe class ShaderProgram
+    public unsafe class ShaderProgram : IDisposable
     {
         public readonly uint id;
 
@@ -95,6 +95,11 @@ namespace HawkEngine.Graphics
             {
                 textures.Item1[i].Unbind(i);
             }
+        }
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            Rendering.gl.DeleteProgram(id);
         }
 
         public void SetTexture(string name, Texture tex)

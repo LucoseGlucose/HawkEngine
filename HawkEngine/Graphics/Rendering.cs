@@ -26,7 +26,7 @@ namespace HawkEngine.Graphics
 
         public static Mesh quad { get; private set; }
         public static ShaderProgram outputShader { get; private set; }
-        public static readonly List<ShaderProgram> postProcessShaders = new();
+        public static readonly Dictionary<string, ShaderProgram> postProcessShaders = new();
         public static Framebuffer postProcessFB { get; private set; }
 
         public static Model skyboxModel { get; set; }
@@ -34,11 +34,7 @@ namespace HawkEngine.Graphics
 
         public static ShaderProgram shadowShader { get; private set; }
 
-        public static float gamma { get; set; } = 2.2f;
-        public static float exposure { get; set; } = 1f;
-        public static float tonemapStrength { get; set; } = 1f;
-        public static Vector2D<float> shadowNormalBias { get; set; } = new(.002f, .008f);
-        public static Vector3D<float> ambientColor { get; set; } = new(.03f);
+        public static Vector3D<float> ambientColor { get; set; } = new(.05f);
 
         public static void Init()
         {
@@ -117,6 +113,8 @@ namespace HawkEngine.Graphics
 
             for (int l = 0; l < lights.Count; l++)
             {
+                if (!lights[l].supportsShadows) continue;
+
                 if (lights[l] is DirectionalLightComponent dLight && dLight.shadowsEnabled)
                     RenderShadowMap(meshes, dLight.shadowMapBuffer, new(dLight.shadowResolution), dLight.viewMat * dLight.projectionMat);
 
@@ -147,7 +145,6 @@ namespace HawkEngine.Graphics
                         else meshes[m].shader.SetIntCache($"uLights[{l}].uType", 0);
 
                         meshes[m].shader.SetVec3Cache("uAmbientColor", ambientColor);
-                        meshes[m].shader.SetVec2Cache("uShadowNormalBias", shadowNormalBias);
                     }
                 }
 
@@ -160,10 +157,10 @@ namespace HawkEngine.Graphics
                 App.window.FramebufferSize.Y, ClearBufferMask.ColorBufferBit, BlitFramebufferFilter.Linear);
             postProcessFB.Bind();
 
-            for (int i = 0; i < postProcessShaders.Count; i++)
+            foreach (KeyValuePair<string, ShaderProgram> shader in postProcessShaders)
             {
-                Model ppModel = new(postProcessShaders[i], quad);
-                ppModel.shader.SetTexture("uColorTex", postProcessFB.attachments[0]);
+                Model ppModel = new(postProcessShaders[shader.Key], quad);
+                ppModel.shader.SetTexture("uColorTex", postProcessFB[FramebufferAttachment.ColorAttachment0]);
                 ppModel.Render();
             }
 
@@ -171,10 +168,7 @@ namespace HawkEngine.Graphics
             gl.Clear(ClearBufferMask.ColorBufferBit);
 
             Model outputModel = new(outputShader, quad);
-            outputModel.shader.SetTexture("uColorTex", postProcessFB.attachments[0]);
-            outputModel.shader.SetFloatCache("uGamma", gamma);
-            outputModel.shader.SetFloatCache("uExposure", exposure);
-            outputModel.shader.SetFloatCache("uTonemapStrength", tonemapStrength);
+            outputModel.shader.SetTexture("uColorTex", postProcessFB[FramebufferAttachment.ColorAttachment0]);
             outputModel.Render();
 
             int deleteCount = deletedObjects.Count;

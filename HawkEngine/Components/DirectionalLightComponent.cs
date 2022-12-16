@@ -26,7 +26,7 @@ namespace HawkEngine.Components
         public Vector2D<float> shadowNormalBias = new(.002f, .008f);
         public int shadowMapSamples = 2;
         public float shadowSoftness = .65f;
-        public float shadowNoise = 7000f;
+        public float shadowNoise = 8000f;
 
         public Matrix4X4<float> projectionMat
         {
@@ -111,16 +111,19 @@ namespace HawkEngine.Components
         {
             shader.SetIntCache($"{prefix}.uType", type);
             shader.SetVec3Cache($"{prefix}.uColor", output);
-            shader.SetVec2Cache($"{prefix}.uFalloff", falloff);
             shader.SetVec3Cache($"{prefix}.uDirection", transform.forward);
 
-            shader.SetTexture($"{prefix}.uShadowTexW", shadowMapBuffer.attachments[0]);
-            shader.SetMat4Cache($"{prefix}.uShadowMat", viewMat * projectionMat);
+            if (shadowsEnabled)
+            {
+                shader.SetTexture($"{prefix}.uShadowTexW", shadowMapBuffer[FramebufferAttachment.DepthAttachment]);
+                shader.SetMat4Cache($"{prefix}.uShadowMat", viewMat * projectionMat);
 
-            shader.SetVec2Cache($"{prefix}.uShadowNormalBias", shadowNormalBias);
-            shader.SetIntCache($"{prefix}.uShadowMapSamples", shadowMapSamples);
-            shader.SetFloatCache($"{prefix}.uShadowSoftness", shadowSoftness);
-            shader.SetFloatCache($"{prefix}.uShadowNoise", shadowNoise);
+                shader.SetVec2Cache($"{prefix}.uShadowNormalBias", shadowNormalBias);
+                shader.SetIntCache($"{prefix}.uShadowMapSamples", shadowMapSamples);
+                shader.SetFloatCache($"{prefix}.uShadowSoftness", shadowSoftness);
+                shader.SetFloatCache($"{prefix}.uShadowNoise", shadowNoise);
+            }
+            else shader.SetIntCache($"{prefix}.uShadowMapSamples", -1);
         }
     }
 }
