@@ -1,6 +1,5 @@
 ﻿using HawkEngine.Core;
 using HawkEngine.Graphics;
-using Silk.NET.Assimp;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 using System;
@@ -16,17 +15,6 @@ namespace HawkEngine.Components
     {
         public override Vector2D<float> falloff { get => new(0f); }
         public override int type => 1;
-        public override bool supportsShadows => true;
-
-        public bool shadowsEnabled = true;
-        public int shadowResolution = 2048;
-        public float shadowDistance = 50f;
-        public Graphics.Framebuffer shadowMapBuffer { get; protected set; }
-
-        public Vector2D<float> shadowNormalBias = new(.002f, .008f);
-        public int shadowMapSamples = 2;
-        public float shadowSoftness = .65f;
-        public float shadowNoise = 8000f;
 
         public Matrix4X4<float> projectionMat
         {
@@ -95,16 +83,26 @@ namespace HawkEngine.Components
         {
             base.Create(owner);
 
+            shadowDistance = 50f;
+            shadowResolution = 2048;
+            shadowNormalBias = new(.002f, .008f);
+            shadowMapSamples = 2;
+            shadowSoftness = .65f;
+            shadowNoise = 8000f;
+
+            shadowShader = new(Graphics.Shader.Create("Shaders/ShadowVert.glsl", ShaderType.VertexShader),
+                Graphics.Shader.Create("Shaders/EmptyFrag.glsl", ShaderType.FragmentShader));
+
             CreateShadowBuffer();
         }
-        public void CreateShadowBuffer()
+        public override void CreateShadowBuffer()
         {
-            FramebufferTexture tex = new((uint)shadowResolution, (uint)shadowResolution, FramebufferAttachment.DepthAttachment,
-                InternalFormat.DepthComponent24, PixelFormat.DepthComponent, wrap: GLEnum.ClampToBorder);
+            FramebufferTexture tex = new(new Texture2D((uint)shadowResolution, (uint)shadowResolution,
+                InternalFormat.DepthComponent24, PixelFormat.DepthComponent, wrap: GLEnum.ClampToBorder), FramebufferAttachment.DepthAttachment);
             Span<float> col = stackalloc float[4] { 1f, 1f, 1f, 1f };
 
-            tex.Bind(0);
-            Rendering.gl.TexParameter(tex.textureType, TextureParameterName.TextureBorderColor, col);
+            tex.texture.Bind(0);
+            Rendering.gl.TexParameter(tex.texture.textureType, TextureParameterName.TextureBorderColor, col);
             shadowMapBuffer = new(tex);
         }
         public override void SetUniforms(string prefix, ShaderProgram shader)
@@ -115,7 +113,7 @@ namespace HawkEngine.Components
 
             if (shadowsEnabled)
             {
-                shader.SetTexture($"{prefix}.uShadowTexW", shadowMapBuffer[FramebufferAttachment.DepthAttachment]);
+                shader.SetTexture($"{prefix}.uShadowTexW", shadowMapBuffer[FramebufferAttachment.DepthAttachment].texture);
                 shader.SetMat4Cache($"{prefix}.uShadowMat", viewMat * projectionMat);
 
                 shader.SetVec2Cache($"{prefix}.uShadowNormalBias", shadowNormalBias);
@@ -124,6 +122,22 @@ namespace HawkEngine.Components
                 shader.SetFloatCache($"{prefix}.uShadowNoise", shadowNoise);
             }
             else shader.SetIntCache($"{prefix}.uShadowMapSamples", -1);
+        }
+        public override unsafe void RenderShadowMap(List<MeshComponent> meshes)
+        {
+            shadowMapBuffer.Bind();
+            Rendering.gl.DrawBuffer(DrawBufferMode.None);
+            Rendering.gl.Viewport(new Vector2D<int>(shadowResolution));
+            Rendering.gl.Clear(ClearBufferMask.DepthBufferBit);
+
+            for (int m = 0; m < meshes.Count; m++)
+            {
+                if (!meshes[m].castShadows) continue;
+
+                shadowShader.SetMat4Cache("uMat", meshes[m].transform.matrix * viewMat * projectionMat);
+                meshes[m].mesh.vertexArray.Bind();
+                Rendering.gl.DrawElements(PrimitiveType.Triangles, (uint)meshes[m].mesh.meshData.indices.Length, DrawElementsType.UnsignedInt, null);
+            }
         }
     }
 }

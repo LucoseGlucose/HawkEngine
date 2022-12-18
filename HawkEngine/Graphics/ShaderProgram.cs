@@ -68,6 +68,13 @@ namespace HawkEngine.Graphics
                         else if (name.EndsWith('N')) texs.Add(Texture2D.normalTex);
                         else texs.Add(null);
                     }
+                    else if (type == UniformType.SamplerCube)
+                    {
+                        if (name.EndsWith('W')) texs.Add(TextureCubemap.whiteTex);
+                        else if (name.EndsWith('B')) texs.Add(TextureCubemap.blackTex);
+                        else if (name.EndsWith('N')) texs.Add(TextureCubemap.normalTex);
+                        else texs.Add(null);
+                    }
                     else texs.Add(null);
                 }
             }
@@ -86,14 +93,14 @@ namespace HawkEngine.Graphics
         {
             for (int i = 0; i < textures.Item1.Length; i++)
             {
-                textures.Item1[i].Bind(i);
+                textures.Item1[i]?.Bind(i);
             }
         }
         public void UnbindTextures()
         {
             for (int i = 0; i < textures.Item1.Length; i++)
             {
-                textures.Item1[i].Unbind(i);
+                textures.Item1[i]?.Unbind(i);
             }
         }
         public void Dispose()

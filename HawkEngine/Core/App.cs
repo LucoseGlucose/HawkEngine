@@ -23,6 +23,9 @@ namespace HawkEngine.Core
         public static Scene scene { get; set; }
         private static Func<Scene> sceneFunc;
 
+        public static bool canFullscreen = true;
+        public static Key fullscreenKey = Key.F11;
+
         public static void Run(Func<Scene> func)
         {
             sceneFunc = func;
@@ -51,6 +54,15 @@ namespace HawkEngine.Core
         private static void OnLoad()
         {
             input = window.CreateInput();
+            if (input.Keyboards.Count > 0)
+            {
+                input.Keyboards[0].KeyDown += (keyboard, key, i) =>
+                {
+                    if (!canFullscreen || key != fullscreenKey) return;
+                    window.WindowState = window.WindowState == WindowState.Fullscreen ? WindowState.Normal : WindowState.Fullscreen;
+                };
+            }
+
             Rendering.Init();
             scene = sceneFunc();
         }

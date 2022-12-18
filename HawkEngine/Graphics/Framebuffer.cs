@@ -19,7 +19,7 @@ namespace HawkEngine.Graphics
 
             for (int i = 0; i < textures.Length; i++)
             {
-                Rendering.gl.FramebufferTexture2D(FramebufferTarget.Framebuffer, textures[i].attachment, textures[i].textureType, textures[i].id, 0);
+                Rendering.gl.FramebufferTexture(FramebufferTarget.Framebuffer, textures[i].attachment, textures[i].texture.id, 0);
             }
 
             Unbind();
@@ -44,6 +44,18 @@ namespace HawkEngine.Graphics
         {
             GC.SuppressFinalize(this);
             Rendering.gl.DeleteFramebuffer(id);
+        }
+    }
+
+    public class FramebufferTexture
+    {
+        public readonly FramebufferAttachment attachment;
+        public readonly Texture texture;
+
+        public FramebufferTexture(Texture texture, FramebufferAttachment attachment)
+        {
+            this.texture = texture;
+            this.attachment = attachment;
         }
     }
 }

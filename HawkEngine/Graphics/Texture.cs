@@ -12,10 +12,15 @@ namespace HawkEngine.Graphics
     {
         public readonly uint id;
         public readonly TextureTarget textureType;
+        public readonly InternalFormat internalFormat;
+        public readonly PixelFormat pixelFormat;
 
-        public Texture(TextureTarget textureType)
+        public Texture(TextureTarget textureType, InternalFormat internalFormat, PixelFormat pixelFormat)
         {
             this.textureType = textureType;
+            this.internalFormat = internalFormat;
+            this.pixelFormat = pixelFormat;
+
             id = Rendering.gl.GenTexture();
         }
         ~Texture()
@@ -47,7 +52,7 @@ namespace HawkEngine.Graphics
 
         public Texture2D(uint width, uint height, byte[] data, InternalFormat internalFormat = InternalFormat.Rgba8,
             PixelFormat pixelFormat = PixelFormat.Rgba, uint samples = 1, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat)
-            : base(samples <= 1 ? TextureTarget.Texture2D : TextureTarget.Texture2DMultisample)
+            : base(samples <= 1 ? TextureTarget.Texture2D : TextureTarget.Texture2DMultisample, internalFormat, pixelFormat)
         {
             Bind(0);
             if (samples <= 1) Rendering.gl.TexImage2D<byte>(textureType, 0, internalFormat, width, height, border, pixelFormat, PixelType.UnsignedByte, data);
@@ -74,7 +79,7 @@ namespace HawkEngine.Graphics
 
         }
         public unsafe Texture2D(string path, bool sRGB = true, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat)
-            : base(TextureTarget.Texture2D)
+            : base(TextureTarget.Texture2D, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8, PixelFormat.Rgba)
         {
             using Stream file = File.OpenRead(Path.GetFullPath("../../../Resources/" + path));
 
@@ -109,22 +114,27 @@ namespace HawkEngine.Graphics
 
     public class TextureCubemap : Texture
     {
+        public static readonly TextureCubemap whiteTex = new(Vector4D<float>.One);
+        public static readonly TextureCubemap blackTex = new(Vector4D<float>.Zero);
+        public static readonly TextureCubemap normalTex = new(new Vector4D<float>(.5f, .5f, 1f, 1f));
+
         public TextureCubemap(uint width, uint height, byte[][] data, InternalFormat internalFormat = InternalFormat.Rgba8,
             PixelFormat pixelFormat = PixelFormat.Rgba, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat)
-            : base(TextureTarget.TextureCubeMap)
+            : base(TextureTarget.TextureCubeMap, internalFormat, pixelFormat)
         {
             Bind(0);
             for (int i = 0; i < 6; i++)
             {
-                Rendering.gl.TexImage2D<byte>(textureType, 0, internalFormat, width, height, border, pixelFormat, PixelType.UnsignedByte, data[i]);
-
-                Rendering.gl.TexParameterI(textureType, TextureParameterName.TextureMinFilter, (uint)filter);
-                Rendering.gl.TexParameterI(textureType, TextureParameterName.TextureMagFilter, (uint)filter);
-
-                Rendering.gl.TexParameterI(textureType, TextureParameterName.TextureWrapS, (uint)wrap);
-                Rendering.gl.TexParameterI(textureType, TextureParameterName.TextureWrapT, (uint)wrap);
-                Rendering.gl.TexParameterI(textureType, TextureParameterName.TextureWrapR, (uint)wrap);
+                Rendering.gl.TexImage2D<byte>(TextureTarget.TextureCubeMapPositiveX + i,
+                    0, internalFormat, width, height, border, pixelFormat, PixelType.UnsignedByte, data[i]);
             }
+
+            Rendering.gl.TexParameterI(textureType, TextureParameterName.TextureMinFilter, (uint)filter);
+            Rendering.gl.TexParameterI(textureType, TextureParameterName.TextureMagFilter, (uint)filter);
+
+            Rendering.gl.TexParameterI(textureType, TextureParameterName.TextureWrapS, (uint)wrap);
+            Rendering.gl.TexParameterI(textureType, TextureParameterName.TextureWrapT, (uint)wrap);
+            Rendering.gl.TexParameterI(textureType, TextureParameterName.TextureWrapR, (uint)wrap);
 
             Unbind(0);
         }
@@ -135,7 +145,7 @@ namespace HawkEngine.Graphics
 
         }
         public unsafe TextureCubemap(string[] paths, bool sRGB = true, int border = 0 , GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat)
-            : base(TextureTarget.TextureCubeMap)
+            : base(TextureTarget.TextureCubeMap, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8, PixelFormat.Rgba)
         {
             for (int i = 0; i < 6; i++)
             {
@@ -173,22 +183,6 @@ namespace HawkEngine.Graphics
             (byte)(color.Z * 255f), (byte)(color.W * 255f) } }, InternalFormat.Rgba8, PixelFormat.Rgba, 0, GLEnum.Nearest, GLEnum.Repeat)
         {
 
-        }
-    }
-
-    public class FramebufferTexture : Texture2D
-    {
-        public readonly FramebufferAttachment attachment;
-        public readonly InternalFormat internalFormat;
-        public readonly PixelFormat pixelFormat;
-        
-        public FramebufferTexture(uint width, uint height, FramebufferAttachment attachment, InternalFormat internalFormat,
-            PixelFormat pixelFormat, uint samples = 1, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat)
-            : base(width, height, internalFormat, pixelFormat, samples, border, filter, wrap)
-        {
-            this.attachment = attachment;
-            this.internalFormat = internalFormat;
-            this.pixelFormat = pixelFormat;
         }
     }
 }

@@ -32,8 +32,6 @@ namespace HawkEngine.Graphics
         public static Model skyboxModel { get; set; }
         public static TextureCubemap skyboxTexture { get; set; }
 
-        public static ShaderProgram shadowShader { get; private set; }
-
         public static Vector3D<float> ambientColor { get; set; } = new(.05f);
 
         public static void Init()
@@ -64,8 +62,8 @@ namespace HawkEngine.Graphics
         }
         public static void CreatePPFB()
         {
-            postProcessFB = new(new FramebufferTexture((uint)App.window.FramebufferSize.X, (uint)App.window.FramebufferSize.Y,
-                FramebufferAttachment.ColorAttachment0, InternalFormat.Rgba16f, PixelFormat.Rgba));
+            postProcessFB = new(new FramebufferTexture(new Texture2D((uint)App.window.FramebufferSize.X, (uint)App.window.FramebufferSize.Y,
+                InternalFormat.Rgba16f, PixelFormat.Rgba), FramebufferAttachment.ColorAttachment0));
         }
         public static void CreateStandardResources()
         {
@@ -86,25 +84,6 @@ namespace HawkEngine.Graphics
                 "Images/Skybox/front.jpg",
                 "Images/Skybox/back.jpg",
             });
-
-            shadowShader = new(Shader.Create("Shaders/ShadowVert.glsl", ShaderType.VertexShader),
-                Shader.Create("Shaders/ShadowFrag.glsl", ShaderType.FragmentShader));
-        }
-        private static unsafe void RenderShadowMap(List<MeshComponent> meshes, Framebuffer fb, Vector2D<int> res, Matrix4X4<float> lightMat)
-        {
-            fb.Bind();
-            gl.DrawBuffer(DrawBufferMode.None);
-            gl.Viewport(res);
-            gl.Clear(ClearBufferMask.DepthBufferBit);
-
-            for (int m = 0; m < meshes.Count; m++)
-            {
-                if (!meshes[m].castShadows) continue;
-
-                shadowShader.SetMat4Cache("uMat", meshes[m].transform.matrix * lightMat);
-                meshes[m].mesh.vertexArray.Bind();
-                gl.DrawElements(PrimitiveType.Triangles, (uint)meshes[m].mesh.meshData.indices.Length, DrawElementsType.UnsignedInt, null);
-            }
         }
         public static unsafe void Render()
         {
@@ -113,13 +92,7 @@ namespace HawkEngine.Graphics
 
             for (int l = 0; l < lights.Count; l++)
             {
-                if (!lights[l].supportsShadows) continue;
-
-                if (lights[l] is DirectionalLightComponent dLight && dLight.shadowsEnabled)
-                    RenderShadowMap(meshes, dLight.shadowMapBuffer, new(dLight.shadowResolution), dLight.viewMat * dLight.projectionMat);
-
-                if (lights[l] is SpotLightComponent sLight && sLight.shadowsEnabled)
-                    RenderShadowMap(meshes, sLight.shadowMapBuffer, new(sLight.shadowResolution), sLight.viewMat * sLight.projectionMat);
+                if (lights[l].shadowsEnabled) lights[l].RenderShadowMap(meshes);
             }
 
             outputCam.framebuffer.Bind();
@@ -160,7 +133,7 @@ namespace HawkEngine.Graphics
             foreach (KeyValuePair<string, ShaderProgram> shader in postProcessShaders)
             {
                 Model ppModel = new(postProcessShaders[shader.Key], quad);
-                ppModel.shader.SetTexture("uColorTex", postProcessFB[FramebufferAttachment.ColorAttachment0]);
+                ppModel.shader.SetTexture("uColorTex", postProcessFB[FramebufferAttachment.ColorAttachment0].texture);
                 ppModel.Render();
             }
 
@@ -168,7 +141,7 @@ namespace HawkEngine.Graphics
             gl.Clear(ClearBufferMask.ColorBufferBit);
 
             Model outputModel = new(outputShader, quad);
-            outputModel.shader.SetTexture("uColorTex", postProcessFB[FramebufferAttachment.ColorAttachment0]);
+            outputModel.shader.SetTexture("uColorTex", postProcessFB[FramebufferAttachment.ColorAttachment0].texture);
             outputModel.Render();
 
             int deleteCount = deletedObjects.Count;

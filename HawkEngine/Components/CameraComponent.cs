@@ -20,8 +20,8 @@ namespace HawkEngine.Components
             get
             {
                 FramebufferTexture tex = framebuffer.attachments[0];
-                if (tex.textureType != TextureTarget.Texture2DMultisample) return 1;
-                Rendering.gl.GetTextureLevelParameter(tex.id, 0, GLEnum.TextureSamples, out int samples);
+                if (tex.texture.textureType != TextureTarget.Texture2DMultisample) return 1;
+                Rendering.gl.GetTextureLevelParameter(tex.texture.id, 0, GLEnum.TextureSamples, out int samples);
                 return Scalar.Max((uint)samples, 1u);
             }
             set
@@ -58,10 +58,10 @@ namespace HawkEngine.Components
         {
             framebuffer = new
                 (
-                    new FramebufferTexture((uint)size.X, (uint)size.Y, 
-                        FramebufferAttachment.ColorAttachment0, InternalFormat.Rgba16f, PixelFormat.Rgba, samples),
-                    new((uint)size.X, (uint)size.Y, FramebufferAttachment.DepthAttachment,
-                        InternalFormat.DepthComponent24, PixelFormat.DepthComponent, samples)
+                    new FramebufferTexture(new Texture2D((uint)size.X, (uint)size.Y, InternalFormat.Rgba16f, PixelFormat.Rgba, samples),
+                        FramebufferAttachment.ColorAttachment0),
+                    new FramebufferTexture(new Texture2D((uint)size.X, (uint)size.Y, InternalFormat.DepthComponent24, PixelFormat.DepthComponent, samples),
+                        FramebufferAttachment.DepthAttachment)
                 );
         }
     }
