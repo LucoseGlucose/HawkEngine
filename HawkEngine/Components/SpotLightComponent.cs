@@ -35,7 +35,7 @@ namespace HawkEngine.Components
             shadowSoftness = 1f;
             shadowNoise = 1000f;
 
-            shadowShader = new(Graphics.Shader.Create("Shaders/ShadowVert.glsl", ShaderType.VertexShader),
+            shadowShader = new(Graphics.Shader.Create("Shaders/Shadows/ShadowVert.glsl", ShaderType.VertexShader),
                 Graphics.Shader.Create("Shaders/EmptyFrag.glsl", ShaderType.FragmentShader));
 
             CreateShadowBuffer();

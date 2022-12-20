@@ -44,8 +44,9 @@ namespace HawkEngine.Components
             shadowResolution = 2048;
             shadowNormalBias = new(.02f, .08f);
 
-            shadowShader = new(Graphics.Shader.Create("Shaders/ShadowVert.glsl", ShaderType.VertexShader), Graphics.Shader.Create(
-                "Shaders/CubemapGeom.glsl", ShaderType.GeometryShader), Graphics.Shader.Create("Shaders/PointShadowFrag.glsl", ShaderType.FragmentShader));
+            shadowShader = new(Graphics.Shader.Create("Shaders/Shadows/ShadowVert.glsl", ShaderType.VertexShader), Graphics.Shader.Create(
+                "Shaders/Skybox/CubemapGeom.glsl", ShaderType.GeometryShader),
+                Graphics.Shader.Create("Shaders/Shadows/PointShadowFrag.glsl", ShaderType.FragmentShader));
 
             CreateShadowBuffer();
         }

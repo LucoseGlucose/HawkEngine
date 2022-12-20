@@ -28,8 +28,8 @@ namespace HawkEngine.Core
                 cam.owner.AddComponent<CameraControllerComponent>();
 
                 MeshComponent mesh1 = scene.CreateObject("Mesh").AddComponent<MeshComponent>();
-                mesh1.shader = new(Graphics.Shader.Create("Shaders/LitVert.glsl", ShaderType.VertexShader),
-                    Graphics.Shader.Create("Shaders/LitFrag.glsl", ShaderType.FragmentShader));
+                mesh1.shader = new(Graphics.Shader.Create("Shaders/Scene/LitVert.glsl", ShaderType.VertexShader),
+                    Graphics.Shader.Create("Shaders/Scene/LitFrag.glsl", ShaderType.FragmentShader));
                 mesh1.shader.SetTexture("uAlbedoTexW", new Texture2D("Images/brickwall.jpg"));
                 mesh1.shader.SetTexture("uNormalMapN", new Texture2D("Images/brickwall_normal.jpg", false));
                 mesh1.mesh = new("Models/Cube.obj");
@@ -37,8 +37,8 @@ namespace HawkEngine.Core
                 mesh1.shader.SetFloatCache("uRoughness", .65f);
 
                 MeshComponent mesh2 = scene.CreateObject("Mesh").AddComponent<MeshComponent>();
-                mesh2.shader = new(Graphics.Shader.Create("Shaders/LitVert.glsl", ShaderType.VertexShader),
-                    Graphics.Shader.Create("Shaders/LitFrag.glsl", ShaderType.FragmentShader));
+                mesh2.shader = new(Graphics.Shader.Create("Shaders/Scene/LitVert.glsl", ShaderType.VertexShader),
+                    Graphics.Shader.Create("Shaders/Scene/LitFrag.glsl", ShaderType.FragmentShader));
                 mesh2.mesh = new("Models/Monkey.obj");
                 mesh2.transform.position = new(2f, 4f, 1f);
                 mesh2.shader.SetVec4Cache("uAlbedo", new(.5f, .5f, 1f, 1f));
@@ -46,8 +46,8 @@ namespace HawkEngine.Core
                 mesh2.shader.SetFloatCache("uRoughness", .4f);
 
                 MeshComponent mesh = scene.CreateObject("Mesh").AddComponent<MeshComponent>();
-                mesh.shader = new(Graphics.Shader.Create("Shaders/LitVert.glsl", ShaderType.VertexShader),
-                    Graphics.Shader.Create("Shaders/LitFrag.glsl", ShaderType.FragmentShader));
+                mesh.shader = new(Graphics.Shader.Create("Shaders/Scene/LitVert.glsl", ShaderType.VertexShader),
+                    Graphics.Shader.Create("Shaders/Scene/LitFrag.glsl", ShaderType.FragmentShader));
                 mesh.shader.SetVec4Cache("uAlbedo", new(.5f, .5f, .5f, 1f));
                 mesh.mesh = new("Models/Quad.obj");
                 mesh.transform.position = new(0f, -2f, 0f);
@@ -62,9 +62,6 @@ namespace HawkEngine.Core
                 light.transform.position = new(0f, 5f, -2f);
 
                 FPSCounterComponent text = scene.CreateObject("FPS Counter").AddComponent<FPSCounterComponent>();
-
-                Rendering.postProcessShaders.Add("Color Adjustments", new(Graphics.Shader.Create("Shaders/OutputVert.glsl",
-                    ShaderType.VertexShader), Graphics.Shader.Create("Shaders/ColorAdjustmentFrag.glsl", ShaderType.FragmentShader)));
 
                 return scene;
             });

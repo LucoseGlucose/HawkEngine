@@ -15,8 +15,8 @@ namespace HawkEngine.Components
         {
             base.Create(owner);
 
-            shader = new(Graphics.Shader.Create("Shaders/TextVert.glsl", ShaderType.VertexShader),
-               Graphics.Shader.Create("Shaders/TextFrag.glsl", ShaderType.FragmentShader));
+            shader = new(Graphics.Shader.Create("Shaders/UI/TextVert.glsl", ShaderType.VertexShader),
+               Graphics.Shader.Create("Shaders/UI/TextFrag.glsl", ShaderType.FragmentShader));
             font = new(256, 256, "Fonts/Ubuntu/Ubuntu-Regular.ttf", 32f, CharacterRange.BasicLatin);
             text = "1000 FPS";
             shader.SetVec4Cache("uColor", new(5f, 5f, 5f, 1f));

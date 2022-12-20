@@ -78,23 +78,35 @@ namespace HawkEngine.Graphics
         {
 
         }
-        public unsafe Texture2D(string path, bool sRGB = true, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat)
+        public unsafe Texture2D(string path, bool sRGB = true, bool hdr = false, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat)
             : base(TextureTarget.Texture2D, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8, PixelFormat.Rgba)
         {
             using Stream file = File.OpenRead(Path.GetFullPath("../../../Resources/" + path));
+            Bind(0);
 
             StbImage.stbi__result_info result;
             int width;
             int height;
             int components;
 
-            void* data = StbImage.stbi__load_main(new StbImage.stbi__context(file), &width, &height, &components, 4, &result, 8);
-            StbImage.stbi__vertical_flip(data, width, height, 4);
-            ReadOnlySpan<byte> span = new(data, width * height * 32);
+            if (!hdr)
+            {
+                void* data = StbImage.stbi__load_main(new StbImage.stbi__context(file), &width, &height, &components, 4, &result, 8);
+                StbImage.stbi__vertical_flip(data, width, height, 4);
 
-            Bind(0);
-            Rendering.gl.TexImage2D(textureType, 0, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8,
-                (uint)width, (uint)height, border, PixelFormat.Rgba, PixelType.UnsignedByte, span);
+                ReadOnlySpan<byte> span = new(data, width * height * 32);
+                Rendering.gl.TexImage2D(textureType, 0, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8,
+                    (uint)width, (uint)height, border, PixelFormat.Rgba, PixelType.UnsignedByte, span);
+            }
+            else
+            {
+                float* data = StbImage.stbi__loadf_main(new StbImage.stbi__context(file), &width, &height, &components, 3);
+                StbImage.stbi__vertical_flip(data, width, height, 12);
+
+                ReadOnlySpan<float> span = new(data, width * height * 3);
+                Rendering.gl.TexImage2D(textureType, 0,InternalFormat.Rgb16f,
+                    (uint)width, (uint)height, border, PixelFormat.Rgb, PixelType.Float, span);
+            }
 
             Rendering.gl.TexParameter(textureType, TextureParameterName.TextureMinFilter, (int)filter);
             Rendering.gl.TexParameter(textureType, TextureParameterName.TextureMagFilter, (int)filter);
