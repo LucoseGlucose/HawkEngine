@@ -9,6 +9,8 @@ out vec4 outColor;
 
 uniform vec3 uCameraPos;
 uniform samplerCube uIrradianceCubeB;
+uniform samplerCube uReflectionCubeB;
+uniform sampler2D uBrdfLutB;
 
 uniform sampler2D uAlbedoTexW;
 uniform vec4 uAlbedo = vec4(1);
@@ -103,6 +105,11 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
 {
 	return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
 }
+
+vec3 fresnelSchlickRoughness(float cosTheta, vec3 F0, float roughness)
+{
+    return F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
+}   
 
 float random(vec3 seed, int i)
 {
@@ -237,6 +244,8 @@ void main()
 	vec3 geometryNormal = normalize(outTBNMat * vec3(0.0, 0.0, 1.0));
 	vec3 viewDir = normalize(uCameraPos - outWorldPosition);
 
+	vec3 reflectDir = reflect(-viewDir, normal);
+
 	vec3 F0 = vec3(0.04); 
 	F0 = mix(F0, albedo.rgb, metallic);
 
@@ -267,13 +276,20 @@ void main()
 		Lo += (kD * albedo.rgb / PI + specular) * radiance * NdotL * (1.0 - shadow);
 	}   
 	
-	vec3 kS = fresnelSchlick(max(dot(normal, viewDir), 0.0), F0);
+	vec3 F = fresnelSchlickRoughness(max(dot(normal, viewDir), 0.0), F0, roughness);
+    
+    vec3 kS = F;
     vec3 kD = 1.0 - kS;
     kD *= 1.0 - metallic;
+    
     vec3 irradiance = texture(uIrradianceCubeB, normal).rgb;
     vec3 diffuse = irradiance * albedo.rgb;
-    vec3 ambient = (kD * diffuse);
     
-    vec3 color = ambient + Lo;
+    const float MAX_REFLECTION_LOD = 4.0;
+    vec3 prefilteredColor = textureLod(uReflectionCubeB, reflectDir,  roughness * MAX_REFLECTION_LOD).rgb;
+    vec2 brdf = texture(uBrdfLutB, vec2(max(dot(normal, viewDir), 0.0), roughness)).rg;
+    vec3 specular = prefilteredColor * (F * brdf.x + brdf.y);
+
+    vec3 ambient = kD * diffuse + specular;
 	outColor = vec4(ambient + Lo, albedo.a);
 }

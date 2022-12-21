@@ -49,9 +49,10 @@ namespace HawkEngine.Graphics
         public static readonly Texture2D whiteTex = new(Vector4D<float>.One);
         public static readonly Texture2D blackTex = new(Vector4D<float>.Zero);
         public static readonly Texture2D normalTex = new(new Vector4D<float>(.5f, .5f, 1f, 1f));
+        public static readonly Texture2D brdfTex = new("Images/ibl_brdf_lut.png", false, wrap: GLEnum.ClampToEdge);
 
-        public Texture2D(uint width, uint height, byte[] data, InternalFormat internalFormat = InternalFormat.Rgba8,
-            PixelFormat pixelFormat = PixelFormat.Rgba, uint samples = 1, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat)
+        public Texture2D(uint width, uint height, byte[] data, InternalFormat internalFormat = InternalFormat.Rgba8, PixelFormat pixelFormat
+            = PixelFormat.Rgba, uint samples = 1, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat, bool mipmap = false)
             : base(samples <= 1 ? TextureTarget.Texture2D : TextureTarget.Texture2DMultisample, internalFormat, pixelFormat)
         {
             Bind(0);
@@ -69,17 +70,17 @@ namespace HawkEngine.Graphics
             Rendering.gl.TexParameterI(textureType, TextureParameterName.TextureWrapS, (uint)wrap);
             Rendering.gl.TexParameterI(textureType, TextureParameterName.TextureWrapT, (uint)wrap);
 
-            Rendering.gl.GenerateMipmap(textureType);
+            if (mipmap) Rendering.gl.GenerateMipmap(textureType);
             Unbind(0);
         }
-        public Texture2D(uint width, uint height, InternalFormat internalFormat = InternalFormat.Rgba8,
-            PixelFormat pixelFormat = PixelFormat.Rgba, uint samples = 1, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat)
-            : this(width, height, null, internalFormat, pixelFormat, samples, border, filter, wrap)
+        public Texture2D(uint width, uint height, InternalFormat internalFormat = InternalFormat.Rgba8, PixelFormat pixelFormat = PixelFormat.Rgba,
+            uint samples = 1, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat, bool mipmap = false)
+            : this(width, height, null, internalFormat, pixelFormat, samples, border, filter, wrap, mipmap)
         {
 
         }
-        public unsafe Texture2D(string path, bool sRGB = true, bool hdr = false, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat)
-            : base(TextureTarget.Texture2D, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8, PixelFormat.Rgba)
+        public unsafe Texture2D(string path, bool sRGB = true, bool hdr = false, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat,
+            bool flip = true, bool mipmap = false) : base(TextureTarget.Texture2D, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8, PixelFormat.Rgba)
         {
             using Stream file = File.OpenRead(Path.GetFullPath("../../../Resources/" + path));
             Bind(0);
@@ -92,7 +93,7 @@ namespace HawkEngine.Graphics
             if (!hdr)
             {
                 void* data = StbImage.stbi__load_main(new StbImage.stbi__context(file), &width, &height, &components, 4, &result, 8);
-                StbImage.stbi__vertical_flip(data, width, height, 4);
+                if (flip) StbImage.stbi__vertical_flip(data, width, height, 4);
 
                 ReadOnlySpan<byte> span = new(data, width * height * 32);
                 Rendering.gl.TexImage2D(textureType, 0, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8,
@@ -101,7 +102,7 @@ namespace HawkEngine.Graphics
             else
             {
                 float* data = StbImage.stbi__loadf_main(new StbImage.stbi__context(file), &width, &height, &components, 3);
-                StbImage.stbi__vertical_flip(data, width, height, 12);
+                if (flip) StbImage.stbi__vertical_flip(data, width, height, 12);
 
                 ReadOnlySpan<float> span = new(data, width * height * 3);
                 Rendering.gl.TexImage2D(textureType, 0,InternalFormat.Rgb16f,
@@ -114,7 +115,7 @@ namespace HawkEngine.Graphics
             Rendering.gl.TexParameter(textureType, TextureParameterName.TextureWrapS, (int)wrap);
             Rendering.gl.TexParameter(textureType, TextureParameterName.TextureWrapT, (int)wrap);
 
-            Rendering.gl.GenerateMipmap(textureType);
+            if (mipmap) Rendering.gl.GenerateMipmap(textureType);
             Unbind(0);
         }
         public Texture2D(Vector4D<float> color) : this(1, 1, new byte[4] { (byte)(color.X * 255f), (byte)(color.Y * 255f),
@@ -128,10 +129,9 @@ namespace HawkEngine.Graphics
     {
         public static readonly TextureCubemap whiteTex = new(Vector4D<float>.One);
         public static readonly TextureCubemap blackTex = new(Vector4D<float>.Zero);
-        public static readonly TextureCubemap normalTex = new(new Vector4D<float>(.5f, .5f, 1f, 1f));
 
         public TextureCubemap(uint width, uint height, byte[][] data, InternalFormat internalFormat = InternalFormat.Rgba8,
-            PixelFormat pixelFormat = PixelFormat.Rgba, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat)
+            PixelFormat pixelFormat = PixelFormat.Rgba, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat, bool mipmap = false)
             : base(TextureTarget.TextureCubeMap, internalFormat, pixelFormat)
         {
             Bind(0);
@@ -148,16 +148,17 @@ namespace HawkEngine.Graphics
             Rendering.gl.TexParameterI(textureType, TextureParameterName.TextureWrapT, (uint)wrap);
             Rendering.gl.TexParameterI(textureType, TextureParameterName.TextureWrapR, (uint)wrap);
 
+            if (mipmap) Rendering.gl.GenerateMipmap(textureType);
             Unbind(0);
         }
         public TextureCubemap(uint width, uint height, InternalFormat internalFormat = InternalFormat.Rgba8,
-            PixelFormat pixelFormat = PixelFormat.Rgba, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat)
-            : this(width, height, new byte[6][], internalFormat, pixelFormat, border, filter, wrap)
+            PixelFormat pixelFormat = PixelFormat.Rgba, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat, bool mipmap = false)
+            : this(width, height, new byte[6][], internalFormat, pixelFormat, border, filter, wrap, mipmap)
         {
 
         }
-        public unsafe TextureCubemap(string[] paths, bool sRGB = true, int border = 0 , GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat)
-            : base(TextureTarget.TextureCubeMap, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8, PixelFormat.Rgba)
+        public unsafe TextureCubemap(string[] paths, bool sRGB = true, int border = 0 , GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat,
+            bool flip = true, bool mipmap = false) : base(TextureTarget.TextureCubeMap, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8, PixelFormat.Rgba)
         {
             for (int i = 0; i < 6; i++)
             {
@@ -169,7 +170,7 @@ namespace HawkEngine.Graphics
                 int components;
 
                 void* data = StbImage.stbi__load_main(new StbImage.stbi__context(file), &width, &height, &components, 4, &result, 8);
-                StbImage.stbi__vertical_flip(data, width, height, 4);
+                if (flip) StbImage.stbi__vertical_flip(data, width, height, 4);
                 ReadOnlySpan<byte> span = new(data, width * height * 32);
 
                 Bind(0);
@@ -184,6 +185,7 @@ namespace HawkEngine.Graphics
                 Rendering.gl.TexParameterI(textureType, TextureParameterName.TextureWrapR, (uint)wrap);
             }
 
+            if (mipmap) Rendering.gl.GenerateMipmap(textureType);
             Unbind(0);
         }
         public TextureCubemap(Vector4D<float> color) : this(1, 1, new byte[6][] { new byte[4] { (byte)(color.X * 255f), (byte)(color.Y * 255f),

@@ -72,7 +72,6 @@ namespace HawkEngine.Graphics
                     {
                         if (name.EndsWith('W')) texs.Add(TextureCubemap.whiteTex);
                         else if (name.EndsWith('B')) texs.Add(TextureCubemap.blackTex);
-                        else if (name.EndsWith('N')) texs.Add(TextureCubemap.normalTex);
                         else texs.Add(null);
                     }
                     else texs.Add(null);

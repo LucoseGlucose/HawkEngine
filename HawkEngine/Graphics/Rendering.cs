@@ -12,6 +12,7 @@ using HawkEngine.Editor;
 using HawkEngine.Components;
 using System.Drawing;
 using Silk.NET.Maths;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HawkEngine.Graphics
 {
@@ -79,7 +80,7 @@ namespace HawkEngine.Graphics
             postProcessShaders.Add("Color Adjustments", new(Shader.Create("Shaders/Post Processing/OutputVert.glsl",
                     ShaderType.VertexShader), Shader.Create("Shaders/Post Processing/ColorAdjustments.glsl", ShaderType.FragmentShader)));
 
-            skybox = new("Images/limpopo_golf_course_4k.hdr", 512u, 32u);
+            skybox = new("Images/limpopo_golf_course_4k.hdr", 1024u, 32u, 128u);
         }
         public static unsafe void Render()
         {
@@ -98,7 +99,7 @@ namespace HawkEngine.Graphics
 
             Model skyboxModel = new(skyboxShader, skyboxMesh);
 
-            skyboxShader.SetTexture("uSkyboxW", skybox.skybox);
+            skyboxShader.SetTexture("uSkyboxW", skybox.specularReflections);
             skyboxModel.shader.SetMat4Cache("uViewMat", outputCam.viewMat);
             skyboxModel.shader.SetMat4Cache("uProjMat", outputCam.projectionMat);
             skyboxModel.Render();
@@ -108,6 +109,8 @@ namespace HawkEngine.Graphics
                 if (meshes[m].lightingEnabled)
                 {
                     meshes[m].shader.SetTexture("uIrradianceCubeB", skybox.irradiance);
+                    meshes[m].shader.SetTexture("uReflectionCubeB", skybox.specularReflections);
+                    meshes[m].shader.SetTexture("uBrdfLutB", Texture2D.brdfTex);
 
                     IOrderedEnumerable<LightComponent> orderedLights =
                         lights.OrderBy(l => Math.Min(l.type, 1) * Vector3D.DistanceSquared(meshes[m].transform.position, l.transform.position));
@@ -147,42 +150,6 @@ namespace HawkEngine.Graphics
             {
                 deletedObjects.Dequeue()?.Invoke();
             }
-        }
-        public static unsafe TextureCubemap RenderToCubemap(Texture tex, ShaderProgram shader, uint resolution)
-        {
-            TextureCubemap cubemap = new(resolution, resolution);
-            uint fbId = gl.GenFramebuffer();
-            gl.BindFramebuffer(FramebufferTarget.Framebuffer, fbId);
-
-            Matrix4X4<float> projMat = Matrix4X4.CreatePerspectiveFieldOfView(Scalar.DegreesToRadians(90f), 1f, .1f, 10f);
-            Matrix4X4<float>[] viewMats = new Matrix4X4<float>[6]
-            {
-                Matrix4X4.CreateLookAt(new(0f), Vector3D<float>.UnitX, -Vector3D<float>.UnitY),
-                Matrix4X4.CreateLookAt(new(0f), -Vector3D<float>.UnitX, -Vector3D<float>.UnitY),
-                Matrix4X4.CreateLookAt(new(0f), Vector3D<float>.UnitY, Vector3D<float>.UnitZ),
-                Matrix4X4.CreateLookAt(new(0f), -Vector3D<float>.UnitY, -Vector3D<float>.UnitZ),
-                Matrix4X4.CreateLookAt(new(0f), Vector3D<float>.UnitZ, -Vector3D<float>.UnitY),
-                Matrix4X4.CreateLookAt(new(0f), -Vector3D<float>.UnitZ, -Vector3D<float>.UnitY),
-            };
-
-            gl.DrawBuffer(DrawBufferMode.ColorAttachment0);
-            gl.Viewport(new Vector2D<int>((int)resolution));
-            shader.Bind();
-            shader.SetTexture("uTexture", tex);
-            shader.BindTextures();
-
-            for (int i = 0; i < 6; i++)
-            {
-                shader.SetMat4Cache($"uMat", viewMats[i] * projMat);
-                gl.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0,
-                    TextureTarget.TextureCubeMapPositiveX + i, cubemap.id, 0);
-
-                gl.Clear(ClearBufferMask.ColorBufferBit);
-                skyboxMesh.vertexArray.Bind();
-                gl.DrawElements(PrimitiveType.Triangles, (uint)skyboxMesh.meshData.indices.Length, DrawElementsType.UnsignedInt, null);
-            }
-
-            return cubemap;
         }
         private static unsafe void GLDebugMessage(GLEnum source, GLEnum type, int id, GLEnum severity, int length, nint message, nint userParam)
         {
