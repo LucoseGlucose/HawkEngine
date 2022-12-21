@@ -12,7 +12,6 @@ using HawkEngine.Editor;
 using HawkEngine.Components;
 using System.Drawing;
 using Silk.NET.Maths;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace HawkEngine.Graphics
 {
@@ -33,6 +32,7 @@ namespace HawkEngine.Graphics
         public static Mesh skyboxMesh { get; private set; }
         public static ShaderProgram skyboxShader { get; set; }
         public static Skybox skybox { get; set; }
+        public static Vector3D<float> ambientColor { get; set; } = Vector3D<float>.One;
 
         public static void Init()
         {
@@ -80,7 +80,7 @@ namespace HawkEngine.Graphics
             postProcessShaders.Add("Color Adjustments", new(Shader.Create("Shaders/Post Processing/OutputVert.glsl",
                     ShaderType.VertexShader), Shader.Create("Shaders/Post Processing/ColorAdjustments.glsl", ShaderType.FragmentShader)));
 
-            skybox = new("Images/limpopo_golf_course_4k.hdr", 1024u, 32u, 128u);
+            skybox = new("Images/limpopo_golf_course_4k.hdr", 1024u, 32u, 256u);
         }
         public static unsafe void Render()
         {
@@ -99,7 +99,7 @@ namespace HawkEngine.Graphics
 
             Model skyboxModel = new(skyboxShader, skyboxMesh);
 
-            skyboxShader.SetTexture("uSkyboxW", skybox.specularReflections);
+            skyboxShader.SetTexture("uSkyboxW", skybox.skybox);
             skyboxModel.shader.SetMat4Cache("uViewMat", outputCam.viewMat);
             skyboxModel.shader.SetMat4Cache("uProjMat", outputCam.projectionMat);
             skyboxModel.Render();
@@ -111,6 +111,7 @@ namespace HawkEngine.Graphics
                     meshes[m].shader.SetTexture("uIrradianceCubeB", skybox.irradiance);
                     meshes[m].shader.SetTexture("uReflectionCubeB", skybox.specularReflections);
                     meshes[m].shader.SetTexture("uBrdfLutB", Texture2D.brdfTex);
+                    meshes[m].shader.SetVec3Cache("uAmbientColor", ambientColor);
 
                     IOrderedEnumerable<LightComponent> orderedLights =
                         lights.OrderBy(l => Math.Min(l.type, 1) * Vector3D.DistanceSquared(meshes[m].transform.position, l.transform.position));

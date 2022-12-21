@@ -66,12 +66,14 @@ namespace HawkEngine.Graphics
                         if (name.EndsWith('W')) texs.Add(Texture2D.whiteTex);
                         else if (name.EndsWith('B')) texs.Add(Texture2D.blackTex);
                         else if (name.EndsWith('N')) texs.Add(Texture2D.normalTex);
+                        else if (name.EndsWith('G')) texs.Add(Texture2D.grayTex);
                         else texs.Add(null);
                     }
                     else if (type == UniformType.SamplerCube)
                     {
                         if (name.EndsWith('W')) texs.Add(TextureCubemap.whiteTex);
                         else if (name.EndsWith('B')) texs.Add(TextureCubemap.blackTex);
+                        else if (name.EndsWith('G')) texs.Add(TextureCubemap.grayTex);
                         else texs.Add(null);
                     }
                     else texs.Add(null);

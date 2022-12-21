@@ -11,6 +11,8 @@ uniform vec3 uCameraPos;
 uniform samplerCube uIrradianceCubeB;
 uniform samplerCube uReflectionCubeB;
 uniform sampler2D uBrdfLutB;
+uniform float uMaxReflectionLod = 4.0;
+uniform vec3 uAmbientColor = vec3(1);
 
 uniform sampler2D uAlbedoTexW;
 uniform vec4 uAlbedo = vec4(1);
@@ -23,6 +25,9 @@ uniform float uRoughness = .5;
 
 uniform sampler2D uNormalMapN;
 uniform float uNormalStrength = 1;
+
+uniform sampler2D uAOMapW;
+uniform float uAO = 1;
 
 vec3 poissonDisk[16] = vec3[]
 ( 
@@ -276,7 +281,7 @@ void main()
 		Lo += (kD * albedo.rgb / PI + specular) * radiance * NdotL * (1.0 - shadow);
 	}   
 	
-	vec3 F = fresnelSchlickRoughness(max(dot(normal, viewDir), 0.0), F0, roughness);
+	vec3 F = fresnelSchlickRoughness(max(dot(geometryNormal, viewDir), 0.0), F0, roughness);
     
     vec3 kS = F;
     vec3 kD = 1.0 - kS;
@@ -285,11 +290,13 @@ void main()
     vec3 irradiance = texture(uIrradianceCubeB, normal).rgb;
     vec3 diffuse = irradiance * albedo.rgb;
     
-    const float MAX_REFLECTION_LOD = 4.0;
-    vec3 prefilteredColor = textureLod(uReflectionCubeB, reflectDir,  roughness * MAX_REFLECTION_LOD).rgb;
-    vec2 brdf = texture(uBrdfLutB, vec2(max(dot(normal, viewDir), 0.0), roughness)).rg;
+    vec3 prefilteredColor = textureLod(uReflectionCubeB, reflectDir,  roughness * uMaxReflectionLod).rgb;
+    vec2 brdf = texture(uBrdfLutB, vec2(max(dot(geometryNormal, viewDir), 0.0), roughness)).rg;
     vec3 specular = prefilteredColor * (F * brdf.x + brdf.y);
 
     vec3 ambient = kD * diffuse + specular;
+	ambient *= uAmbientColor;
+	ambient *= texture(uAOMapW, outUV).r * uAO;
+
 	outColor = vec4(ambient + Lo, albedo.a);
 }

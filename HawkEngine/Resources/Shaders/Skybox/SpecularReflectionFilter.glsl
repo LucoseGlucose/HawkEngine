@@ -5,7 +5,6 @@ in vec3 outLocalPos;
 uniform samplerCube uTexture;
 uniform float uRoughness;
 uniform int uSampleCount = 1024;
-uniform float uResolution = 512.0;
 
 const float PI = 3.14159265359;
 
@@ -70,6 +69,7 @@ void main()
 
     vec3 prefilteredColor = vec3(0.0);
     float totalWeight = 0.0;
+    float resolution = textureSize(uTexture, 0).x;
     
     for(uint i = 0u; i < uSampleCount; ++i)
     {
@@ -85,7 +85,7 @@ void main()
             float HdotV = max(dot(H, V), 0.0);
             float pdf = D * NdotH / (4.0 * HdotV) + 0.0001;
 
-            float saTexel  = 4.0 * PI / (6.0 * uResolution * uResolution);
+            float saTexel  = 4.0 * PI / (6.0 * resolution * resolution);
             float saSample = 1.0 / (float(uSampleCount) * pdf + 0.0001);
 
             float mipLevel = uRoughness == 0.0 ? 0.0 : 0.5 * log2(saSample / saTexel);

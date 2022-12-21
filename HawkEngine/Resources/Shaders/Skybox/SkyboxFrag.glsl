@@ -8,5 +8,5 @@ uniform samplerCube uSkyboxW;
 
 void main()
 {
-	outColor = vec4(textureCube(uSkyboxW, outPosition).xyz, 1);
+	outColor = vec4(texture(uSkyboxW, outPosition).xyz, 1);
 }

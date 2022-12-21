@@ -14,12 +14,14 @@ namespace HawkEngine.Graphics
         public readonly TextureTarget textureType;
         public readonly InternalFormat internalFormat;
         public readonly PixelFormat pixelFormat;
+        public readonly Vector2D<uint> size;
 
-        public Texture(TextureTarget textureType, InternalFormat internalFormat, PixelFormat pixelFormat)
+        public Texture(TextureTarget textureType, InternalFormat internalFormat, PixelFormat pixelFormat, Vector2D<uint> size)
         {
             this.textureType = textureType;
             this.internalFormat = internalFormat;
             this.pixelFormat = pixelFormat;
+            this.size = size;
 
             id = Rendering.gl.GenTexture();
         }
@@ -48,12 +50,13 @@ namespace HawkEngine.Graphics
     {
         public static readonly Texture2D whiteTex = new(Vector4D<float>.One);
         public static readonly Texture2D blackTex = new(Vector4D<float>.Zero);
+        public static readonly Texture2D grayTex = new(new(.5f));
         public static readonly Texture2D normalTex = new(new Vector4D<float>(.5f, .5f, 1f, 1f));
         public static readonly Texture2D brdfTex = new("Images/ibl_brdf_lut.png", false, wrap: GLEnum.ClampToEdge);
 
         public Texture2D(uint width, uint height, byte[] data, InternalFormat internalFormat = InternalFormat.Rgba8, PixelFormat pixelFormat
             = PixelFormat.Rgba, uint samples = 1, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat, bool mipmap = false)
-            : base(samples <= 1 ? TextureTarget.Texture2D : TextureTarget.Texture2DMultisample, internalFormat, pixelFormat)
+            : base(samples <= 1 ? TextureTarget.Texture2D : TextureTarget.Texture2DMultisample, internalFormat, pixelFormat, new(width, height))
         {
             Bind(0);
             if (samples <= 1) Rendering.gl.TexImage2D<byte>(textureType, 0, internalFormat, width, height, border, pixelFormat, PixelType.UnsignedByte, data);
@@ -79,34 +82,36 @@ namespace HawkEngine.Graphics
         {
 
         }
-        public unsafe Texture2D(string path, bool sRGB = true, bool hdr = false, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat,
-            bool flip = true, bool mipmap = false) : base(TextureTarget.Texture2D, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8, PixelFormat.Rgba)
+        public unsafe Texture2D(string path, bool sRGB = true, bool hdr = false, int border = 0, GLEnum filter = GLEnum.Linear,
+            GLEnum wrap = GLEnum.Repeat, bool flip = true, bool mipmap = false)
+            : base(TextureTarget.Texture2D, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8, PixelFormat.Rgba, new(0))
         {
             using Stream file = File.OpenRead(Path.GetFullPath("../../../Resources/" + path));
             Bind(0);
 
             StbImage.stbi__result_info result;
-            int width;
-            int height;
             int components;
 
-            if (!hdr)
+            fixed (void* xP = &size.X, yP = &size.Y)
             {
-                void* data = StbImage.stbi__load_main(new StbImage.stbi__context(file), &width, &height, &components, 4, &result, 8);
-                if (flip) StbImage.stbi__vertical_flip(data, width, height, 4);
+                if (!hdr)
+                {
+                    void* data = StbImage.stbi__load_main(new StbImage.stbi__context(file), (int*)xP, (int*)yP, &components, 4, &result, 8);
+                    if (flip) StbImage.stbi__vertical_flip(data, (int)size.X, (int)size.Y, 4);
 
-                ReadOnlySpan<byte> span = new(data, width * height * 32);
-                Rendering.gl.TexImage2D(textureType, 0, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8,
-                    (uint)width, (uint)height, border, PixelFormat.Rgba, PixelType.UnsignedByte, span);
-            }
-            else
-            {
-                float* data = StbImage.stbi__loadf_main(new StbImage.stbi__context(file), &width, &height, &components, 3);
-                if (flip) StbImage.stbi__vertical_flip(data, width, height, 12);
+                    ReadOnlySpan<byte> span = new(data, (int)(size.X * size.Y * 32u));
+                    Rendering.gl.TexImage2D(textureType, 0, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8,
+                        size.X, size.Y, border, PixelFormat.Rgba, PixelType.UnsignedByte, span);
+                }
+                else
+                {
+                    float* data = StbImage.stbi__loadf_main(new StbImage.stbi__context(file), (int*)xP, (int*)yP, &components, 3);
+                    if (flip) StbImage.stbi__vertical_flip(data, (int)size.X, (int)size.Y, 12);
 
-                ReadOnlySpan<float> span = new(data, width * height * 3);
-                Rendering.gl.TexImage2D(textureType, 0,InternalFormat.Rgb16f,
-                    (uint)width, (uint)height, border, PixelFormat.Rgb, PixelType.Float, span);
+                    ReadOnlySpan<float> span = new(data, (int)(size.X * size.Y * 3u));
+                    Rendering.gl.TexImage2D(textureType, 0, InternalFormat.Rgb16f,
+                        size.X, size.Y, border, PixelFormat.Rgb, PixelType.Float, span);
+                }
             }
 
             Rendering.gl.TexParameter(textureType, TextureParameterName.TextureMinFilter, (int)filter);
@@ -129,10 +134,11 @@ namespace HawkEngine.Graphics
     {
         public static readonly TextureCubemap whiteTex = new(Vector4D<float>.One);
         public static readonly TextureCubemap blackTex = new(Vector4D<float>.Zero);
+        public static readonly TextureCubemap grayTex = new(new(.5f));
 
         public TextureCubemap(uint width, uint height, byte[][] data, InternalFormat internalFormat = InternalFormat.Rgba8,
             PixelFormat pixelFormat = PixelFormat.Rgba, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat, bool mipmap = false)
-            : base(TextureTarget.TextureCubeMap, internalFormat, pixelFormat)
+            : base(TextureTarget.TextureCubeMap, internalFormat, pixelFormat, new(width, height))
         {
             Bind(0);
             for (int i = 0; i < 6; i++)
@@ -157,25 +163,27 @@ namespace HawkEngine.Graphics
         {
 
         }
-        public unsafe TextureCubemap(string[] paths, bool sRGB = true, int border = 0 , GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat,
-            bool flip = true, bool mipmap = false) : base(TextureTarget.TextureCubeMap, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8, PixelFormat.Rgba)
+        public unsafe TextureCubemap(string[] paths, bool sRGB = true, int border = 0 , GLEnum filter = GLEnum.Linear,
+            GLEnum wrap = GLEnum.Repeat, bool flip = true, bool mipmap = false)
+            : base(TextureTarget.TextureCubeMap, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8, PixelFormat.Rgba, new(0))
         {
             for (int i = 0; i < 6; i++)
             {
                 using Stream file = File.OpenRead(Path.GetFullPath("../../../Resources/" + paths[i]));
 
-                StbImage.stbi__result_info result;
-                int width;
-                int height;
-                int components;
+                fixed (void* xP = &size.X, yP = &size.Y)
+                {
+                    StbImage.stbi__result_info result;
+                    int components;
 
-                void* data = StbImage.stbi__load_main(new StbImage.stbi__context(file), &width, &height, &components, 4, &result, 8);
-                if (flip) StbImage.stbi__vertical_flip(data, width, height, 4);
-                ReadOnlySpan<byte> span = new(data, width * height * 32);
+                    void* data = StbImage.stbi__load_main(new StbImage.stbi__context(file), (int*)xP, (int*)yP, &components, 4, &result, 8);
+                    if (flip) StbImage.stbi__vertical_flip(data, (int)size.X, (int)size.Y, 4);
+                    ReadOnlySpan<byte> span = new(data, (int)(size.X * size.Y * 32u));
 
-                Bind(0);
-                Rendering.gl.TexImage2D(TextureTarget.TextureCubeMapPositiveX + i, 0, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8,
-                    (uint)width, (uint)height, border, PixelFormat.Rgba, PixelType.UnsignedByte, span);
+                    Bind(0);
+                    Rendering.gl.TexImage2D(TextureTarget.TextureCubeMapPositiveX + i, 0, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8,
+                        size.X, size.Y, border, PixelFormat.Rgba, PixelType.UnsignedByte, span);
+                }
 
                 Rendering.gl.TexParameter(textureType, TextureParameterName.TextureMinFilter, (int)filter);
                 Rendering.gl.TexParameter(textureType, TextureParameterName.TextureMagFilter, (int)filter);
