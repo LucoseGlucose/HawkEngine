@@ -25,7 +25,7 @@ namespace HawkEngine.Components
         public override void Update()
         {
             mesh.Dispose();
-            text = Math.Round(1f / App.deltaTime).ToString() + " FPS";
+            text = Math.Round(1f / Time.smoothUnscaledDeltaTime).ToString() + " FPS";
 
             transform.position = new(-App.window.FramebufferSize.X * .5f, App.window.FramebufferSize.Y * .5f
                 - font.pixelHeight * transform.scale.Y / 50f, 0f);

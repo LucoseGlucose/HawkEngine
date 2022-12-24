@@ -17,9 +17,6 @@ namespace HawkEngine.Core
         public static IWindow window { get; private set; }
         public static IInputContext input { get; private set; }
 
-        public static float deltaTime { get; private set; }
-        public static float totalTime { get; private set; }
-
         public static Scene scene { get; set; }
         private static Func<Scene> sceneFunc;
 
@@ -68,9 +65,7 @@ namespace HawkEngine.Core
         }
         private static void OnUpdate(double delta)
         {
-            deltaTime = (float)delta;
-            totalTime += deltaTime;
-
+            Time.Update((float)delta);
             scene.Update();
         }
         private static void OnRender(double delta)

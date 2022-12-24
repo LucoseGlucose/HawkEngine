@@ -24,21 +24,21 @@ namespace HawkEngine.Components
             if (mouse.IsButtonPressed(MouseButton.Right))
             {
                 if (mouseDelta.LengthSquared() > 0)
-                    transform.rotation += new Vector3D<float>(mouseDelta.Y, -mouseDelta.X, 0f) * App.deltaTime * rotateSpeed;
+                    transform.rotation += new Vector3D<float>(mouseDelta.Y, -mouseDelta.X, 0f) * Time.deltaTime * rotateSpeed;
 
                 IKeyboard keyboard = App.input.Keyboards[0];
-                if (keyboard.IsKeyPressed(Key.W)) transform.position += transform.forward * flySpeed * App.deltaTime;
-                if (keyboard.IsKeyPressed(Key.A)) transform.position += transform.right * flySpeed * App.deltaTime;
-                if (keyboard.IsKeyPressed(Key.S)) transform.position += -transform.forward * flySpeed * App.deltaTime;
-                if (keyboard.IsKeyPressed(Key.D)) transform.position += -transform.right * flySpeed * App.deltaTime;
-                if (keyboard.IsKeyPressed(Key.Q)) transform.position += -transform.up * flySpeed * App.deltaTime;
-                if (keyboard.IsKeyPressed(Key.E)) transform.position += transform.up * flySpeed * App.deltaTime;
+                if (keyboard.IsKeyPressed(Key.W)) transform.position += transform.forward * flySpeed * Time.deltaTime;
+                if (keyboard.IsKeyPressed(Key.A)) transform.position += transform.right * flySpeed * Time.deltaTime;
+                if (keyboard.IsKeyPressed(Key.S)) transform.position += -transform.forward * flySpeed * Time.deltaTime;
+                if (keyboard.IsKeyPressed(Key.D)) transform.position += -transform.right * flySpeed * Time.deltaTime;
+                if (keyboard.IsKeyPressed(Key.Q)) transform.position += -transform.up * flySpeed * Time.deltaTime;
+                if (keyboard.IsKeyPressed(Key.E)) transform.position += transform.up * flySpeed * Time.deltaTime;
             }
 
             if (mouse.IsButtonPressed(MouseButton.Middle) && mouseDelta.LengthSquared() > 0)
             {
-                transform.position += transform.up * mouseDelta.Y * App.deltaTime * panSpeed;
-                transform.position += transform.right * mouseDelta.X * App.deltaTime * panSpeed;
+                transform.position += transform.up * mouseDelta.Y * Time.deltaTime * panSpeed;
+                transform.position += transform.right * mouseDelta.X * Time.deltaTime * panSpeed;
             }
 
             if (mouse.ScrollWheels[0].Y != 0) transform.position += transform.forward * mouse.ScrollWheels[0].Y * scrollSpeed;

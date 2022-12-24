@@ -4,7 +4,7 @@ in vec3 outLocalPos;
 
 uniform samplerCube uTexture;
 uniform float uRoughness;
-uniform int uSampleCount = 1024;
+uniform int uSampleCount = 512;
 
 const float PI = 3.14159265359;
 

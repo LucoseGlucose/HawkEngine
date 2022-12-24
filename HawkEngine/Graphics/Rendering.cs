@@ -32,7 +32,7 @@ namespace HawkEngine.Graphics
         public static Mesh skyboxMesh { get; private set; }
         public static ShaderProgram skyboxShader { get; set; }
         public static Skybox skybox { get; set; }
-        public static Vector3D<float> ambientColor { get; set; } = Vector3D<float>.One;
+        public static Vector3D<float> ambientColor { get; set; } = new(1f);
 
         public static void Init()
         {
@@ -80,7 +80,7 @@ namespace HawkEngine.Graphics
             postProcessShaders.Add("Color Adjustments", new(Shader.Create("Shaders/Post Processing/OutputVert.glsl",
                     ShaderType.VertexShader), Shader.Create("Shaders/Post Processing/ColorAdjustments.glsl", ShaderType.FragmentShader)));
 
-            skybox = new("Images/limpopo_golf_course_4k.hdr", 1024u, 32u, 256u);
+            skybox = new("Images/limpopo_golf_course_4k.hdr", 2048u, 64u, 512u);
         }
         public static unsafe void Render()
         {

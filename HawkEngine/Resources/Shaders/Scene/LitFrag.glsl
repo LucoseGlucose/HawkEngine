@@ -1,9 +1,13 @@
 #version 460
 
-in vec2 outUV;
-
-in vec3 outWorldPosition;
-in mat3 outTBNMat;
+in VSOut
+{
+	vec2 uv;
+	vec3 worldPosition;
+	mat3 tbnMat;
+	vec3 geometryNormal;
+}
+fsIn;
 
 out vec4 outColor;
 
@@ -135,12 +139,12 @@ bool calcShadow(in Light l, in vec3 lightDir, in vec3 normal, in vec3 lightCoord
 		{
 			for(int x = -l.uShadowMapSamples; x <= l.uShadowMapSamples; x++)
 			{
-				int index = int(16.0 * random(floor(outWorldPosition * 1000.0), 21)) % 16;
+				int index = int(16.0 * random(floor(fsIn.worldPosition * 1000.0), 21)) % 16;
 				float closestDepth = texture(l.uShadowTexW, lightCoords.xy + vec2(x, y) * pixelSize + poissonDisk[index].xy / l.uShadowNoise).r;
 				float currentDepth = lightCoords.z;
 
 				float diff = currentDepth - (closestDepth + bias);
-				if (diff > 0.0) shadow += 1.0f;
+				if (diff > 0.0) shadow += 1.0;
 			}
 		}
 		shadow /= pow((l.uShadowMapSamples * 2 + 1), 2);
@@ -149,13 +153,13 @@ bool calcShadow(in Light l, in vec3 lightDir, in vec3 normal, in vec3 lightCoord
 	return shadow < 1.0;
 }
 
-bool calcDirectionalLight(in Light l, in vec3 viewDir, in vec3 normal, in vec3 geometryNormal, out vec3 radiance, out vec3 lightDir, out float shadow)
+bool calcDirectionalLight(in Light l, in vec3 viewDir, in vec3 normal, out vec3 radiance, out vec3 lightDir, out float shadow)
 {
 	lightDir = -l.uDirection;
-	if (dot(geometryNormal, lightDir) <= 0.0) return false;
+	if (dot(fsIn.geometryNormal, lightDir) <= 0.0) return false;
 
 	shadow = 0.0;
-	vec4 lightSpacePos = l.uShadowMat * vec4(outWorldPosition, 1);
+	vec4 lightSpacePos = l.uShadowMat * vec4(fsIn.worldPosition, 1);
 	vec3 lightCoords = lightSpacePos.xyz / lightSpacePos.w;
 	lightCoords = lightCoords * .5 + .5;
 
@@ -165,13 +169,13 @@ bool calcDirectionalLight(in Light l, in vec3 viewDir, in vec3 normal, in vec3 g
 	return true;
 }
 
-bool calcPointLight(in Light l, in vec3 viewDir, in vec3 normal, in vec3 geometryNormal, out vec3 radiance, out vec3 lightDir, out float shadow)
+bool calcPointLight(in Light l, in vec3 viewDir, in vec3 normal, out vec3 radiance, out vec3 lightDir, out float shadow)
 {
 
-	lightDir = normalize(l.uPosition - outWorldPosition);
-	if (dot(geometryNormal, lightDir) <= 0.0) return false;
+	lightDir = normalize(l.uPosition - fsIn.worldPosition);
+	if (dot(fsIn.geometryNormal, lightDir) <= 0.0) return false;
 
-	vec3 lightCoords = outWorldPosition - l.uPosition;
+	vec3 lightCoords = fsIn.worldPosition - l.uPosition;
 	float bias = max(l.uShadowNormalBias.y * (1.0 - dot(normal, lightDir)), l.uShadowNormalBias.x);
 
 	float currentDepth = length(lightCoords);
@@ -180,26 +184,26 @@ bool calcPointLight(in Light l, in vec3 viewDir, in vec3 normal, in vec3 geometr
 	float diff = currentDepth - (closestDepth + bias);
 	if (diff > 0.0) shadow = 1.0;
 
-	float dist = length(l.uPosition - outWorldPosition);
+	float dist = length(l.uPosition - fsIn.worldPosition);
 	float attenuation = 1.0 / (1 + l.uFalloff.x * dist + l.uFalloff.y * (dist * dist));
 	radiance = l.uColor * attenuation;
 
 	return true;
 }
 
-bool calcSpotLight(in Light l, in vec3 viewDir, in vec3 normal, in vec3 geometryNormal, out vec3 radiance, out vec3 lightDir, out float shadow)
+bool calcSpotLight(in Light l, in vec3 viewDir, in vec3 normal, out vec3 radiance, out vec3 lightDir, out float shadow)
 {
-	lightDir = normalize(l.uPosition - outWorldPosition);
-	if (dot(geometryNormal, lightDir) <= 0.0) return false;
+	lightDir = normalize(l.uPosition - fsIn.worldPosition);
+	if (dot(fsIn.geometryNormal, lightDir) <= 0.0) return false;
 
 	shadow = 0.0;
-	vec4 lightSpacePos = l.uShadowMat * vec4(outWorldPosition, 1);
+	vec4 lightSpacePos = l.uShadowMat * vec4(fsIn.worldPosition, 1);
 	vec3 lightCoords = lightSpacePos.xyz / lightSpacePos.w;
 	lightCoords = lightCoords * .5 + .5;
 
 	if (!calcShadow(l, lightDir, normal, lightCoords, shadow)) return false;
 
-	float dist = length(l.uPosition - outWorldPosition);
+	float dist = length(l.uPosition - fsIn.worldPosition);
 	float attenuation = 1.0 / (1 + l.uFalloff.x * dist + l.uFalloff.y * (dist * dist));
 
 	float theta = dot(lightDir, -l.uDirection);
@@ -212,23 +216,23 @@ bool calcSpotLight(in Light l, in vec3 viewDir, in vec3 normal, in vec3 geometry
 	return true;
 }
 
-bool calcLight(in Light l, in vec3 viewDir, in vec3 normal, in vec3 geometryNormal, out vec3 radiance, out vec3 lightDir, out float shadow)
+bool calcLight(in Light l, in vec3 viewDir, in vec3 normal, out vec3 radiance, out vec3 lightDir, out float shadow)
 {
 	if (l.uType == 0) return false;
 
 	if (l.uType == 1) 
 	{
-		return calcDirectionalLight(l, viewDir, normal, geometryNormal, radiance, lightDir, shadow);
+		return calcDirectionalLight(l, viewDir, normal, radiance, lightDir, shadow);
 	}
 
 	if (l.uType == 2)
 	{
-		return calcPointLight(l, viewDir, normal, geometryNormal, radiance, lightDir, shadow);
+		return calcPointLight(l, viewDir, normal, radiance, lightDir, shadow);
 	}
 
 	if (l.uType == 3)
 	{
-		return calcSpotLight(l, viewDir, normal, geometryNormal, radiance, lightDir, shadow);
+		return calcSpotLight(l, viewDir, normal, radiance, lightDir, shadow);
 	}
 
 	return false;
@@ -236,19 +240,17 @@ bool calcLight(in Light l, in vec3 viewDir, in vec3 normal, in vec3 geometryNorm
 
 void main()
 {
-	vec4 albedo = uAlbedo * texture(uAlbedoTexW, outUV);
+	vec4 albedo = uAlbedo * texture(uAlbedoTexW, fsIn.uv);
 	if (albedo.a <= uAlphaClip) discard;
 
-	float metallic = texture(uMetallicMapW, outUV).r * uMetallic;
-	float roughness = texture(uRoughnessMapW, outUV).r * uRoughness;
+	float metallic = texture(uMetallicMapW, fsIn.uv).r * uMetallic;
+	float roughness = texture(uRoughnessMapW, fsIn.uv).r * uRoughness;
 
-	vec3 normal = texture(uNormalMapN, outUV).xyz * 2.0 - 1.0;
+	vec3 normal = texture(uNormalMapN, fsIn.uv).xyz * 2.0 - 1.0;
 	normal.xy *= uNormalStrength;
-	normal = normalize(outTBNMat * normal);
+	normal = normalize(fsIn.tbnMat * normal);
 
-	vec3 geometryNormal = normalize(outTBNMat * vec3(0.0, 0.0, 1.0));
-	vec3 viewDir = normalize(uCameraPos - outWorldPosition);
-
+	vec3 viewDir = normalize(uCameraPos - fsIn.worldPosition);
 	vec3 reflectDir = reflect(-viewDir, normal);
 
 	vec3 F0 = vec3(0.04); 
@@ -261,7 +263,7 @@ void main()
 		vec3 lightDir;
 		float shadow;
 
-		if (!calcLight(uLights[i], viewDir, normal, geometryNormal, radiance, lightDir, shadow)) continue;
+		if (!calcLight(uLights[i], viewDir, normal, radiance, lightDir, shadow)) continue;
 
 		vec3 halfwayVec = normalize(viewDir + lightDir);
 
@@ -281,7 +283,7 @@ void main()
 		Lo += (kD * albedo.rgb / PI + specular) * radiance * NdotL * (1.0 - shadow);
 	}   
 	
-	vec3 F = fresnelSchlickRoughness(max(dot(geometryNormal, viewDir), 0.0), F0, roughness);
+	vec3 F = fresnelSchlickRoughness(max(dot(fsIn.geometryNormal, viewDir), 0.0), F0, roughness);
     
     vec3 kS = F;
     vec3 kD = 1.0 - kS;
@@ -291,12 +293,12 @@ void main()
     vec3 diffuse = irradiance * albedo.rgb;
     
     vec3 prefilteredColor = textureLod(uReflectionCubeB, reflectDir,  roughness * uMaxReflectionLod).rgb;
-    vec2 brdf = texture(uBrdfLutB, vec2(max(dot(geometryNormal, viewDir), 0.0), roughness)).rg;
+    vec2 brdf = texture(uBrdfLutB, vec2(max(dot(fsIn.geometryNormal, viewDir), 0.0), roughness)).rg;
     vec3 specular = prefilteredColor * (F * brdf.x + brdf.y);
 
     vec3 ambient = kD * diffuse + specular;
 	ambient *= uAmbientColor;
-	ambient *= texture(uAOMapW, outUV).r * uAO;
+	ambient *= texture(uAOMapW, fsIn.uv).r * uAO;
 
 	outColor = vec4(ambient + Lo, albedo.a);
 }

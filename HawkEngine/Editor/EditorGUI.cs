@@ -27,7 +27,7 @@ namespace HawkEngine.Editor
         }
         public static void Update()
         {
-            imgui.Update(App.deltaTime);
+            imgui.Update(Time.unscaledDeltaTime);
         }
         public static void Render()
         {
