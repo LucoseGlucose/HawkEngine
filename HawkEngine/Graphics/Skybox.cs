@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HawkEngine.Graphics
 {
-    public class Skybox
+    public sealed class Skybox
     {
         public readonly TextureCubemap skybox;
         public readonly TextureCubemap irradiance;
@@ -51,8 +51,7 @@ namespace HawkEngine.Graphics
             uint fbId = Rendering.gl.GenFramebuffer();
             Rendering.gl.BindFramebuffer(FramebufferTarget.Framebuffer, fbId);
 
-            ShaderProgram shader = new(Shader.Create("Shaders/Skybox/RectToCubemapVert.glsl", ShaderType.VertexShader),
-                Shader.Create("Shaders/Skybox/RectToCubemapFrag.glsl", ShaderType.FragmentShader));
+            ShaderProgram shader = new("Shaders/Skybox/RectToCubemapVert.glsl", "Shaders/Skybox/RectToCubemapFrag.glsl");
 
             Rendering.gl.TextureParameterI(cubemap.id, TextureParameterName.TextureMinFilter, (uint)GLEnum.LinearMipmapLinear);
 
@@ -82,8 +81,7 @@ namespace HawkEngine.Graphics
         }
         public static unsafe TextureCubemap ComputeIrradiance(TextureCubemap tex, uint resolution, float sampleDelta = .025f)
         {
-            ShaderProgram shader = new(Shader.Create("Shaders/Skybox/RectToCubemapVert.glsl", ShaderType.VertexShader),
-                Shader.Create("Shaders/Skybox/IrradianceConvolutionFrag.glsl", ShaderType.FragmentShader));
+            ShaderProgram shader = new("Shaders/Skybox/RectToCubemapVert.glsl", "Shaders/Skybox/IrradianceConvolutionFrag.glsl");
 
             shader.SetFloatCache("uSampleDelta", sampleDelta);
 
@@ -116,8 +114,7 @@ namespace HawkEngine.Graphics
         public static unsafe TextureCubemap ComputeSpecularReflectionMap(TextureCubemap tex, uint resolution, int sampleCount = 512)
         {
             TextureCubemap cubemap = new(resolution, resolution, InternalFormat.Rgb16f, PixelFormat.Rgb, mipmap: true);
-            ShaderProgram shader = new(Shader.Create("Shaders/Skybox/RectToCubemapVert.glsl", ShaderType.VertexShader),
-                Shader.Create("Shaders/Skybox/SpecularReflectionFilter.glsl", ShaderType.FragmentShader));
+            ShaderProgram shader = new("Shaders/Skybox/RectToCubemapVert.glsl", "Shaders/Skybox/SpecularReflectionFilter.glsl");
 
             Rendering.gl.TextureParameterI(cubemap.id, TextureParameterName.TextureMinFilter, (uint)GLEnum.LinearMipmapLinear);
 

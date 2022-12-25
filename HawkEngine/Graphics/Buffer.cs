@@ -57,7 +57,7 @@ namespace HawkEngine.Graphics
         }
     }
 
-    public class AttribBuffer : Buffer<float>
+    public sealed class AttribBuffer : Buffer<float>
     {
         public readonly int numComponents;
 
@@ -67,7 +67,7 @@ namespace HawkEngine.Graphics
         }
     }
 
-    public class IndexBuffer : Buffer<uint>
+    public sealed class IndexBuffer : Buffer<uint>
     {
         public IndexBuffer(uint[] data, BufferStorageMask usage) : base(GLEnum.ElementArrayBuffer, data, usage)
         {

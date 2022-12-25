@@ -2,7 +2,7 @@
 
 namespace HawkEngine.Core
 {
-    public class Transform
+    public sealed class Transform
     {
         public Vector3D<float> position;
         public Vector3D<float> rotation;

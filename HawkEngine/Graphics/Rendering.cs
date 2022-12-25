@@ -26,13 +26,22 @@ namespace HawkEngine.Graphics
 
         public static Mesh quad { get; private set; }
         public static ShaderProgram outputShader { get; private set; }
-        public static readonly Dictionary<string, ShaderProgram> postProcessShaders = new();
+        public static Model outputModel { get; private set; }
+
         public static Framebuffer postProcessFB { get; private set; }
+
+        public delegate void Pass(List<MeshComponent> meshes, List<LightComponent> lights);
+        public static readonly List<Pass> renderPasses = new();
 
         public static Mesh skyboxMesh { get; private set; }
         public static ShaderProgram skyboxShader { get; set; }
+        public static Model skyboxModel { get; set; }
+
         public static Skybox skybox { get; set; }
         public static Vector3D<float> ambientColor { get; set; } = new(1f);
+
+        public static ShaderProgram colorAdjustmentsShader { get; private set; }
+        public static Bloom bloom { get; private set; }
 
         public static void Init()
         {
@@ -70,82 +79,40 @@ namespace HawkEngine.Graphics
             CreatePPFB();
 
             quad = new("Models/Quad.obj");
-            outputShader = new(Shader.Create("Shaders/Post Processing/OutputVert.glsl", ShaderType.VertexShader),
-                Shader.Create("Shaders/Post Processing/OutputFrag.glsl", ShaderType.FragmentShader));
+            outputShader = new("Shaders/Post Processing/OutputVert.glsl", "Shaders/Post Processing/OutputFrag.glsl");
+            outputModel = new(outputShader, quad);
 
             skyboxMesh = new("Models/Inverted Cube.obj");
-            skyboxShader = new(Shader.Create("Shaders/Skybox/SkyboxVert.glsl", ShaderType.VertexShader),
-                Shader.Create("Shaders/Skybox/SkyboxFrag.glsl", ShaderType.FragmentShader));
-
-            postProcessShaders.Add("Color Adjustments", new(Shader.Create("Shaders/Post Processing/OutputVert.glsl",
-                    ShaderType.VertexShader), Shader.Create("Shaders/Post Processing/ColorAdjustments.glsl", ShaderType.FragmentShader)));
+            skyboxShader = new("Shaders/Skybox/SkyboxVert.glsl", "Shaders/Skybox/SkyboxFrag.glsl");
+            skyboxModel = new(skyboxShader, skyboxMesh);
 
             skybox = new("Images/limpopo_golf_course_4k.hdr", 2048u, 64u, 512u);
+            colorAdjustmentsShader = new("Shaders/Post Processing/OutputVert.glsl", "Shaders/Post Processing/ColorAdjustments.glsl");
+            bloom = new(5);
+
+            renderPasses.Add(RenderPass.shadowPass);
+            renderPasses.Add(RenderPass.preMainDrawPass);
+            renderPasses.Add(RenderPass.skyboxPass);
+            renderPasses.Add(RenderPass.scenePass);
+            renderPasses.Add(RenderPass.prePostProcessPass);
+            renderPasses.Add(RenderPass.bloomPass);
+            renderPasses.Add(RenderPass.BlitScreenPass(colorAdjustmentsShader));
+            renderPasses.Add(RenderPass.outputPass);
         }
         public static unsafe void Render()
         {
             List<MeshComponent> meshes = App.scene.FindComponents<MeshComponent>();
             List<LightComponent> lights = App.scene.FindComponents<LightComponent>();
 
-            for (int l = 0; l < lights.Count; l++)
+            foreach (Pass pass in renderPasses)
             {
-                if (lights[l].shadowsEnabled) lights[l].RenderShadowMap(meshes);
+                pass?.Invoke(meshes, lights);
             }
 
-            outputCam.framebuffer.Bind();
-            gl.Viewport(outputCam.size);
-            gl.DrawBuffer(DrawBufferMode.ColorAttachment0);
-            gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-            Model skyboxModel = new(skyboxShader, skyboxMesh);
-
-            skyboxShader.SetTexture("uSkyboxW", skybox.skybox);
-            skyboxModel.shader.SetMat4Cache("uViewMat", outputCam.viewMat);
-            skyboxModel.shader.SetMat4Cache("uProjMat", outputCam.projectionMat);
-            skyboxModel.Render();
-
-            for (int m = 0; m < meshes.Count; m++)
-            {
-                if (meshes[m].lightingEnabled)
-                {
-                    meshes[m].shader.SetTexture("uIrradianceCubeB", skybox.irradiance);
-                    meshes[m].shader.SetTexture("uReflectionCubeB", skybox.specularReflections);
-                    meshes[m].shader.SetTexture("uBrdfLutB", Texture2D.brdfTex);
-                    meshes[m].shader.SetVec3Cache("uAmbientColor", ambientColor);
-
-                    IOrderedEnumerable<LightComponent> orderedLights =
-                        lights.OrderBy(l => Math.Min(l.type, 1) * Vector3D.DistanceSquared(meshes[m].transform.position, l.transform.position));
-
-                    for (int l = 0; l < 5; l++)
-                    {
-                        if (orderedLights.Count() > l) orderedLights.ElementAt(l).SetUniforms($"uLights[{l}]", meshes[m].shader);
-                        else meshes[m].shader.SetIntCache($"uLights[{l}].uType", 0);
-                    }
-                }
-
-                meshes[m].SetUniforms();
-                meshes[m].Render();
-                meshes[m].Cleanup();
-            }
-
-            gl.BlitNamedFramebuffer(outputCam.framebuffer.id, postProcessFB.id, 0, 0, outputCam.size.X, outputCam.size.Y, 0, 0, App.window.FramebufferSize.X,
-                App.window.FramebufferSize.Y, ClearBufferMask.ColorBufferBit, BlitFramebufferFilter.Linear);
-            postProcessFB.Bind();
-
-            foreach (KeyValuePair<string, ShaderProgram> shader in postProcessShaders)
-            {
-                Model ppModel = new(postProcessShaders[shader.Key], quad);
-                ppModel.shader.SetTexture("uColorTex", postProcessFB[FramebufferAttachment.ColorAttachment0].texture);
-                ppModel.Render();
-            }
-
-            postProcessFB.Unbind();
-            gl.Clear(ClearBufferMask.ColorBufferBit);
-
-            Model outputModel = new(outputShader, quad);
-            outputModel.shader.SetTexture("uColorTex", postProcessFB[FramebufferAttachment.ColorAttachment0].texture);
-            outputModel.Render();
-
+            CleanupDeletedObjects();
+        }
+        public static void CleanupDeletedObjects()
+        {
             int deleteCount = deletedObjects.Count;
             for (int i = 0; i < deleteCount; i++)
             {

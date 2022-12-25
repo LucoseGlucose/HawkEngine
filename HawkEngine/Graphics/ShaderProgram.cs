@@ -7,7 +7,7 @@ using HawkEngine.Core;
 
 namespace HawkEngine.Graphics
 {
-    public unsafe class ShaderProgram : IDisposable
+    public sealed unsafe class ShaderProgram : IDisposable
     {
         public readonly uint id;
 
@@ -23,6 +23,16 @@ namespace HawkEngine.Graphics
         private readonly Dictionary<string, Matrix3X3<float>> mat3Values = new();
         private readonly Dictionary<string, Matrix4X4<float>> mat4Values = new();
 
+        public ShaderProgram(string vertexShader, string fragmentShader)
+            : this(Shader.Create(vertexShader, ShaderType.VertexShader), Shader.Create(fragmentShader, ShaderType.FragmentShader))
+        {
+
+        }
+        public ShaderProgram(string vertexShader, string geometryShader, string fragmentShader) : this(Shader.Create(vertexShader,
+            ShaderType.VertexShader), Shader.Create(geometryShader, ShaderType.GeometryShader), Shader.Create(fragmentShader, ShaderType.FragmentShader))
+        {
+
+        }
         public unsafe ShaderProgram(params uint[] shaders)
         {
             id = Rendering.gl.CreateProgram();

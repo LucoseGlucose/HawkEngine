@@ -33,6 +33,9 @@ uniform float uNormalStrength = 1;
 uniform sampler2D uAOMapW;
 uniform float uAO = 1;
 
+uniform sampler2D uEmissiveMapW;
+uniform vec3 uEmissive;
+
 vec3 poissonDisk[16] = vec3[]
 ( 
    vec3(-0.94201624, -0.39906216, 0.63561923), 
@@ -300,5 +303,7 @@ void main()
 	ambient *= uAmbientColor;
 	ambient *= texture(uAOMapW, fsIn.uv).r * uAO;
 
-	outColor = vec4(ambient + Lo, albedo.a);
+	vec3 emissiveColor = texture(uEmissiveMapW, fsIn.uv).rgb * uEmissive;
+
+	outColor = vec4(ambient + Lo + emissiveColor, albedo.a);
 }

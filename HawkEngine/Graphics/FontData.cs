@@ -11,7 +11,7 @@ using StbRectPackSharp;
 
 namespace HawkEngine.Graphics
 {
-    public unsafe class Font
+    public sealed unsafe class Font
     {
         public readonly byte[] bitmap;
         public readonly int bitmapWidth, bitmapHeight;

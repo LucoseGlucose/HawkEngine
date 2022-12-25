@@ -6,7 +6,7 @@ using Silk.NET.OpenGL;
 
 namespace HawkEngine.Graphics
 {
-    public class Framebuffer : IDisposable
+    public sealed class Framebuffer : IDisposable
     {
         public readonly uint id;
         public readonly FramebufferTexture[] attachments;
@@ -47,7 +47,7 @@ namespace HawkEngine.Graphics
         }
     }
 
-    public class FramebufferTexture
+    public sealed class FramebufferTexture
     {
         public readonly FramebufferAttachment attachment;
         public readonly Texture texture;

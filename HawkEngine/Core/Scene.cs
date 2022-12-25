@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace HawkEngine.Core
 {
-    public class Scene
+    public sealed class Scene
     {
         public readonly string name;
         public readonly List<SceneObject> objects = new();
