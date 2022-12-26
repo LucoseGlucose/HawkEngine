@@ -15,7 +15,6 @@ namespace HawkEngine.Components
         public bool lightingEnabled = true;
         public bool castShadows = true;
         public bool recieveShadows = true;
-        public bool transparent = false;
 
         public virtual void SetUniforms()
         {

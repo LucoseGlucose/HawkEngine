@@ -35,7 +35,8 @@ namespace HawkEngine.Editor
             style = GetStyle();
             style.WindowMenuButtonPosition = ImGuiDir.None;
 
-            windows.Add(new EditorViewport(true));
+            windows.Add(EditorWindow.viewport);
+            windows.Add(EditorWindow.sceneTree);
         }
         public static void Update()
         {
@@ -44,7 +45,10 @@ namespace HawkEngine.Editor
             BeginMainMenuBar();
             if (BeginMenu("Window"))
             {
-                MenuItem("Viewport", "", ref FindWindow<EditorViewport>().open);
+                foreach (EditorWindow window in windows)
+                {
+                    MenuItem(window.title, "", ref FindWindow(window.title).open);
+                }
                 EndMenu();
             }
             EndMainMenuBar();
@@ -60,13 +64,9 @@ namespace HawkEngine.Editor
         {
             imgui.Render();
         }
-        public static EditorWindow FindWindow<T>() where T : EditorWindow
+        public static EditorWindow FindWindow(string title)
         {
-            return windows.OfType<T>().FirstOrDefault();
-        }
-        public static EditorWindow FindOpenWindow<T>() where T : EditorWindow
-        {
-            return windows.OfType<T>().Where(w => w.open).FirstOrDefault();
+            return windows.FirstOrDefault(w => w.title == title);
         }
     }
 }

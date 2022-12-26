@@ -56,13 +56,15 @@ namespace HawkEngine.Components
         }
         public void CreateFramebuffer(uint samples = 1)
         {
+            if (size == Vector2D<int>.Zero) return;
+
             framebuffer = new
-                (
-                    new FramebufferTexture(new Texture2D((uint)size.X, (uint)size.Y, InternalFormat.Rgba16f, PixelFormat.Rgba, samples),
-                        FramebufferAttachment.ColorAttachment0),
-                    new FramebufferTexture(new Texture2D((uint)size.X, (uint)size.Y, InternalFormat.DepthComponent24, PixelFormat.DepthComponent, samples),
-                        FramebufferAttachment.DepthAttachment)
-                );
+            (
+                new FramebufferTexture(new Texture2D((uint)size.X, (uint)size.Y, InternalFormat.Rgba16f, PixelFormat.Rgba, samples),
+                    FramebufferAttachment.ColorAttachment0),
+                new FramebufferTexture(new Texture2D((uint)size.X, (uint)size.Y, InternalFormat.Depth24Stencil8, PixelFormat.DepthStencil, samples),
+                    FramebufferAttachment.DepthStencilAttachment)
+            );
         }
     }
 }

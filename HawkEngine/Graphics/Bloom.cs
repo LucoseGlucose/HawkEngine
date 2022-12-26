@@ -13,7 +13,7 @@ namespace HawkEngine.Graphics
     public class Bloom
     {
         private readonly uint fbID;
-        private Texture2D[] textures;
+        private readonly Texture2D[] textures;
 
         private readonly ShaderProgram downsampleShader;
         private readonly ShaderProgram upsampleShader;

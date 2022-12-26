@@ -19,7 +19,7 @@ namespace HawkEngine.Components
         public override void Update()
         {
 #if DEBUG
-            if (Editor.EditorGUI.activeWindow == null || Editor.EditorGUI.activeWindow.GetType() != typeof(Editor.EditorViewport)) return;
+            if (Editor.EditorGUI.activeWindow == null || Editor.EditorGUI.activeWindow.title != "Viewport") return;
 #endif
             IMouse mouse = App.input.Mice[0];
             Vector2 mouseDelta = mouse.Position - lastMousePos;

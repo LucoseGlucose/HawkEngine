@@ -11,6 +11,8 @@ namespace HawkEngine.Editor
 {
     public static class HawkEditor
     {
+        public static readonly List<SceneObject> selectedObjects = new();
+
         public static void Init()
         {
             EditorGUI.Init();

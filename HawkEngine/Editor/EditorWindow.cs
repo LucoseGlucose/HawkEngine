@@ -14,15 +14,19 @@ using static ImGuiNET.ImGui;
 
 namespace HawkEngine.Editor
 {
-    public abstract class EditorWindow
+    public class EditorWindow
     {
         public bool open = true;
-        protected abstract string title { get; }
-        protected abstract Action[] styleVars { get; }
+        public readonly string title;
+        public readonly Action[] styleVars;
+        public readonly Action showAction;
 
-        public EditorWindow(bool open)
+        public EditorWindow(bool open, string title, Action[] styleVars, Action showAction)
         {
             this.open = open;
+            this.title = title;
+            this.styleVars = styleVars;
+            this.showAction = showAction;
         }
         public void Update()
         {
@@ -41,29 +45,16 @@ namespace HawkEngine.Editor
             {
                 if (IsWindowFocused()) EditorGUI.activeWindow = this;
                 else if (EditorGUI.activeWindow == this) EditorGUI.activeWindow = null;
-                Show();
+                showAction?.Invoke();
             }
             End();
 
             PopStyleVar(styleVars.Length);
         }
-        protected abstract void Show();
-    }
 
-    public class EditorViewport : EditorWindow
-    {
-        protected override string title => "Viewport";
-
-        protected override Action[] styleVars => new Action[]
-        {
-            () => PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0f)),
-        };
-
-        public EditorViewport(bool open) : base(open)
-        {
-
-        }
-        protected override void Show()
+        public static readonly EditorWindow viewport = new(true, "Viewport",
+        new Action[1] { () => PushStyleVar(ImGuiStyleVar.WindowPadding, Vector2.Zero) },
+        () =>
         {
             Vector2 availSpace = GetContentRegionAvail();
             float availAspect = availSpace.X / availSpace.Y;
@@ -73,7 +64,44 @@ namespace HawkEngine.Editor
             Vector2 size = new(availSpace.X * Scalar.Min(aspect, 1f), availSpace.Y / Scalar.Max(aspect, 1f));
 
             Image((nint)Rendering.postProcessFB[FramebufferAttachment.ColorAttachment0].id, size, new(0f, 1f), new(1f, 0f));
-        }
+        });
+
+        public static readonly EditorWindow sceneTree = new(true, "Scene Tree", Array.Empty<Action>(),
+        () =>
+        {
+            List<SceneObject> objects = App.scene.objects;
+
+            foreach (SceneObject obj in objects)
+            {
+                bool selected = HawkEditor.selectedObjects.Contains(obj);
+                Selectable(obj.name, ref selected);
+
+                if (selected)
+                {
+                    if (!HawkEditor.selectedObjects.Contains(obj))
+                    {
+                        if (HawkEditor.selectedObjects.Count > 0 && EditorGUI.io.KeyShift)
+                        {
+                            int lastIndex = objects.IndexOf(HawkEditor.selectedObjects.Last());
+                            int currentIndex = objects.IndexOf(obj);
+
+                            int diff = lastIndex - currentIndex;
+                            int sign = Scalar.Sign(diff);
+
+                            for (int i = 0; i < diff * sign; i++)
+                            {
+                                SceneObject toSelect = objects[lastIndex - i * sign];
+                                if (!HawkEditor.selectedObjects.Contains(toSelect)) HawkEditor.selectedObjects.Add(toSelect);
+                            }
+                        }
+                        else if (!EditorGUI.io.KeyCtrl) HawkEditor.selectedObjects.Clear();
+
+                        HawkEditor.selectedObjects.Add(obj);
+                    }
+                }
+                else if (HawkEditor.selectedObjects.Contains(obj)) HawkEditor.selectedObjects.Remove(obj);
+            }
+        });
     }
 }
 #endif

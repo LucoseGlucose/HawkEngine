@@ -12,6 +12,7 @@ using HawkEngine.Components;
 using System.Drawing;
 using Silk.NET.Maths;
 using static HawkEngine.Graphics.Rendering;
+using Silk.NET.Vulkan;
 
 namespace HawkEngine.Graphics
 {
@@ -58,6 +59,7 @@ namespace HawkEngine.Graphics
             gl.Enable(EnableCap.TextureCubeMapSeamless);
             gl.Enable(EnableCap.DepthTest);
             gl.Enable(EnableCap.Blend);
+            gl.Enable(EnableCap.StencilTest);
 
             gl.DepthFunc(DepthFunction.Lequal);
             gl.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
@@ -67,13 +69,17 @@ namespace HawkEngine.Graphics
         }
         private static void OnWindowResize(Vector2D<int> size)
         {
-            postProcessFB = new(new FramebufferTexture(new Texture2D((uint)size.X, (uint)size.Y,
-                InternalFormat.Rgba16f, PixelFormat.Rgba), FramebufferAttachment.ColorAttachment0));
+            postProcessFB = new
+            (
+                new FramebufferTexture(new Texture2D((uint)size.X, (uint)size.Y, InternalFormat.Rgba16f, PixelFormat.Rgba, 1),
+                    FramebufferAttachment.ColorAttachment0),
+                new FramebufferTexture(new Texture2D((uint)size.X, (uint)size.Y, InternalFormat.Depth24Stencil8, PixelFormat.DepthStencil, 1),
+                    FramebufferAttachment.DepthStencilAttachment)
+            );
         }
         public static void CreateStandardResources()
         {
-            postProcessFB = new(new FramebufferTexture(new Texture2D((uint)App.window.FramebufferSize.X, (uint)App.window.FramebufferSize.Y,
-                InternalFormat.Rgba16f, PixelFormat.Rgba), FramebufferAttachment.ColorAttachment0));
+            OnWindowResize(App.window.FramebufferSize);
 
             quad = new("Models/Quad.obj");
             outputShader = new("Shaders/Post Processing/OutputVert.glsl", "Shaders/Post Processing/OutputFrag.glsl");
@@ -102,6 +108,8 @@ namespace HawkEngine.Graphics
         }
         public static unsafe void Render()
         {
+            if (App.window.FramebufferSize == Vector2D<int>.Zero) return;
+
             List<MeshComponent> meshes = App.scene.FindComponents<MeshComponent>();
             List<LightComponent> lights = App.scene.FindComponents<LightComponent>();
 
@@ -145,10 +153,11 @@ namespace HawkEngine.Graphics
 
         public static readonly Pass preMainDrawPass = (_, _) =>
         {
+            gl.Enable(EnableCap.DepthTest);
             outputCam.framebuffer.Bind();
             gl.Viewport(outputCam.size);
             gl.DrawBuffer(DrawBufferMode.ColorAttachment0);
-            gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
         };
 
         public static readonly Pass skyboxPass = (_, _) =>
@@ -189,7 +198,9 @@ namespace HawkEngine.Graphics
         public static readonly Pass prePostProcessPass = (_, _) =>
         {
             gl.BlitNamedFramebuffer(outputCam.framebuffer.id, postProcessFB.id, 0, 0, outputCam.size.X, outputCam.size.Y, 0, 0, App.window.FramebufferSize.X,
-                App.window.FramebufferSize.Y, ClearBufferMask.ColorBufferBit, BlitFramebufferFilter.Linear);
+                App.window.FramebufferSize.Y, ClearBufferMask.ColorBufferBit
+                | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit, BlitFramebufferFilter.Nearest);
+            gl.Disable(EnableCap.DepthTest);
             postProcessFB.Bind();
         };
 

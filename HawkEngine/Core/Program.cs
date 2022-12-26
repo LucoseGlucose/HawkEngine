@@ -27,7 +27,7 @@ namespace HawkEngine.Core
                 cam.transform.position = new(0f, 0f, -4f);
                 cam.owner.AddComponent<CameraControllerComponent>();
 
-                MeshComponent mesh1 = scene.CreateObject("Mesh").AddComponent<MeshComponent>();
+                MeshComponent mesh1 = scene.CreateObject("Cube").AddComponent<MeshComponent>();
                 mesh1.shader = new("Shaders/Scene/LitVert.glsl", "Shaders/Scene/LitFrag.glsl");
                 mesh1.shader.SetTexture("uAlbedoTexW", new Texture2D("Images/brickwall.jpg"));
                 mesh1.shader.SetTexture("uNormalMapN", new Texture2D("Images/brickwall_normal.jpg", false));
@@ -35,7 +35,7 @@ namespace HawkEngine.Core
                 mesh1.shader.SetFloatCache("uMetallic", .1f);
                 mesh1.shader.SetFloatCache("uRoughness", .8f);
 
-                MeshComponent mesh2 = scene.CreateObject("Mesh").AddComponent<MeshComponent>();
+                MeshComponent mesh2 = scene.CreateObject("Monkey").AddComponent<MeshComponent>();
                 mesh2.shader = new("Shaders/Scene/LitVert.glsl", "Shaders/Scene/LitFrag.glsl");
                 mesh2.mesh = new("Models/Monkey.obj");
                 mesh2.transform.position = new(2f, 4f, 1f);
@@ -43,7 +43,7 @@ namespace HawkEngine.Core
                 mesh2.shader.SetFloatCache("uMetallic", .1f);
                 mesh2.shader.SetFloatCache("uRoughness", .9f);
 
-                MeshComponent meshG = scene.CreateObject("Mesh").AddComponent<MeshComponent>();
+                MeshComponent meshG = scene.CreateObject("Ground").AddComponent<MeshComponent>();
                 meshG.shader = new("Shaders/Scene/LitVert.glsl", "Shaders/Scene/LitFrag.glsl");
                 meshG.shader.SetVec4Cache("uAlbedo", new(.5f, .5f, .5f, 1f));
                 meshG.mesh = new("Models/Quad.obj");
@@ -53,7 +53,7 @@ namespace HawkEngine.Core
                 meshG.shader.SetFloatCache("uRoughness", 1f);
                 mesh2.shader.SetFloatCache("uMetallic", 0f);
 
-                MeshComponent mesh = scene.CreateObject("Mesh").AddComponent<MeshComponent>();
+                MeshComponent mesh = scene.CreateObject("Ball").AddComponent<MeshComponent>();
                 mesh.shader = new("Shaders/Scene/LitVert.glsl", "Shaders/Scene/LitFrag.glsl");
                 mesh.shader.SetVec4Cache("uAlbedo", new(.05f, .2f, 1f, 1f));
                 mesh.mesh = new("Models/Smooth Sphere.obj");
