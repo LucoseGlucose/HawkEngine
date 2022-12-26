@@ -112,7 +112,7 @@ namespace HawkEngine.Components
 
             if (shadowsEnabled)
             {
-                shader.SetTexture($"{prefix}.uShadowTexW", shadowMapBuffer[FramebufferAttachment.DepthAttachment].texture);
+                shader.SetTexture($"{prefix}.uShadowTexW", shadowMapBuffer[FramebufferAttachment.DepthAttachment]);
                 shader.SetMat4Cache($"{prefix}.uShadowMat", viewMat * projectionMat);
 
                 shader.SetVec2Cache($"{prefix}.uShadowNormalBias", shadowNormalBias);

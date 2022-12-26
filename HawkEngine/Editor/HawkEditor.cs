@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if DEBUG
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,23 +11,11 @@ namespace HawkEngine.Editor
 {
     public static class HawkEditor
     {
-        public static void EditorCall(Action action)
-        {
-#if DEBUG
-            action();
-#endif
-        }
-        public static void BuildCall(Action action)
-        {
-#if !DEBUG
-            action();
-#endif
-        }
         public static void Init()
         {
             EditorGUI.Init();
         }
-        public static void Update(double deltaTime)
+        public static void Update()
         {
             EditorGUI.Update();
         }
@@ -36,3 +25,4 @@ namespace HawkEngine.Editor
         }
     }
 }
+#endif

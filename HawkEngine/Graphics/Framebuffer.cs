@@ -36,9 +36,9 @@ namespace HawkEngine.Graphics
         {
             Rendering.gl.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
         }
-        public FramebufferTexture this[FramebufferAttachment attachment]
+        public Texture this[FramebufferAttachment attachment]
         {
-            get { return attachments.FirstOrDefault(t => t.attachment == attachment); }
+            get { return attachments.FirstOrDefault(t => t.attachment == attachment)?.texture; }
         }
         public void Dispose()
         {

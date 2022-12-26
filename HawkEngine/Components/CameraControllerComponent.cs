@@ -18,6 +18,9 @@ namespace HawkEngine.Components
 
         public override void Update()
         {
+#if DEBUG
+            if (Editor.EditorGUI.activeWindow == null || Editor.EditorGUI.activeWindow.GetType() != typeof(Editor.EditorViewport)) return;
+#endif
             IMouse mouse = App.input.Mice[0];
             Vector2 mouseDelta = mouse.Position - lastMousePos;
 
@@ -44,6 +47,9 @@ namespace HawkEngine.Components
             if (mouse.ScrollWheels[0].Y != 0) transform.position += transform.forward * mouse.ScrollWheels[0].Y * scrollSpeed;
 
             lastMousePos = mouse.Position;
+
+            if (mouse.IsButtonPressed(MouseButton.Right) || mouse.IsButtonPressed(MouseButton.Middle)) mouse.Cursor.CursorMode = CursorMode.Hidden;
+            else mouse.Cursor.CursorMode = CursorMode.Normal;
         }
     }
 }

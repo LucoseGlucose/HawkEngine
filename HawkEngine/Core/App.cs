@@ -8,7 +8,6 @@ using Silk.NET.Maths;
 using Silk.NET.Input;
 using HawkEngine.Graphics;
 using Silk.NET.GLFW;
-using HawkEngine.Editor;
 
 namespace HawkEngine.Core
 {
@@ -20,8 +19,8 @@ namespace HawkEngine.Core
         public static Scene scene { get; set; }
         private static Func<Scene> sceneFunc;
 
-        public static bool canFullscreen = true;
-        public static Key fullscreenKey = Key.F11;
+        public static bool canFullscreen { get; set; } = true;
+        public static Key fullscreenKey { get; set; } = Key.F11;
 
         public static void Run(Func<Scene> func)
         {
@@ -62,15 +61,24 @@ namespace HawkEngine.Core
 
             Rendering.Init();
             scene = sceneFunc();
+#if DEBUG
+            Editor.HawkEditor.Init();
+#endif
         }
         private static void OnUpdate(double delta)
         {
             Time.Update((float)delta);
             scene.Update();
+#if DEBUG
+            Editor.HawkEditor.Update();
+#endif
         }
         private static void OnRender(double delta)
         {
             Rendering.Render();
+#if DEBUG
+            Editor.HawkEditor.Render();
+#endif
         }
         private static void OnClose()
         {

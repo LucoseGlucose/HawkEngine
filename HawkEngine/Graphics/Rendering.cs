@@ -8,10 +8,10 @@ using Silk.NET.OpenGL.Extensions.ImGui;
 using ImGuiNET;
 using Silk.NET.Windowing;
 using HawkEngine.Core;
-using HawkEngine.Editor;
 using HawkEngine.Components;
 using System.Drawing;
 using Silk.NET.Maths;
+using static HawkEngine.Graphics.Rendering;
 
 namespace HawkEngine.Graphics
 {
@@ -67,16 +67,13 @@ namespace HawkEngine.Graphics
         }
         private static void OnWindowResize(Vector2D<int> size)
         {
-            CreatePPFB();
-        }
-        public static void CreatePPFB()
-        {
-            postProcessFB = new(new FramebufferTexture(new Texture2D((uint)App.window.FramebufferSize.X, (uint)App.window.FramebufferSize.Y,
+            postProcessFB = new(new FramebufferTexture(new Texture2D((uint)size.X, (uint)size.Y,
                 InternalFormat.Rgba16f, PixelFormat.Rgba), FramebufferAttachment.ColorAttachment0));
         }
         public static void CreateStandardResources()
         {
-            CreatePPFB();
+            postProcessFB = new(new FramebufferTexture(new Texture2D((uint)App.window.FramebufferSize.X, (uint)App.window.FramebufferSize.Y,
+                InternalFormat.Rgba16f, PixelFormat.Rgba), FramebufferAttachment.ColorAttachment0));
 
             quad = new("Models/Quad.obj");
             outputShader = new("Shaders/Post Processing/OutputVert.glsl", "Shaders/Post Processing/OutputFrag.glsl");
@@ -97,7 +94,11 @@ namespace HawkEngine.Graphics
             renderPasses.Add(RenderPass.prePostProcessPass);
             renderPasses.Add(RenderPass.bloomPass);
             renderPasses.Add(RenderPass.BlitScreenPass(colorAdjustmentsShader));
+#if DEBUG
+            renderPasses.Add(RenderPass.editorOutputPass);
+#else
             renderPasses.Add(RenderPass.outputPass);
+#endif
         }
         public static unsafe void Render()
         {
@@ -129,6 +130,102 @@ namespace HawkEngine.Graphics
             Console.WriteLine($"{dType.ToString().TrimStart("DebugType".ToCharArray()).ToUpper()} {
                 id} in {dSource.ToString().TrimStart("DebugSource".ToCharArray())}: {dMessage}");
             glDebugCallback?.Invoke(dSource, dType, id, dMessage);
+        }
+    }
+
+    public static class RenderPass
+    {
+        public static readonly Pass shadowPass = (meshes, lights) =>
+        {
+            for (int l = 0; l < lights.Count; l++)
+            {
+                if (lights[l].shadowsEnabled) lights[l].RenderShadowMap(meshes);
+            }
+        };
+
+        public static readonly Pass preMainDrawPass = (_, _) =>
+        {
+            outputCam.framebuffer.Bind();
+            gl.Viewport(outputCam.size);
+            gl.DrawBuffer(DrawBufferMode.ColorAttachment0);
+            gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+        };
+
+        public static readonly Pass skyboxPass = (_, _) =>
+        {
+            skyboxShader.SetTexture("uSkyboxW", skybox.skybox);
+            skyboxModel.shader.SetMat4Cache("uViewMat", outputCam.viewMat);
+            skyboxModel.shader.SetMat4Cache("uProjMat", outputCam.projectionMat);
+            skyboxModel.Render();
+        };
+
+        public static readonly Pass scenePass = (meshes, lights) =>
+        {
+            for (int m = 0; m < meshes.Count; m++)
+            {
+                if (meshes[m].lightingEnabled)
+                {
+                    meshes[m].shader.SetTexture("uIrradianceCubeB", skybox.irradiance);
+                    meshes[m].shader.SetTexture("uReflectionCubeB", skybox.specularReflections);
+                    meshes[m].shader.SetTexture("uBrdfLutB", Texture2D.brdfTex);
+                    meshes[m].shader.SetVec3Cache("uAmbientColor", ambientColor);
+
+                    IOrderedEnumerable<LightComponent> orderedLights =
+                        lights.OrderBy(l => Math.Min(l.type, 1) * Vector3D.DistanceSquared(meshes[m].transform.position, l.transform.position));
+
+                    for (int l = 0; l < 5; l++)
+                    {
+                        if (orderedLights.Count() > l) orderedLights.ElementAt(l).SetUniforms($"uLights[{l}]", meshes[m].shader);
+                        else meshes[m].shader.SetIntCache($"uLights[{l}].uType", 0);
+                    }
+                }
+
+                meshes[m].SetUniforms();
+                meshes[m].Render();
+                meshes[m].Cleanup();
+            }
+        };
+
+        public static readonly Pass prePostProcessPass = (_, _) =>
+        {
+            gl.BlitNamedFramebuffer(outputCam.framebuffer.id, postProcessFB.id, 0, 0, outputCam.size.X, outputCam.size.Y, 0, 0, App.window.FramebufferSize.X,
+                App.window.FramebufferSize.Y, ClearBufferMask.ColorBufferBit, BlitFramebufferFilter.Linear);
+            postProcessFB.Bind();
+        };
+
+        public static readonly Pass outputPass = (_, _) =>
+        {
+            postProcessFB.Unbind();
+            gl.Clear(ClearBufferMask.ColorBufferBit);
+
+            Model outputModel = new(outputShader, quad);
+            outputModel.shader.SetTexture("uColorTex", postProcessFB[FramebufferAttachment.ColorAttachment0]);
+            outputModel.Render();
+        };
+
+        public static readonly Pass editorOutputPass = (_, _) =>
+        {
+            Model outputModel = new(outputShader, quad);
+            outputModel.shader.SetTexture("uColorTex", postProcessFB[FramebufferAttachment.ColorAttachment0]);
+            outputModel.Render();
+
+            postProcessFB.Unbind();
+            gl.Clear(ClearBufferMask.ColorBufferBit);
+        };
+
+        public static readonly Pass bloomPass = (_, _) =>
+        {
+            bloom.Render();
+        };
+
+        public static Pass BlitScreenPass(ShaderProgram shader)
+        {
+            return (_, _) =>
+            {
+                Model ppModel = new(shader, quad);
+                ppModel.shader.SetTexture("uColorTex", postProcessFB[FramebufferAttachment.ColorAttachment0]);
+                ppModel.Render();
+            };
         }
     }
 }

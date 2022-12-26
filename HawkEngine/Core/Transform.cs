@@ -19,7 +19,11 @@ namespace HawkEngine.Core
         }
         public Matrix4X4<float> matrix
         {
-            get { return Matrix4X4.CreateScale(scale) * Matrix4X4.CreateFromQuaternion(orientation) * Matrix4X4.CreateTranslation(position); }
+            get
+            {
+                if (parent == null) return Matrix4X4.CreateScale(scale) * Matrix4X4.CreateFromQuaternion(orientation) * Matrix4X4.CreateTranslation(position);
+                else return parent.matrix * relativeMatrix;
+            }
         }
 
         public Vector3D<float> forward
@@ -34,5 +38,27 @@ namespace HawkEngine.Core
         {
             get { return Vector3D.Transform(Vector3D<float>.UnitX, orientation); }
         }
+
+        public Vector3D<float> relativePosition;
+        public Vector3D<float> relativeRotation;
+        public Vector3D<float> relativeScale = new(1f);
+
+        public Vector3D<float> relativeRadRotation
+        {
+            get { return new(Scalar.DegreesToRadians(relativeRotation.X),
+                Scalar.DegreesToRadians(relativeRotation.Y), Scalar.DegreesToRadians(relativeRotation.Z)); }
+            set { relativeRotation = new(Scalar.RadiansToDegrees(value.X), Scalar.RadiansToDegrees(value.Y), Scalar.RadiansToDegrees(value.Z)); }
+        }
+        public Quaternion<float> relativeOrientation
+        {
+            get { return Quaternion<float>.CreateFromYawPitchRoll(relativeRadRotation.Y, relativeRadRotation.X, relativeRadRotation.Z); }
+        }
+        public Matrix4X4<float> relativeMatrix
+        {
+            get { return Matrix4X4.CreateScale(relativeScale) *
+                    Matrix4X4.CreateFromQuaternion(relativeOrientation) * Matrix4X4.CreateTranslation(relativePosition); }
+        }
+
+        public Transform parent;
     }
 }

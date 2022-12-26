@@ -40,7 +40,6 @@ namespace HawkEngine.Core
                 mesh2.mesh = new("Models/Monkey.obj");
                 mesh2.transform.position = new(2f, 4f, 1f);
                 mesh2.shader.SetVec4Cache("uAlbedo", new(.5f, .5f, 1f, 1f));
-                mesh2.shader.SetVec3Cache("uEmissive", new Vector3D<float>(.5f, .5f, 1f) * 5f);
                 mesh2.shader.SetFloatCache("uMetallic", .1f);
                 mesh2.shader.SetFloatCache("uRoughness", .9f);
 
@@ -59,18 +58,16 @@ namespace HawkEngine.Core
                 mesh.shader.SetVec4Cache("uAlbedo", new(.05f, .2f, 1f, 1f));
                 mesh.mesh = new("Models/Smooth Sphere.obj");
                 mesh.transform.position = new(-4f, 1f, 0f);
-                mesh.shader.SetFloatCache("uRoughness", .2f);
-                mesh.shader.SetFloatCache("uMetallic", .8f);
+                mesh.shader.SetFloatCache("uRoughness", .1f);
+                mesh.shader.SetFloatCache("uMetallic", .1f);
 
                 LightComponent light = scene.CreateObject("Light").AddComponent<DirectionalLightComponent>();
                 light.color = new(.94f, .97f, .85f);
-                light.strength = .5f;
+                light.strength = 5f;
                 light.transform.rotation = new(60f, 230f, 0f);
                 light.transform.position = new(0f, 5f, -2f);
 
                 FPSCounterComponent text = scene.CreateObject("FPS Counter").AddComponent<FPSCounterComponent>();
-
-                Rendering.ambientColor = new(.5f);
 
                 return scene;
             });

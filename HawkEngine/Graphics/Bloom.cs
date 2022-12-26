@@ -19,11 +19,11 @@ namespace HawkEngine.Graphics
         private readonly ShaderProgram upsampleShader;
         private readonly ShaderProgram mixShader;
 
-        private readonly int mipCount = 5;
-        public float strength = .1f;
-        public float filterRadius = .005f;
+        private readonly int mipCount;
+        public float strength;
+        public float filterRadius;
 
-        public Bloom(int mipCount = 5, float strength = .125f, float filterRadius = .005f)
+        public Bloom(int mipCount = 5, float strength = .04f, float filterRadius = .005f)
         {
             this.mipCount = mipCount;
             this.strength = strength;
@@ -55,7 +55,7 @@ namespace HawkEngine.Graphics
             Rendering.gl.BindFramebuffer(FramebufferTarget.Framebuffer, fbID);
 
             downsampleShader.SetVec2Cache("uResolution", App.window.FramebufferSize.As<float>());
-            downsampleShader.SetTexture("uTexture", Rendering.postProcessFB[FramebufferAttachment.ColorAttachment0].texture);
+            downsampleShader.SetTexture("uTexture", Rendering.postProcessFB[FramebufferAttachment.ColorAttachment0]);
 
             for (int i = 0; i < mipCount; i++)
             {
@@ -90,7 +90,7 @@ namespace HawkEngine.Graphics
             Rendering.gl.Viewport(Rendering.outputCam.size);
 
             mixShader.SetFloatCache("uT", strength);
-            mixShader.SetTexture("uTexture0", Rendering.postProcessFB[FramebufferAttachment.ColorAttachment0].texture);
+            mixShader.SetTexture("uTexture0", Rendering.postProcessFB[FramebufferAttachment.ColorAttachment0]);
             mixShader.SetTexture("uTexture1", textures[0]);
 
             outModel.Render();
