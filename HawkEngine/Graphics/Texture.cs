@@ -99,7 +99,7 @@ namespace HawkEngine.Graphics
                     void* data = StbImage.stbi__load_main(new StbImage.stbi__context(file), (int*)xP, (int*)yP, &components, 4, &result, 8);
                     if (flip) StbImage.stbi__vertical_flip(data, (int)size.X, (int)size.Y, 4);
 
-                    ReadOnlySpan<byte> span = new(data, (int)(size.X * size.Y * 32u));
+                    ReadOnlySpan<byte> span = new(data, (int)(size.X * size.Y * 4u));
                     Rendering.gl.TexImage2D(textureType, 0, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8,
                         size.X, size.Y, border, PixelFormat.Rgba, PixelType.UnsignedByte, span);
                 }
@@ -178,7 +178,7 @@ namespace HawkEngine.Graphics
 
                     void* data = StbImage.stbi__load_main(new StbImage.stbi__context(file), (int*)xP, (int*)yP, &components, 4, &result, 8);
                     if (flip) StbImage.stbi__vertical_flip(data, (int)size.X, (int)size.Y, 4);
-                    ReadOnlySpan<byte> span = new(data, (int)(size.X * size.Y * 32u));
+                    ReadOnlySpan<byte> span = new(data, (int)(size.X * size.Y * 4u));
 
                     Bind(0);
                     Rendering.gl.TexImage2D(TextureTarget.TextureCubeMapPositiveX + i, 0, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8,

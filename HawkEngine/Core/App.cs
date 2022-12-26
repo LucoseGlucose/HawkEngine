@@ -8,6 +8,10 @@ using Silk.NET.Maths;
 using Silk.NET.Input;
 using HawkEngine.Graphics;
 using Silk.NET.GLFW;
+using StbImageSharp;
+using System.Drawing;
+using System.IO;
+using Silk.NET.Core;
 
 namespace HawkEngine.Core
 {
@@ -57,6 +61,23 @@ namespace HawkEngine.Core
                     if (!canFullscreen || key != fullscreenKey) return;
                     window.WindowState = window.WindowState == WindowState.Fullscreen ? WindowState.Normal : WindowState.Fullscreen;
                 };
+            }
+
+            unsafe
+            {
+                using Stream file = File.OpenRead(Path.GetFullPath("../../../Resources/Images/HawkEngine Icon.png"));
+
+                StbImage.stbi__result_info result;
+                int width;
+                int height;
+                int components;
+
+                void* data = StbImage.stbi__load_main(new StbImage.stbi__context(file), &width, &height, &components, 4, &result, 8);
+                ReadOnlySpan<byte> span = new(data, width * height * 4);
+
+                Memory<byte> mem = new(span.ToArray());
+                RawImage icon = new(width, height, mem);
+                window.SetWindowIcon(ref icon);
             }
 
             Rendering.Init();
