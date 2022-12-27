@@ -15,6 +15,7 @@ namespace HawkEngine.Components
     {
         public override Vector2D<float> falloff { get => new(0f); }
         public override int type => 1;
+        public static readonly List<ShaderProgram> shadowShaders = new();
 
         public Matrix4X4<float> projectionMat
         {
@@ -22,7 +23,7 @@ namespace HawkEngine.Components
             {
                 CameraComponent cam = Rendering.outputCam;
 
-                float ar = (float)App.window.FramebufferSize.X / App.window.FramebufferSize.Y;
+                float ar = (float)Rendering.outputCam.size.X / Rendering.outputCam.size.Y;
                 float fov = Scalar.DegreesToRadians(Rendering.outputCam.fov);
                 float Hnear = 2f * Scalar.Tan(fov * .5f) * cam.nearClip;
                 float Wnear = Hnear * ar;
@@ -30,10 +31,10 @@ namespace HawkEngine.Components
                 float Wfar = Hfar * ar;
                 Vector3D<float> centerFar = cam.transform.position + cam.transform.forward * shadowDistance;
 
-                Vector3D<float> tlf = centerFar + (Rendering.outputCam.transform.up * Hfar * .5f) - (Rendering.outputCam.transform.right * Wfar * .5f);
-                Vector3D<float> trf = centerFar + (Rendering.outputCam.transform.up * Hfar * .5f) + (Rendering.outputCam.transform.right * Wfar * .5f);
-                Vector3D<float> blf = centerFar - (Rendering.outputCam.transform.up * Hfar * .5f) - (Rendering.outputCam.transform.right * Wfar * .5f);
-                Vector3D<float> brf = centerFar - (Rendering.outputCam.transform.up * Hfar * .5f) + (Rendering.outputCam.transform.right * Wfar * .5f);
+                Vector3D<float> tlf = centerFar + (cam.transform.up * Hfar * .5f) - (cam.transform.right * Wfar * .5f);
+                Vector3D<float> trf = centerFar + (cam.transform.up * Hfar * .5f) + (cam.transform.right * Wfar * .5f);
+                Vector3D<float> blf = centerFar - (cam.transform.up * Hfar * .5f) - (cam.transform.right * Wfar * .5f);
+                Vector3D<float> brf = centerFar - (cam.transform.up * Hfar * .5f) + (cam.transform.right * Wfar * .5f);
                 Vector3D<float> centerNear = cam.transform.position + cam.transform.forward * cam.nearClip;
 
                 Vector3D<float> tln = centerNear + ((cam.transform.up * Hnear / 2) - (cam.transform.right * Wnear / 2));
@@ -90,8 +91,7 @@ namespace HawkEngine.Components
             shadowSoftness = .65f;
             shadowNoise = 8000f;
 
-            shadowShader = new("Shaders/Shadows/ShadowVert.glsl", "Shaders/EmptyFrag.glsl");
-
+            shadowFragmentShader = Graphics.Shader.Create("Shaders/EmptyFrag.glsl", ShaderType.FragmentShader);
             CreateShadowBuffer();
         }
         public override void CreateShadowBuffer()
@@ -99,9 +99,8 @@ namespace HawkEngine.Components
             FramebufferTexture tex = new(new Texture2D((uint)shadowResolution, (uint)shadowResolution,
                 InternalFormat.DepthComponent24, PixelFormat.DepthComponent, wrap: GLEnum.ClampToBorder), FramebufferAttachment.DepthAttachment);
             Span<float> col = stackalloc float[4] { 1f, 1f, 1f, 1f };
+            Rendering.gl.TextureParameter(tex.texture.id, TextureParameterName.TextureBorderColor, col);
 
-            tex.texture.Bind(0);
-            Rendering.gl.TexParameter(tex.texture.textureType, TextureParameterName.TextureBorderColor, col);
             shadowMapBuffer = new(tex);
         }
         public override void SetUniforms(string prefix, ShaderProgram shader)
@@ -125,7 +124,6 @@ namespace HawkEngine.Components
         public override unsafe void RenderShadowMap(List<MeshComponent> meshes)
         {
             shadowMapBuffer.Bind();
-            Rendering.gl.DrawBuffer(DrawBufferMode.None);
             Rendering.gl.Viewport(new Vector2D<int>(shadowResolution));
             Rendering.gl.Clear(ClearBufferMask.DepthBufferBit);
 
@@ -133,7 +131,16 @@ namespace HawkEngine.Components
             {
                 if (!meshes[m].castShadows) continue;
 
-                shadowShader.SetMat4Cache("uMat", meshes[m].transform.matrix * viewMat * projectionMat);
+                ShaderProgram newShader = shadowShaders.FirstOrDefault(ns => ns[ShaderType.VertexShader] == meshes[m].shader[ShaderType.VertexShader]);
+                if (newShader == null)
+                {
+                    newShader = new(meshes[m].shader[ShaderType.VertexShader], shadowFragmentShader);
+                    shadowShaders.Add(newShader);
+                }
+
+                newShader.Bind();
+                newShader.SetMat4Cache("uMat", meshes[m].transform.matrix * viewMat * projectionMat);
+
                 meshes[m].mesh.vertexArray.Bind();
                 Rendering.gl.DrawElements(PrimitiveType.Triangles, (uint)meshes[m].mesh.meshData.indices.Length, DrawElementsType.UnsignedInt, null);
             }

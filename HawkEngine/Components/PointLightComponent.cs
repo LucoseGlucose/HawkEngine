@@ -14,6 +14,10 @@ namespace HawkEngine.Components
     {
         public override Vector2D<float> falloff { get; set; } = new(.09f, .032f);
         public override int type => 2;
+
+        public static readonly List<ShaderProgram> shadowShaders = new();
+        protected Graphics.Shader shadowGeometryShader;
+
         public float nearClip = .01f;
 
         public Matrix4X4<float> projectionMat
@@ -44,7 +48,8 @@ namespace HawkEngine.Components
             shadowResolution = 2048;
             shadowNormalBias = new(.02f, .08f);
 
-            shadowShader = new("Shaders/Shadows/ShadowVert.glsl", "Shaders/Skybox/CubemapGeom.glsl", "Shaders/Shadows/PointShadowFrag.glsl");
+            shadowFragmentShader = Graphics.Shader.Create("Shaders/Scene/PointShadowFrag.glsl", ShaderType.FragmentShader);
+            shadowGeometryShader = Graphics.Shader.Create("Shaders/Skybox/CubemapGeom.glsl", ShaderType.GeometryShader);
 
             CreateShadowBuffer();
         }
@@ -53,9 +58,8 @@ namespace HawkEngine.Components
             FramebufferTexture tex = new(new TextureCubemap((uint)shadowResolution, (uint)shadowResolution,
                 InternalFormat.DepthComponent24, PixelFormat.DepthComponent, wrap: GLEnum.ClampToBorder), FramebufferAttachment.DepthAttachment);
             Span<float> col = stackalloc float[4] { 1f, 1f, 1f, 1f };
+            Rendering.gl.TextureParameter(tex.texture.id, TextureParameterName.TextureBorderColor, col);
 
-            tex.texture.Bind(0);
-            Rendering.gl.TexParameter(tex.texture.textureType, TextureParameterName.TextureBorderColor, col);
             shadowMapBuffer = new(tex);
         }
         public override void SetUniforms(string prefix, ShaderProgram shader)
@@ -80,22 +84,30 @@ namespace HawkEngine.Components
         public override unsafe void RenderShadowMap(List<MeshComponent> meshes)
         {
             shadowMapBuffer.Bind();
-            Rendering.gl.DrawBuffer(DrawBufferMode.None);
             Rendering.gl.Viewport(new Vector2D<int>(shadowResolution));
             Rendering.gl.Clear(ClearBufferMask.DepthBufferBit);
-
-            for (int i = 0; i < 6; i++)
-            {
-                shadowShader.SetMat4Cache($"uMats[{i}].uMat", viewMats[i] * projectionMat);
-            }
-            shadowShader.SetVec3Cache("uLightPos", transform.position);
-            shadowShader.SetFloatCache("uFarPlane", shadowDistance);
 
             for (int m = 0; m < meshes.Count; m++)
             {
                 if (!meshes[m].castShadows) continue;
 
-                shadowShader.SetMat4Cache("uMat", meshes[m].transform.matrix);
+                ShaderProgram newShader = shadowShaders.FirstOrDefault(ns => ns[ShaderType.VertexShader] == meshes[m].shader[ShaderType.VertexShader]);
+                if (newShader == null)
+                {
+                    newShader = new(meshes[m].shader[ShaderType.VertexShader], shadowGeometryShader, shadowFragmentShader);
+                    shadowShaders.Add(newShader);
+                }
+
+                newShader.Bind();
+                newShader.SetMat4Cache("uMat", meshes[m].transform.matrix);
+
+                for (int i = 0; i < 6; i++)
+                {
+                    newShader.SetMat4Cache($"uMats[{i}].uMat", viewMats[i] * projectionMat);
+                }
+                newShader.SetVec3Cache("uLightPos", transform.position);
+                newShader.SetFloatCache("uFarPlane", shadowDistance);
+
                 meshes[m].mesh.vertexArray.Bind();
                 Rendering.gl.DrawElements(PrimitiveType.Triangles, (uint)meshes[m].mesh.meshData.indices.Length, DrawElementsType.UnsignedInt, null);
             }

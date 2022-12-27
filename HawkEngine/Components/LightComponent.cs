@@ -18,7 +18,7 @@ namespace HawkEngine.Components
         public float shadowDistance;
 
         public Graphics.Framebuffer shadowMapBuffer { get; protected set; }
-        public ShaderProgram shadowShader;
+        protected Graphics.Shader shadowFragmentShader;
 
         public Vector2D<float> shadowNormalBias;
         public int shadowMapSamples;

@@ -9,7 +9,7 @@ using Silk.NET.Maths;
 
 namespace HawkEngine.Graphics
 {
-    public readonly struct MeshData
+    public class MeshData : HawkObject
     {
         public static PostProcessSteps postProcessSteps { get; set; } = PostProcessSteps.CalculateTangentSpace | PostProcessSteps.JoinIdenticalVertices
             | PostProcessSteps.Triangulate | PostProcessSteps.OptimizeMeshes;
@@ -24,6 +24,8 @@ namespace HawkEngine.Graphics
         public MeshData(uint[] indices, Vector3D<float>[] verts, Vector3D<float>[] normals,
             Vector2D<float>[] uvs, Vector3D<float>[] tangents, Vector3D<float>[] bitangents)
         {
+            GenRandomID();
+
             this.indices = indices;
             this.verts = verts;
             this.normals = normals;
@@ -33,6 +35,8 @@ namespace HawkEngine.Graphics
         }
         public unsafe MeshData(string path)
         {
+            GenRandomID();
+
             Assimp assimp = Assimp.GetApi();
             Silk.NET.Assimp.Scene* scene = assimp.ImportFile(Path.GetFullPath("../../../Resources/" + path), (uint)postProcessSteps);
 

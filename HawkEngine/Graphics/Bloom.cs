@@ -36,8 +36,14 @@ namespace HawkEngine.Graphics
             upsampleShader = new("Shaders/Post Processing/OutputVert.glsl", "Shaders/Post Processing/BloomUpsample.glsl");
             mixShader = new("Shaders/Post Processing/OutputVert.glsl", "Shaders/Post Processing/MixFrag.glsl");
 
+#if !DEBUG
             App.window.FramebufferResize += InitTextures;
             InitTextures(App.window.FramebufferSize);
+#else
+            Editor.EditorWindow viewport = Editor.EditorGUI.FindWindow("Viewport");
+            viewport.sizeChanged += (size) => InitTextures(new((int)size.X, (int)size.Y));
+            InitTextures(new((int)viewport.size.X, (int)viewport.size.Y));
+#endif
         }
         private void InitTextures(Vector2D<int> size)
         {
@@ -54,7 +60,7 @@ namespace HawkEngine.Graphics
             Model downModel = new(downsampleShader, Rendering.quad);
             Rendering.gl.BindFramebuffer(FramebufferTarget.Framebuffer, fbID);
 
-            downsampleShader.SetVec2Cache("uResolution", App.window.FramebufferSize.As<float>());
+            downsampleShader.SetVec2Cache("uResolution", Rendering.outputCam.size.As<float>());
             downsampleShader.SetTexture("uTexture", Rendering.postProcessFB[FramebufferAttachment.ColorAttachment0]);
 
             for (int i = 0; i < mipCount; i++)

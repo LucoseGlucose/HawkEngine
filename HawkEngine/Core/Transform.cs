@@ -2,7 +2,7 @@
 
 namespace HawkEngine.Core
 {
-    public sealed class Transform
+    public sealed class Transform : HawkObject
     {
         public Vector3D<float> position;
         public Vector3D<float> rotation;
@@ -60,5 +60,10 @@ namespace HawkEngine.Core
         }
 
         public Transform parent;
+
+        public Transform()
+        {
+            GenRandomID();
+        }
     }
 }

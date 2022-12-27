@@ -7,7 +7,7 @@ using HawkEngine.Core;
 
 namespace HawkEngine.Graphics
 {
-    public sealed unsafe class ShaderProgram : IDisposable
+    public sealed unsafe class ShaderProgram : HawkObject, IDisposable
     {
         public readonly uint id;
 
@@ -23,6 +23,8 @@ namespace HawkEngine.Graphics
         private readonly Dictionary<string, Matrix3X3<float>> mat3Values = new();
         private readonly Dictionary<string, Matrix4X4<float>> mat4Values = new();
 
+        public readonly List<Shader> compiledShaders = new();
+
         public ShaderProgram(string vertexShader, string fragmentShader)
             : this(Shader.Create(vertexShader, ShaderType.VertexShader), Shader.Create(fragmentShader, ShaderType.FragmentShader))
         {
@@ -33,19 +35,21 @@ namespace HawkEngine.Graphics
         {
 
         }
-        public unsafe ShaderProgram(params uint[] shaders)
+        public unsafe ShaderProgram(params Shader[] shaders)
         {
+            GenRandomID();
             id = Rendering.gl.CreateProgram();
 
             for (int i = 0; i < shaders.Length; i++)
             {
-                Rendering.gl.AttachShader(id, shaders[i]);
+                Rendering.gl.AttachShader(id, shaders[i].id);
             }
             Rendering.gl.LinkProgram(id);
 
             for (int i = 0; i < shaders.Length; i++)
             {
-                Rendering.gl.DetachShader(id, shaders[i]);
+                Rendering.gl.DetachShader(id, shaders[i].id);
+                compiledShaders.Add(shaders[i]);
             }
 
             Rendering.gl.GetProgram(id, ProgramPropertyARB.ActiveUniforms, out int uniformCount);
@@ -118,6 +122,14 @@ namespace HawkEngine.Graphics
         {
             GC.SuppressFinalize(this);
             Rendering.gl.DeleteProgram(id);
+        }
+        public Shader this[ShaderType shaderType]
+        {
+            get { return compiledShaders.FirstOrDefault(s => s.type == shaderType); }
+        }
+        public Shader this[string shaderPath]
+        {
+            get { return compiledShaders.FirstOrDefault(s => s.filePath == shaderPath); }
         }
 
         public void SetTexture(string name, Texture tex)

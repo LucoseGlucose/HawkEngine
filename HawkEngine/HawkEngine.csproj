@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	<UseWindowsForms>False</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>

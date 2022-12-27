@@ -14,6 +14,7 @@ namespace HawkEngine.Components
     {
         public override Vector2D<float> falloff { get; set; } = new(.09f, .032f);
         public override int type => 3;
+        public static readonly List<ShaderProgram> shadowShaders = new();
 
         public float nearClip = .01f;
         public Vector2D<float> angles = new(45f, 60f);
@@ -35,8 +36,7 @@ namespace HawkEngine.Components
             shadowSoftness = 1f;
             shadowNoise = 1000f;
 
-            shadowShader = new("Shaders/Shadows/ShadowVert.glsl", "Shaders/EmptyFrag.glsl");
-
+            shadowFragmentShader = Graphics.Shader.Create("Shaders/EmptyFrag.glsl", ShaderType.FragmentShader);
             CreateShadowBuffer();
         }
         public override void CreateShadowBuffer()
@@ -44,9 +44,8 @@ namespace HawkEngine.Components
             FramebufferTexture tex = new(new Texture2D((uint)shadowResolution, (uint)shadowResolution,
                 InternalFormat.DepthComponent24, PixelFormat.DepthComponent, wrap: GLEnum.ClampToBorder), FramebufferAttachment.DepthAttachment);
             Span<float> col = stackalloc float[4] { 1f, 1f, 1f, 1f };
+            Rendering.gl.TextureParameter(tex.texture.id, TextureParameterName.TextureBorderColor, col);
 
-            tex.texture.Bind(0);
-            Rendering.gl.TexParameter(tex.texture.textureType, TextureParameterName.TextureBorderColor, col);
             shadowMapBuffer = new(tex);
         }
         public override void SetUniforms(string prefix, ShaderProgram shader)
@@ -74,7 +73,6 @@ namespace HawkEngine.Components
         public override unsafe void RenderShadowMap(List<MeshComponent> meshes)
         {
             shadowMapBuffer.Bind();
-            Rendering.gl.DrawBuffer(DrawBufferMode.None);
             Rendering.gl.Viewport(new Vector2D<int>(shadowResolution));
             Rendering.gl.Clear(ClearBufferMask.DepthBufferBit);
 
@@ -82,7 +80,16 @@ namespace HawkEngine.Components
             {
                 if (!meshes[m].castShadows) continue;
 
-                shadowShader.SetMat4Cache("uMat", meshes[m].transform.matrix * viewMat * projectionMat);
+                ShaderProgram newShader = shadowShaders.FirstOrDefault(ns => ns[ShaderType.VertexShader] == meshes[m].shader[ShaderType.VertexShader]);
+                if (newShader == null)
+                {
+                    newShader = new(meshes[m].shader[ShaderType.VertexShader], shadowFragmentShader);
+                    shadowShaders.Add(newShader);
+                }
+
+                newShader.Bind();
+                newShader.SetMat4Cache("uMat", meshes[m].transform.matrix * viewMat * projectionMat);
+
                 meshes[m].mesh.vertexArray.Bind();
                 Rendering.gl.DrawElements(PrimitiveType.Triangles, (uint)meshes[m].mesh.meshData.indices.Length, DrawElementsType.UnsignedInt, null);
             }

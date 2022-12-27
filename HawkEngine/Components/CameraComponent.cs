@@ -19,9 +19,9 @@ namespace HawkEngine.Components
         {
             get
             {
-                FramebufferTexture tex = framebuffer.attachments[0];
-                if (tex.texture.textureType != TextureTarget.Texture2DMultisample) return 1;
-                Rendering.gl.GetTextureLevelParameter(tex.texture.id, 0, GLEnum.TextureSamples, out int samples);
+                Graphics.Texture tex = framebuffer[FramebufferAttachment.ColorAttachment0];
+                if (tex.textureType != TextureTarget.Texture2DMultisample) return 1;
+                Rendering.gl.GetTextureLevelParameter(tex.id, 0, GLEnum.TextureSamples, out int samples);
                 return Scalar.Max((uint)samples, 1u);
             }
             set
@@ -42,14 +42,22 @@ namespace HawkEngine.Components
         {
             base.Create(owner);
 
+#if !DEBUG
+
             size = App.window.FramebufferSize;
             CreateFramebuffer(4);
-
             App.window.FramebufferResize += (v2) =>
+#else
+            System.Numerics.Vector2 s = Editor.EditorGUI.FindWindow("Viewport").size;
+            size = new((int)s.X, (int)s.Y);
+            CreateFramebuffer(4);
+
+            Editor.EditorGUI.FindWindow("Viewport").sizeChanged += (v2) =>
+#endif
             {
-                if (matchScreen)
+                if (matchScreen || Rendering.outputCam == this)
                 {
-                    size = v2;
+                    size = new((int)v2.X, (int)v2.Y);
                     CreateFramebuffer(multisamples);
                 }
             };
@@ -62,8 +70,8 @@ namespace HawkEngine.Components
             (
                 new FramebufferTexture(new Texture2D((uint)size.X, (uint)size.Y, InternalFormat.Rgba16f, PixelFormat.Rgba, samples),
                     FramebufferAttachment.ColorAttachment0),
-                new FramebufferTexture(new Texture2D((uint)size.X, (uint)size.Y, InternalFormat.Depth24Stencil8, PixelFormat.DepthStencil, samples),
-                    FramebufferAttachment.DepthStencilAttachment)
+                new FramebufferTexture(new Texture2D((uint)size.X, (uint)size.Y, InternalFormat.Depth24Stencil8, PixelFormat.DepthStencil,
+                    samples, GLEnum.Nearest), FramebufferAttachment.DepthStencilAttachment)
             );
         }
     }

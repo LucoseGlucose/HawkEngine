@@ -22,6 +22,18 @@ namespace HawkEngine.Graphics
                 Rendering.gl.FramebufferTexture(FramebufferTarget.Framebuffer, textures[i].attachment, textures[i].texture.id, 0);
             }
 
+            List<DrawBufferMode> drawBuffers = new();
+            for (int i = 0; i < textures.Length; i++)
+            {
+                if (textures[i].attachment.ToString().Contains("ColorAttachment"))
+                {
+                    if (Enum.TryParse(textures[i].attachment.ToString(), out DrawBufferMode drawBuffer)) drawBuffers.Add(drawBuffer);
+                }
+            }
+
+            if (drawBuffers.Count == 0) Rendering.gl.DrawBuffers(stackalloc DrawBufferMode[1] { DrawBufferMode.None });
+            else Rendering.gl.DrawBuffers(drawBuffers.ToArray());
+
             Unbind();
         }
         ~Framebuffer()

@@ -12,6 +12,7 @@ using StbImageSharp;
 using System.Drawing;
 using System.IO;
 using Silk.NET.Core;
+using Silk.NET.OpenGL;
 
 namespace HawkEngine.Core
 {
@@ -53,6 +54,8 @@ namespace HawkEngine.Core
 
         private static void OnLoad()
         {
+            GL gl = window.CreateOpenGL();
+
             input = window.CreateInput();
             if (input.Keyboards.Count > 0)
             {
@@ -80,8 +83,13 @@ namespace HawkEngine.Core
                 window.SetWindowIcon(ref icon);
             }
 
+#if DEBUG
+            Editor.EditorGUI.Init(gl);
+#endif
+
             Rendering.Init();
             scene = sceneFunc();
+
 #if DEBUG
             Editor.HawkEditor.Init();
 #endif
@@ -103,6 +111,9 @@ namespace HawkEngine.Core
         }
         private static void OnClose()
         {
+#if DEBUG
+            Editor.HawkEditor.Close();
+#endif
             window.Dispose();
         }
     }

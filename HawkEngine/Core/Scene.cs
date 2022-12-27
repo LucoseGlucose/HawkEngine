@@ -7,13 +7,14 @@ using System.Runtime.CompilerServices;
 
 namespace HawkEngine.Core
 {
-    public sealed class Scene
+    public sealed class Scene : HawkObject
     {
         public readonly string name;
         public readonly List<SceneObject> objects = new();
 
         public Scene(string name)
         {
+            GenRandomID();
             this.name = name;
         }
 

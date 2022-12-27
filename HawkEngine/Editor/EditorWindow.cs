@@ -21,6 +21,18 @@ namespace HawkEngine.Editor
         public readonly Action[] styleVars;
         public readonly Action showAction;
 
+        public Vector2 position { get; protected set; }
+        public Vector2 size { get; protected set; }
+        public Vector2 rectMin { get; protected set; }
+        public Vector2 rectMax { get; protected set; }
+
+
+        public event Action<Vector2> positionChanged;
+
+        public event Action<Vector2> sizeChanged;
+
+        public event Action<Vector2, Vector2> rectChanged;
+
         public EditorWindow(bool open, string title, Action[] styleVars, Action showAction)
         {
             this.open = open;
@@ -45,6 +57,21 @@ namespace HawkEngine.Editor
             {
                 if (IsWindowFocused()) EditorGUI.activeWindow = this;
                 else if (EditorGUI.activeWindow == this) EditorGUI.activeWindow = null;
+
+                Vector2 newPosition = GetWindowPos();
+                Vector2 newSize = GetContentRegionAvail();
+                Vector2 newRectMin = GetWindowContentRegionMin() + position;
+                Vector2 newRectMax = GetWindowContentRegionMax() + position;
+
+                if (newPosition != position) positionChanged?.Invoke(newPosition);
+                if (newSize != size) sizeChanged?.Invoke(newSize);
+                if (newRectMin != rectMin || newRectMax != rectMax) rectChanged?.Invoke(newRectMin, newRectMax);
+
+                position = newPosition;
+                size = newSize;
+                rectMin = newRectMin;
+                rectMax = newRectMax;
+
                 showAction?.Invoke();
             }
             End();
@@ -56,6 +83,8 @@ namespace HawkEngine.Editor
         new Action[1] { () => PushStyleVar(ImGuiStyleVar.WindowPadding, Vector2.Zero) },
         () =>
         {
+            if (Rendering.outputCam == null) return;
+
             Vector2 availSpace = GetContentRegionAvail();
             float availAspect = availSpace.X / availSpace.Y;
             float srcAspect = (float)Rendering.outputCam.size.X / Rendering.outputCam.size.Y;
@@ -64,12 +93,47 @@ namespace HawkEngine.Editor
             Vector2 size = new(availSpace.X * Scalar.Min(aspect, 1f), availSpace.Y / Scalar.Max(aspect, 1f));
 
             Image((nint)Rendering.postProcessFB[FramebufferAttachment.ColorAttachment0].id, size, new(0f, 1f), new(1f, 0f));
+
+            if (IsItemClicked(ImGuiMouseButton.Left))
+            {
+                Vector2 relativeMousePos = GetMousePos() - viewport.rectMin;
+                relativeMousePos.Y = viewport.size.Y - relativeMousePos.Y;
+
+                Span<float> firstHalf = stackalloc float[2];
+                Span<float> secondHalf = stackalloc float[2];
+
+                Rendering.gl.GetTextureSubImage(HawkEditor.objectIDFB[FramebufferAttachment.ColorAttachment0].id, 0, (int)relativeMousePos.X,
+                    (int)relativeMousePos.Y, 0, 1, 1, 1, PixelFormat.RG, PixelType.Float, 64u, firstHalf);
+
+                Rendering.gl.GetTextureSubImage(HawkEditor.objectIDFB[FramebufferAttachment.ColorAttachment1].id, 0, (int)relativeMousePos.X,
+                    (int)relativeMousePos.Y, 0, 1, 1, 1, PixelFormat.RG, PixelType.Float, 64u, secondHalf);
+
+                Vector4D<float> col = new(firstHalf[0], firstHalf[1], secondHalf[0], secondHalf[1]);
+                ulong objID = EditorUtils.ColorToID(col);
+
+                if (objID == 0)
+                {
+                    HawkEditor.selectedObjects.Clear();
+                    return;
+                }
+
+                foreach (HawkObject obj in App.scene.objects)
+                {
+                    if (obj.engineID == objID)
+                    {
+                        if (!EditorGUI.io.KeyShift) HawkEditor.selectedObjects.Clear();
+                        HawkEditor.selectedObjects.Add(obj);
+                        break;
+                    }
+                }
+            }
         });
 
         public static readonly EditorWindow sceneTree = new(true, "Scene Tree", Array.Empty<Action>(),
         () =>
         {
-            List<SceneObject> objects = App.scene.objects;
+            List<SceneObject> objects = App.scene?.objects;
+            if (objects == null) return;
 
             foreach (SceneObject obj in objects)
             {
@@ -82,7 +146,7 @@ namespace HawkEngine.Editor
                     {
                         if (HawkEditor.selectedObjects.Count > 0 && EditorGUI.io.KeyShift)
                         {
-                            int lastIndex = objects.IndexOf(HawkEditor.selectedObjects.Last());
+                            int lastIndex = objects.IndexOf((SceneObject)HawkEditor.selectedObjects.Last());
                             int currentIndex = objects.IndexOf(obj);
 
                             int diff = lastIndex - currentIndex;

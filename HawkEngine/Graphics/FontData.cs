@@ -8,10 +8,11 @@ using Silk.NET.OpenGL;
 using StbTrueTypeSharp;
 using StbImageSharp;
 using StbRectPackSharp;
+using HawkEngine.Core;
 
 namespace HawkEngine.Graphics
 {
-    public sealed unsafe class Font
+    public sealed unsafe class Font : HawkObject
     {
         public readonly byte[] bitmap;
         public readonly int bitmapWidth, bitmapHeight;
@@ -26,6 +27,8 @@ namespace HawkEngine.Graphics
 
         public Font(int width, int height, string path, float fontPixelHeight, params CharacterRange[] characterRanges)
         {
+            GenRandomID();
+
             bitmapWidth = width;
             bitmapHeight = height;
             bitmap = new byte[width * height];

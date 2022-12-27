@@ -54,8 +54,6 @@ namespace HawkEngine.Graphics
             ShaderProgram shader = new("Shaders/Skybox/RectToCubemapVert.glsl", "Shaders/Skybox/RectToCubemapFrag.glsl");
 
             Rendering.gl.TextureParameterI(cubemap.id, TextureParameterName.TextureMinFilter, (uint)GLEnum.LinearMipmapLinear);
-
-            Rendering.gl.DrawBuffer(DrawBufferMode.ColorAttachment0);
             Rendering.gl.Viewport(new Vector2D<int>((int)resolution));
 
             shader.Bind();
@@ -87,9 +85,8 @@ namespace HawkEngine.Graphics
 
             TextureCubemap cubemap = new(resolution, resolution, InternalFormat.Rgb16f, PixelFormat.Rgb);
             uint fbId = Rendering.gl.GenFramebuffer();
-            Rendering.gl.BindFramebuffer(FramebufferTarget.Framebuffer, fbId);
 
-            Rendering.gl.DrawBuffer(DrawBufferMode.ColorAttachment0);
+            Rendering.gl.BindFramebuffer(FramebufferTarget.Framebuffer, fbId);
             Rendering.gl.Viewport(new Vector2D<int>((int)resolution));
 
             shader.Bind();
@@ -120,7 +117,6 @@ namespace HawkEngine.Graphics
 
             uint fbId = Rendering.gl.GenFramebuffer();
             Rendering.gl.BindFramebuffer(FramebufferTarget.Framebuffer, fbId);
-            Rendering.gl.DrawBuffer(DrawBufferMode.ColorAttachment0);
 
             shader.Bind();
             shader.SetTexture("uTexture", tex);

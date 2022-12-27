@@ -18,10 +18,17 @@ namespace HawkEngine.Components
         private string _text;
         public string text { get => _text; set => SetText(value); }
 
+        public override void Create(SceneObject owner)
+        {
+            base.Create(owner);
+
+            castShadows = false;
+            recieveShadows = false;
+        }
         public override void SetUniforms()
         {
             shader.SetMat4Cache("uModelMat", transform.matrix);
-            shader.SetMat4Cache("uProjMat", Matrix4X4.CreateOrthographic(App.window.FramebufferSize.X, App.window.FramebufferSize.Y, .1f, 1f));
+            shader.SetMat4Cache("uProjMat", Matrix4X4.CreateOrthographic(Rendering.outputCam.size.X, Rendering.outputCam.size.Y, .1f, 1f));
         }
         private unsafe void SetText(string value)
         {

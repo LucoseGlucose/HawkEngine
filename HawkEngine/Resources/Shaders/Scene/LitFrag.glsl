@@ -16,7 +16,7 @@ uniform samplerCube uIrradianceCubeB;
 uniform samplerCube uReflectionCubeB;
 uniform sampler2D uBrdfLutB;
 uniform float uMaxReflectionLod = 4.0;
-uniform vec3 uAmbientColor = vec3(1);
+uniform vec3 uAmbientColor = vec3(.5);
 
 uniform sampler2D uAlbedoTexW;
 uniform vec4 uAlbedo = vec4(1);
@@ -204,7 +204,7 @@ bool calcSpotLight(in Light l, in vec3 viewDir, in vec3 normal, out vec3 radianc
 	vec3 lightCoords = lightSpacePos.xyz / lightSpacePos.w;
 	lightCoords = lightCoords * .5 + .5;
 
-	if (!calcShadow(l, lightDir, normal, lightCoords, shadow)) return false;
+	if (l.uShadowMapSamples >= 0 && !calcShadow(l, lightDir, normal, lightCoords, shadow)) return false;
 
 	float dist = length(l.uPosition - fsIn.worldPosition);
 	float attenuation = 1.0 / (1 + l.uFalloff.x * dist + l.uFalloff.y * (dist * dist));

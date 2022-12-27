@@ -24,9 +24,10 @@ namespace HawkEngine.Editor
         public static readonly List<EditorWindow> windows = new();
         public static EditorWindow activeWindow { get; set; }
 
-        public static void Init()
+        public static void Init(GL gl)
         {
-            imgui = new(Rendering.gl, App.window, App.input);
+            imgui = new(gl, App.window, App.input);
+            LoadIniSettingsFromDisk("imgui.ini");
 
             io = GetIO();
             io.ConfigFlags |= ImGuiConfigFlags.DockingEnable;
@@ -37,6 +38,8 @@ namespace HawkEngine.Editor
 
             windows.Add(EditorWindow.viewport);
             windows.Add(EditorWindow.sceneTree);
+
+            Update();
         }
         public static void Update()
         {
@@ -63,6 +66,10 @@ namespace HawkEngine.Editor
         public static void Render()
         {
             imgui.Render();
+        }
+        public static void Close()
+        {
+            SaveIniSettingsToDisk("imgui.ini");
         }
         public static EditorWindow FindWindow(string title)
         {

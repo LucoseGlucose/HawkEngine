@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HawkEngine.Core
 {
-    public class SceneObject
+    public class SceneObject : HawkObject
     {
         public string name;
         public readonly List<Component> components = new();
@@ -14,6 +14,7 @@ namespace HawkEngine.Core
 
         public virtual void Create(string name)
         {
+            GenRandomID();
             this.name = name;
         }
         public virtual void Destroy()

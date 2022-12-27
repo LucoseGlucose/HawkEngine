@@ -8,7 +8,7 @@ using System.IO;
 
 namespace HawkEngine.Graphics
 {
-    public class Texture : IDisposable
+    public class Texture : HawkObject, IDisposable
     {
         public readonly uint id;
         public readonly TextureTarget textureType;
@@ -23,6 +23,7 @@ namespace HawkEngine.Graphics
             this.pixelFormat = pixelFormat;
             this.size = size;
 
+            GenRandomID();
             id = Rendering.gl.GenTexture();
         }
         ~Texture()
@@ -54,12 +55,12 @@ namespace HawkEngine.Graphics
         public static readonly Texture2D normalTex = new(new Vector4D<float>(.5f, .5f, 1f, 1f));
         public static readonly Texture2D brdfTex = new("Images/ibl_brdf_lut.png", false, wrap: GLEnum.ClampToEdge);
 
-        public Texture2D(uint width, uint height, byte[] data, InternalFormat internalFormat = InternalFormat.Rgba8, PixelFormat pixelFormat
-            = PixelFormat.Rgba, uint samples = 1, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat, bool mipmap = false)
+        public Texture2D(uint width, uint height, byte[] data, InternalFormat internalFormat = InternalFormat.Rgba8, PixelFormat pixelFormat = PixelFormat.Rgba,
+            uint samples = 1, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat, bool mipmap = false, PixelType pixelType = PixelType.UnsignedByte)
             : base(samples <= 1 ? TextureTarget.Texture2D : TextureTarget.Texture2DMultisample, internalFormat, pixelFormat, new(width, height))
         {
             Bind(0);
-            if (samples <= 1) Rendering.gl.TexImage2D<byte>(textureType, 0, internalFormat, width, height, border, pixelFormat, PixelType.UnsignedByte, data);
+            if (samples <= 1) Rendering.gl.TexImage2D<byte>(textureType, 0, internalFormat, width, height, 0, pixelFormat, pixelType, data);
             else
             {
                 Rendering.gl.TexImage2DMultisample(textureType, samples, internalFormat, width, height, true);
@@ -77,12 +78,12 @@ namespace HawkEngine.Graphics
             Unbind(0);
         }
         public Texture2D(uint width, uint height, InternalFormat internalFormat = InternalFormat.Rgba8, PixelFormat pixelFormat = PixelFormat.Rgba,
-            uint samples = 1, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat, bool mipmap = false)
-            : this(width, height, null, internalFormat, pixelFormat, samples, border, filter, wrap, mipmap)
+            uint samples = 1, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat, bool mipmap = false, PixelType pixelType = PixelType.UnsignedByte)
+            : this(width, height, null, internalFormat, pixelFormat, samples, filter, wrap, mipmap, pixelType)
         {
 
         }
-        public unsafe Texture2D(string path, bool sRGB = true, bool hdr = false, int border = 0, GLEnum filter = GLEnum.Linear,
+        public unsafe Texture2D(string path, bool sRGB = true, bool hdr = false, GLEnum filter = GLEnum.Linear,
             GLEnum wrap = GLEnum.Repeat, bool flip = true, bool mipmap = false)
             : base(TextureTarget.Texture2D, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8, PixelFormat.Rgba, new(0))
         {
@@ -101,7 +102,7 @@ namespace HawkEngine.Graphics
 
                     ReadOnlySpan<byte> span = new(data, (int)(size.X * size.Y * 4u));
                     Rendering.gl.TexImage2D(textureType, 0, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8,
-                        size.X, size.Y, border, PixelFormat.Rgba, PixelType.UnsignedByte, span);
+                        size.X, size.Y, 0, PixelFormat.Rgba, PixelType.UnsignedByte, span);
                 }
                 else
                 {
@@ -110,7 +111,7 @@ namespace HawkEngine.Graphics
 
                     ReadOnlySpan<float> span = new(data, (int)(size.X * size.Y * 3u));
                     Rendering.gl.TexImage2D(textureType, 0, InternalFormat.Rgb16f,
-                        size.X, size.Y, border, PixelFormat.Rgb, PixelType.Float, span);
+                        size.X, size.Y, 0, PixelFormat.Rgb, PixelType.Float, span);
                 }
             }
 
@@ -124,7 +125,7 @@ namespace HawkEngine.Graphics
             Unbind(0);
         }
         public Texture2D(Vector4D<float> color) : this(1, 1, new byte[4] { (byte)(color.X * 255f), (byte)(color.Y * 255f),
-            (byte)(color.Z * 255f), (byte)(color.W * 255f) }, InternalFormat.Rgba8, PixelFormat.Rgba, 1, 0, GLEnum.Nearest, GLEnum.Repeat)
+            (byte)(color.Z * 255f), (byte)(color.W * 255f) }, InternalFormat.Rgba8, PixelFormat.Rgba, 1, GLEnum.Nearest, GLEnum.Repeat)
         {
 
         }
@@ -137,14 +138,14 @@ namespace HawkEngine.Graphics
         public static readonly TextureCubemap grayTex = new(new(.5f));
 
         public TextureCubemap(uint width, uint height, byte[][] data, InternalFormat internalFormat = InternalFormat.Rgba8,
-            PixelFormat pixelFormat = PixelFormat.Rgba, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat, bool mipmap = false)
+            PixelFormat pixelFormat = PixelFormat.Rgba, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat, bool mipmap = false)
             : base(TextureTarget.TextureCubeMap, internalFormat, pixelFormat, new(width, height))
         {
             Bind(0);
             for (int i = 0; i < 6; i++)
             {
                 Rendering.gl.TexImage2D<byte>(TextureTarget.TextureCubeMapPositiveX + i,
-                    0, internalFormat, width, height, border, pixelFormat, PixelType.UnsignedByte, data[i]);
+                    0, internalFormat, width, height, 0, pixelFormat, PixelType.UnsignedByte, data[i]);
             }
 
             Rendering.gl.TexParameterI(textureType, TextureParameterName.TextureMinFilter, (uint)filter);
@@ -158,12 +159,12 @@ namespace HawkEngine.Graphics
             Unbind(0);
         }
         public TextureCubemap(uint width, uint height, InternalFormat internalFormat = InternalFormat.Rgba8,
-            PixelFormat pixelFormat = PixelFormat.Rgba, int border = 0, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat, bool mipmap = false)
-            : this(width, height, new byte[6][], internalFormat, pixelFormat, border, filter, wrap, mipmap)
+            PixelFormat pixelFormat = PixelFormat.Rgba, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat, bool mipmap = false)
+            : this(width, height, new byte[6][], internalFormat, pixelFormat, filter, wrap, mipmap)
         {
 
         }
-        public unsafe TextureCubemap(string[] paths, bool sRGB = true, int border = 0 , GLEnum filter = GLEnum.Linear,
+        public unsafe TextureCubemap(string[] paths, bool sRGB = true, GLEnum filter = GLEnum.Linear,
             GLEnum wrap = GLEnum.Repeat, bool flip = true, bool mipmap = false)
             : base(TextureTarget.TextureCubeMap, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8, PixelFormat.Rgba, new(0))
         {
@@ -182,7 +183,7 @@ namespace HawkEngine.Graphics
 
                     Bind(0);
                     Rendering.gl.TexImage2D(TextureTarget.TextureCubeMapPositiveX + i, 0, sRGB ? InternalFormat.Srgb8Alpha8 : InternalFormat.Rgba8,
-                        size.X, size.Y, border, PixelFormat.Rgba, PixelType.UnsignedByte, span);
+                        size.X, size.Y, 0, PixelFormat.Rgba, PixelType.UnsignedByte, span);
                 }
 
                 Rendering.gl.TexParameter(textureType, TextureParameterName.TextureMinFilter, (int)filter);
@@ -202,7 +203,7 @@ namespace HawkEngine.Graphics
             (byte)(color.Z * 255f), (byte)(color.W * 255f) }, new byte[4] { (byte)(color.X * 255f), (byte)(color.Y * 255f),
             (byte)(color.Z * 255f), (byte)(color.W * 255f) }, new byte[4] { (byte)(color.X * 255f), (byte)(color.Y * 255f),
             (byte)(color.Z * 255f), (byte)(color.W * 255f) }, new byte[4] { (byte)(color.X * 255f), (byte)(color.Y * 255f),
-            (byte)(color.Z * 255f), (byte)(color.W * 255f) } }, InternalFormat.Rgba8, PixelFormat.Rgba, 0, GLEnum.Nearest, GLEnum.Repeat)
+            (byte)(color.Z * 255f), (byte)(color.W * 255f) } }, InternalFormat.Rgba8, PixelFormat.Rgba, GLEnum.Nearest, GLEnum.Repeat)
         {
 
         }
