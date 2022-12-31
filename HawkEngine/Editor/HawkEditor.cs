@@ -39,7 +39,7 @@ namespace HawkEngine.Editor
             outlineModel = new(new("Shaders/Post Processing/OutputVert.glsl", "Shaders/Editor/OutlineFrag.glsl"), Rendering.quad);
 
             GenFramebuffers();
-            EditorGUI.FindWindow("Viewport").sizeChanged += (_) => GenFramebuffers();
+            EditorGUI.FindWindow<EditorViewport>().sizeChanged += (_) => GenFramebuffers();
 
             Rendering.renderPasses.Insert(4, editorInfoPass);
             Rendering.renderPasses.Insert(6, outlinePass);

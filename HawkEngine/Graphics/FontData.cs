@@ -25,10 +25,8 @@ namespace HawkEngine.Graphics
 
         private readonly StbTrueType.stbtt_pack_context context;
 
-        public Font(int width, int height, string path, float fontPixelHeight, params CharacterRange[] characterRanges)
+        public Font(int width, int height, string path, float fontPixelHeight, params CharacterRange[] characterRanges) : base(path)
         {
-            GenRandomID();
-
             bitmapWidth = width;
             bitmapHeight = height;
             bitmap = new byte[width * height];
@@ -78,7 +76,6 @@ namespace HawkEngine.Graphics
             }
 
             fontAtlas = new((uint)bitmapWidth, (uint)bitmapHeight, bitmap, InternalFormat.R8, PixelFormat.Red);
-
             StbTrueType.stbtt_PackEnd(context);
         }
     }

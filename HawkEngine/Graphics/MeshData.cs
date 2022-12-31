@@ -22,10 +22,8 @@ namespace HawkEngine.Graphics
         public readonly Vector3D<float>[] bitangents;
 
         public MeshData(uint[] indices, Vector3D<float>[] verts, Vector3D<float>[] normals,
-            Vector2D<float>[] uvs, Vector3D<float>[] tangents, Vector3D<float>[] bitangents)
+            Vector2D<float>[] uvs, Vector3D<float>[] tangents, Vector3D<float>[] bitangents, string name = nameof(MeshData)) : base(name)
         {
-            GenRandomID();
-
             this.indices = indices;
             this.verts = verts;
             this.normals = normals;
@@ -33,10 +31,8 @@ namespace HawkEngine.Graphics
             this.tangents = tangents;
             this.bitangents = bitangents;
         }
-        public unsafe MeshData(string path)
+        public unsafe MeshData(string path) : base(path)
         {
-            GenRandomID();
-
             Assimp assimp = Assimp.GetApi();
             Silk.NET.Assimp.Scene* scene = assimp.ImportFile(Path.GetFullPath("../../../Resources/" + path), (uint)postProcessSteps);
 

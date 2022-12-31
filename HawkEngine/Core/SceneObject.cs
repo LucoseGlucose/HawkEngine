@@ -8,13 +8,15 @@ namespace HawkEngine.Core
 {
     public class SceneObject : HawkObject
     {
-        public string name;
         public readonly List<Component> components = new();
         public readonly Transform transform = new();
 
+        public SceneObject() : base("")
+        {
+
+        }
         public virtual void Create(string name)
         {
-            GenRandomID();
             this.name = name;
         }
         public virtual void Destroy()

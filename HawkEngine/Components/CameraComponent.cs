@@ -48,11 +48,11 @@ namespace HawkEngine.Components
             CreateFramebuffer(4);
             App.window.FramebufferResize += (v2) =>
 #else
-            System.Numerics.Vector2 s = Editor.EditorGUI.FindWindow("Viewport").size;
+            System.Numerics.Vector2 s = Editor.EditorGUI.FindWindow<Editor.EditorViewport>().size;
             size = new((int)s.X, (int)s.Y);
             CreateFramebuffer(4);
 
-            Editor.EditorGUI.FindWindow("Viewport").sizeChanged += (v2) =>
+            Editor.EditorGUI.FindWindow<Editor.EditorViewport>().sizeChanged += (v2) =>
 #endif
             {
                 if (matchScreen || Rendering.outputCam == this)

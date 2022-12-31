@@ -8,11 +8,29 @@ namespace HawkEngine.Core
 {
     public class HawkObject
     {
-        public ulong engineID { get; protected set; }
+        public static readonly List<HawkObject> allObjects = new();
 
-        protected void GenRandomID()
+        public ulong engineID { get; protected set; }
+        public string name;
+
+        public HawkObject(string name)
         {
+            this.name = name;
             engineID = (ulong)Random.Shared.NextInt64();
+            allObjects.Add(this);
+        }
+        public override string ToString()
+        {
+            return name;
+        }
+        public static bool TryGetWithID(ulong id, out HawkObject obj)
+        {
+            obj = GetWithID(id);
+            return obj != null;
+        }
+        public static HawkObject GetWithID(ulong id)
+        {
+            return allObjects.FirstOrDefault(o => o.engineID == id);
         }
     }
 }

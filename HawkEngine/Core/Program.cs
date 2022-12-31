@@ -67,8 +67,6 @@ namespace HawkEngine.Core
                 light.transform.rotation = new(60f, 230f, 0f);
                 light.transform.position = new(0f, 5f, -2f);
 
-                FPSCounterComponent text = scene.CreateObject("FPS Counter").AddComponent<FPSCounterComponent>();
-
                 return scene;
             });
         }

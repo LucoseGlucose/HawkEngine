@@ -61,9 +61,9 @@ namespace HawkEngine.Core
 
         public Transform parent;
 
-        public Transform()
+        public Transform() : base(nameof(Transform))
         {
-            GenRandomID();
+            
         }
     }
 }

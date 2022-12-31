@@ -4,6 +4,7 @@ using HawkEngine.Graphics;
 using ImGuiNET;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
+using Silk.NET.Vulkan;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,33 +15,29 @@ using static ImGuiNET.ImGui;
 
 namespace HawkEngine.Editor
 {
-    public class EditorWindow
+    public abstract class EditorWindow
     {
         public bool open = true;
         public readonly string title;
-        public readonly Action[] styleVars;
-        public readonly Action showAction;
 
         public Vector2 position { get; protected set; }
         public Vector2 size { get; protected set; }
         public Vector2 rectMin { get; protected set; }
         public Vector2 rectMax { get; protected set; }
 
-
         public event Action<Vector2> positionChanged;
-
         public event Action<Vector2> sizeChanged;
-
         public event Action<Vector2, Vector2> rectChanged;
 
-        public EditorWindow(bool open, string title, Action[] styleVars, Action showAction)
+        public EditorWindow(bool open, string title)
         {
             this.open = open;
             this.title = title;
-            this.styleVars = styleVars;
-            this.showAction = showAction;
         }
-        public void Update()
+        protected virtual void PreShowWindow() {  }
+        protected abstract void ShowWindow();
+        protected virtual void PostShowWindow() {  }
+        public virtual void Update()
         {
             if (!open)
             {
@@ -48,10 +45,7 @@ namespace HawkEngine.Editor
                 return;
             }
 
-            for (int i = 0; i < styleVars.Length; i++)
-            {
-                styleVars[i]?.Invoke();
-            }
+            PreShowWindow();
 
             if (Begin(title, ref open))
             {
@@ -72,16 +66,25 @@ namespace HawkEngine.Editor
                 rectMin = newRectMin;
                 rectMax = newRectMax;
 
-                showAction?.Invoke();
+                ShowWindow();
             }
+
             End();
-
-            PopStyleVar(styleVars.Length);
+            PostShowWindow();
         }
+    }
 
-        public static readonly EditorWindow viewport = new(true, "Viewport",
-        new Action[1] { () => PushStyleVar(ImGuiStyleVar.WindowPadding, Vector2.Zero) },
-        () =>
+    public class EditorViewport : EditorWindow
+    {
+        public EditorViewport() : base(true, "Viewport")
+        {
+
+        }
+        protected override void PreShowWindow()
+        {
+            PushStyleVar(ImGuiStyleVar.FramePadding, Vector2.Zero);
+        }
+        protected override void ShowWindow()
         {
             if (Rendering.outputCam == null) return;
 
@@ -96,8 +99,8 @@ namespace HawkEngine.Editor
 
             if (IsItemClicked(ImGuiMouseButton.Left))
             {
-                Vector2 relativeMousePos = GetMousePos() - viewport.rectMin;
-                relativeMousePos.Y = viewport.size.Y - relativeMousePos.Y;
+                Vector2 relativeMousePos = GetMousePos() - rectMin;
+                relativeMousePos.Y = size.Y - relativeMousePos.Y;
 
                 Span<float> firstHalf = stackalloc float[2];
                 Span<float> secondHalf = stackalloc float[2];
@@ -127,10 +130,20 @@ namespace HawkEngine.Editor
                     }
                 }
             }
-        });
+        }
+        protected override void PostShowWindow()
+        {
+            PopStyleVar();
+        }
+    }
 
-        public static readonly EditorWindow sceneTree = new(true, "Scene Tree", Array.Empty<Action>(),
-        () =>
+    public class EditorSceneTree : EditorWindow
+    {
+        public EditorSceneTree() : base(true, "Scene Tree")
+        {
+
+        }
+        protected override void ShowWindow()
         {
             List<SceneObject> objects = App.scene?.objects;
             if (objects == null) return;
@@ -165,7 +178,59 @@ namespace HawkEngine.Editor
                 }
                 else if (HawkEditor.selectedObjects.Contains(obj)) HawkEditor.selectedObjects.Remove(obj);
             }
-        });
+        }
+    }
+
+    public class EditorConsole : EditorWindow
+    {
+        private readonly List<EditorUtils.ConsoleMessage> messages = new();
+
+        public EditorConsole() : base(true, "Console")
+        {
+
+        }
+        protected override void ShowWindow()
+        {
+            foreach (EditorUtils.ConsoleMessage message in messages)
+            {
+                PushStyleColor(ImGuiCol.Text, message.severity switch
+                {
+                    EditorUtils.MessageSeverity.Warning => new(1f, 1f, 0f, 1f),
+                    EditorUtils.MessageSeverity.Error => new(1f, 0f, 0f, 1f),
+                    _ => Vector4.One,
+                });
+
+                Text(message.message);
+                if (message.obj != null)
+                {
+                    SameLine(GetContentRegionAvail().X - CalcTextSize(message.obj.name).X);
+                    Text(message.obj.name);
+                }
+
+                if (message.stackTrace != null) Text(message.stackTrace);
+                PopStyleColor();
+            }
+        }
+        public void PrintMessage(EditorUtils.ConsoleMessage message)
+        {
+            messages.Add(message);
+        }
+        public void Clear()
+        {
+            messages.Clear();
+        }
+    }
+
+    public class EditorStats : EditorWindow
+    {
+        public EditorStats() : base(true, "Stats")
+        {
+
+        }
+        protected override void ShowWindow()
+        {
+            Text($"FPS: {Scalar.Round(1f / Time.smoothUnscaledDeltaTime)}");
+        }
     }
 }
 #endif

@@ -40,7 +40,7 @@ namespace HawkEngine.Graphics
             App.window.FramebufferResize += InitTextures;
             InitTextures(App.window.FramebufferSize);
 #else
-            Editor.EditorWindow viewport = Editor.EditorGUI.FindWindow("Viewport");
+            Editor.EditorWindow viewport = Editor.EditorGUI.FindWindow<Editor.EditorViewport>();
             viewport.sizeChanged += (size) => InitTextures(new((int)size.X, (int)size.Y));
             InitTextures(new((int)viewport.size.X, (int)viewport.size.Y));
 #endif

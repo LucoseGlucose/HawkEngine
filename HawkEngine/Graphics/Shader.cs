@@ -15,9 +15,8 @@ namespace HawkEngine.Graphics
         public readonly ShaderType type;
         public readonly uint id;
 
-        private Shader(string filePath, ShaderType type, uint id)
+        private Shader(string filePath, ShaderType type, uint id) : base(filePath)
         {
-            GenRandomID();
             this.filePath = filePath;
             this.type = type;
             this.id = id;
@@ -32,6 +31,10 @@ namespace HawkEngine.Graphics
 
             Shader shader = new(path, type, id);
             compiledShaders.Add(path, shader);
+
+            string infoLog = Rendering.gl.GetShaderInfoLog(id);
+            if (!string.IsNullOrEmpty(infoLog)) Editor.EditorUtils.PrintMessage(Editor.EditorUtils.MessageSeverity.Error, infoLog, shader);
+
             return shader;
         }
     }

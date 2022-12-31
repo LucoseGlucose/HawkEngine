@@ -35,9 +35,17 @@ namespace HawkEngine.Graphics
         {
 
         }
-        public unsafe ShaderProgram(params Shader[] shaders)
+        private static string GetNameFromShaders(Shader[] shaders)
         {
-            GenRandomID();
+            string name = "";
+            for (int i = 0; i < shaders.Length; i++)
+            {
+                name += shaders[i].name + " : ";
+            }
+            return name;
+        }
+        public unsafe ShaderProgram(params Shader[] shaders) : base(GetNameFromShaders(shaders))
+        {
             id = Rendering.gl.CreateProgram();
 
             for (int i = 0; i < shaders.Length; i++)

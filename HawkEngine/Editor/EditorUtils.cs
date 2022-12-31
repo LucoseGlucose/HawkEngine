@@ -1,4 +1,4 @@
-﻿#if DEBUG
+﻿using HawkEngine.Core;
 using Silk.NET.Maths;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,7 @@ namespace HawkEngine.Editor
 {
     public static class EditorUtils
     {
+#if DEBUG
         public static Vector4D<float> IDToColor(ulong id)
         {
             ulong first16 = (id & 0x000000000000FFFF) >> 0;
@@ -28,6 +29,55 @@ namespace HawkEngine.Editor
 
             return first16 | (second16 << 16) | (third16 << 32) | (fourth16 << 48);
         }
+#endif
+
+        public enum MessageSeverity
+        {
+            Info,
+            Warning,
+            Error,
+        }
+        public struct ConsoleMessage
+        {
+            public MessageSeverity severity;
+            public string message;
+            public HawkObject obj;
+            public string stackTrace;
+
+            public ConsoleMessage(MessageSeverity severity, string message, HawkObject obj, string stackTrace)
+            {
+                this.severity = severity;
+                this.message = message;
+                this.obj = obj;
+                this.stackTrace = stackTrace;
+            }
+        }
+
+        public static void PrintMessage(ConsoleMessage message)
+        {
+#if DEBUG
+            EditorGUI.FindWindow<EditorConsole>().PrintMessage(message);
+#endif
+        }
+        public static void PrintMessage(MessageSeverity severity, string message, HawkObject obj)
+        {
+            PrintMessage(new ConsoleMessage(severity, message, obj, null));
+        }
+        public static void PrintMessage(string message)
+        {
+            PrintMessage(new ConsoleMessage(MessageSeverity.Info, message, null, null));
+        }
+        public static void PrintMessage(string message, HawkObject obj)
+        {
+            PrintMessage(new ConsoleMessage(MessageSeverity.Info, message, obj, null));
+        }
+        public static void PrintMessage(MessageSeverity severity, string message)
+        {
+            PrintMessage(new ConsoleMessage(severity, message, null, null));
+        }
+        public static void PrintException(Exception exception)
+        {
+            PrintMessage(new ConsoleMessage(MessageSeverity.Error, exception.Message, null, exception.StackTrace));
+        }
     }
 }
-#endif

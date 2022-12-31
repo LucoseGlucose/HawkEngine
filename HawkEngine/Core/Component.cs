@@ -11,10 +11,14 @@ namespace HawkEngine.Core
         public SceneObject owner { get; private set; }
         public Transform transform { get { return owner.transform; } }
 
+        public Component() : base(nameof(Component))
+        {
+
+        }
         public virtual void Create(SceneObject owner)
         {
-            GenRandomID();
             this.owner = owner;
+            name = $"{owner.name} : {GetType().Name}";
         }
         public virtual void Destroy()
         {

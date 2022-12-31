@@ -51,7 +51,7 @@ namespace HawkEngine.Graphics
             gl.Enable(EnableCap.DebugOutputSynchronous);
             gl.DebugMessageCallback(GLDebugMessage, nint.Zero);
 
-            Editor.EditorGUI.FindWindow("Viewport").sizeChanged += (size) => OnWindowResize(new((int)size.X, (int)size.Y));
+            Editor.EditorGUI.FindWindow<Editor.EditorViewport>().sizeChanged += (size) => OnWindowResize(new((int)size.X, (int)size.Y));
 #else
             App.window.FramebufferResize += OnWindowResize;
 #endif
@@ -88,7 +88,7 @@ namespace HawkEngine.Graphics
 #if !DEBUG
             OnWindowResize(App.window.FramebufferSize);
 #else
-            System.Numerics.Vector2 size = Editor.EditorGUI.FindWindow("Viewport").size;
+            System.Numerics.Vector2 size = Editor.EditorGUI.FindWindow<Editor.EditorViewport>().size;
             OnWindowResize(new((int)size.X, (int)size.Y));
 #endif
 
@@ -145,10 +145,14 @@ namespace HawkEngine.Graphics
             DebugType dType = (DebugType)type;
 
             string dMessage = Encoding.UTF8.GetString((byte*)message.ToPointer(), length);
-
-            Console.WriteLine($"{dType.ToString().TrimStart("DebugType".ToCharArray()).ToUpper()} {
-                id} in {dSource.ToString().TrimStart("DebugSource".ToCharArray())}: {dMessage}");
+            string print = $"OpenGL {type.ToString().TrimStart("DebugType".ToCharArray()).ToUpper()} {
+                id} in {source.ToString().TrimStart("DebugSource".ToCharArray())}: {message}";
+#if DEBUG
+            Editor.EditorUtils.PrintMessage(Editor.EditorUtils.MessageSeverity.Error, print);
             glDebugCallback?.Invoke(dSource, dType, id, dMessage);
+#else
+            throw new Exception(print);
+#endif
         }
     }
 
