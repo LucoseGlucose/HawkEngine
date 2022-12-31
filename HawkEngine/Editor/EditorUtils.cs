@@ -39,17 +39,19 @@ namespace HawkEngine.Editor
         }
         public struct ConsoleMessage
         {
+            public readonly nint id;
             public MessageSeverity severity;
             public string message;
             public HawkObject obj;
-            public string stackTrace;
+            public string extraInfo;
 
-            public ConsoleMessage(MessageSeverity severity, string message, HawkObject obj, string stackTrace)
+            public ConsoleMessage(MessageSeverity severity, string message, HawkObject obj, string extraInfo)
             {
+                id = (nint)Random.Shared.NextInt64();
                 this.severity = severity;
                 this.message = message;
                 this.obj = obj;
-                this.stackTrace = stackTrace;
+                this.extraInfo = extraInfo;
             }
         }
 
@@ -74,6 +76,14 @@ namespace HawkEngine.Editor
         public static void PrintMessage(MessageSeverity severity, string message)
         {
             PrintMessage(new ConsoleMessage(severity, message, null, null));
+        }
+        public static void PrintMessage(MessageSeverity severity, string message, string extraInfo)
+        {
+            PrintMessage(new ConsoleMessage(severity, message, null, extraInfo));
+        }
+        public static void PrintMessage(MessageSeverity severity, string message, HawkObject obj, string extraInfo)
+        {
+            PrintMessage(new ConsoleMessage(severity, message, obj, extraInfo));
         }
         public static void PrintException(Exception exception)
         {

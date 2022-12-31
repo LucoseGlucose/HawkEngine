@@ -4,6 +4,7 @@ using System.Linq;
 using Silk.NET.OpenGL;
 using Silk.NET.Maths;
 using HawkEngine.Core;
+using System.IO;
 
 namespace HawkEngine.Graphics
 {
@@ -53,6 +54,10 @@ namespace HawkEngine.Graphics
                 Rendering.gl.AttachShader(id, shaders[i].id);
             }
             Rendering.gl.LinkProgram(id);
+
+            string infoLog = Rendering.gl.GetProgramInfoLog(id);
+            if (!string.IsNullOrEmpty(infoLog)) Editor.EditorUtils.PrintMessage(Editor.EditorUtils.MessageSeverity.Error,
+                $"Could not link shader program {name}", this, infoLog);
 
             for (int i = 0; i < shaders.Length; i++)
             {

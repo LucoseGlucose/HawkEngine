@@ -9,7 +9,7 @@ namespace HawkEngine.Core
     public class SceneObject : HawkObject
     {
         public readonly List<Component> components = new();
-        public readonly Transform transform = new();
+        public Transform transform { get; protected set; }
 
         public SceneObject() : base("")
         {
@@ -17,6 +17,7 @@ namespace HawkEngine.Core
         }
         public virtual void Create(string name)
         {
+            transform = new(this);
             this.name = name;
         }
         public virtual void Destroy()

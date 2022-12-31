@@ -51,7 +51,7 @@ namespace HawkEngine.Graphics
             gl.Enable(EnableCap.DebugOutputSynchronous);
             gl.DebugMessageCallback(GLDebugMessage, nint.Zero);
 
-            Editor.EditorGUI.FindWindow<Editor.EditorViewport>().sizeChanged += (size) => OnWindowResize(new((int)size.X, (int)size.Y));
+            Editor.EditorGUI.FindWindow<Editor.EditorViewport>().sizeChangeEnd += (size) => OnWindowResize(new((int)size.X, (int)size.Y));
 #else
             App.window.FramebufferResize += OnWindowResize;
 #endif
@@ -145,10 +145,10 @@ namespace HawkEngine.Graphics
             DebugType dType = (DebugType)type;
 
             string dMessage = Encoding.UTF8.GetString((byte*)message.ToPointer(), length);
-            string print = $"OpenGL {type.ToString().TrimStart("DebugType".ToCharArray()).ToUpper()} {
-                id} in {source.ToString().TrimStart("DebugSource".ToCharArray())}: {message}";
+            string print = $"OpenGL {dType.ToString().Remove(0, 9).ToUpper()} {
+                id} in {dSource.ToString().Remove(0, 11)}";
 #if DEBUG
-            Editor.EditorUtils.PrintMessage(Editor.EditorUtils.MessageSeverity.Error, print);
+            Editor.EditorUtils.PrintMessage(Editor.EditorUtils.MessageSeverity.Error, print, dMessage);
             glDebugCallback?.Invoke(dSource, dType, id, dMessage);
 #else
             throw new Exception(print);

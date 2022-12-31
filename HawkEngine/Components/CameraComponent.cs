@@ -46,14 +46,14 @@ namespace HawkEngine.Components
 
             size = App.window.FramebufferSize;
             CreateFramebuffer(4);
-            App.window.FramebufferResize += (v2) =>
 #else
             System.Numerics.Vector2 s = Editor.EditorGUI.FindWindow<Editor.EditorViewport>().size;
             size = new((int)s.X, (int)s.Y);
             CreateFramebuffer(4);
-
-            Editor.EditorGUI.FindWindow<Editor.EditorViewport>().sizeChanged += (v2) =>
 #endif
+
+#if DEBUG
+            Editor.EditorGUI.FindWindow<Editor.EditorViewport>().sizeChangeEnd += (v2) =>
             {
                 if (matchScreen || Rendering.outputCam == this)
                 {
@@ -61,6 +61,16 @@ namespace HawkEngine.Components
                     CreateFramebuffer(multisamples);
                 }
             };
+#else
+            App.window.FramebufferResize += (v2) =>
+            {
+                if (matchScreen || Rendering.outputCam == this)
+                {
+                    size = v2;
+                    CreateFramebuffer(multisamples);
+                }
+            };
+#endif
         }
         public void CreateFramebuffer(uint samples = 1)
         {

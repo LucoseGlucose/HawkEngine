@@ -19,6 +19,7 @@ namespace HawkEngine.Editor
     {
         public bool open = true;
         public readonly string title;
+        public Vector2 minSize = new(180f, 180f);
 
         public Vector2 position { get; protected set; }
         public Vector2 size { get; protected set; }
@@ -29,15 +30,19 @@ namespace HawkEngine.Editor
         public event Action<Vector2> sizeChanged;
         public event Action<Vector2, Vector2> rectChanged;
 
-        public EditorWindow(bool open, string title)
+        private bool changingSize;
+        public event Action<Vector2> sizeChangeEnd;
+
+        public EditorWindow(bool open, string title, Vector2 minSize)
         {
             this.open = open;
             this.title = title;
+            this.minSize = minSize;
         }
         protected virtual void PreShowWindow() {  }
         protected abstract void ShowWindow();
         protected virtual void PostShowWindow() {  }
-        public virtual void Update()
+        public virtual unsafe void Update()
         {
             if (!open)
             {
@@ -45,11 +50,13 @@ namespace HawkEngine.Editor
                 return;
             }
 
+            EditorGUI.style.WindowMinSize.X = minSize.X;
+            EditorGUI.style.WindowMinSize.Y = minSize.Y;
             PreShowWindow();
 
             if (Begin(title, ref open))
             {
-                if (IsWindowFocused()) EditorGUI.activeWindow = this;
+                if (IsWindowFocused() && EditorGUI.activeWindow != this) EditorGUI.activeWindow = this;
                 else if (EditorGUI.activeWindow == this) EditorGUI.activeWindow = null;
 
                 Vector2 newPosition = GetWindowPos();
@@ -57,8 +64,18 @@ namespace HawkEngine.Editor
                 Vector2 newRectMin = GetWindowContentRegionMin() + position;
                 Vector2 newRectMax = GetWindowContentRegionMax() + position;
 
+                if (newSize != size)
+                {
+                    sizeChanged?.Invoke(newSize);
+                    changingSize = true;
+                }
+                else if (changingSize && !IsMouseDown(ImGuiMouseButton.Left))
+                {
+                    sizeChangeEnd?.Invoke(newSize);
+                    changingSize = false;
+                }
+
                 if (newPosition != position) positionChanged?.Invoke(newPosition);
-                if (newSize != size) sizeChanged?.Invoke(newSize);
                 if (newRectMin != rectMin || newRectMax != rectMax) rectChanged?.Invoke(newRectMin, newRectMax);
 
                 position = newPosition;
@@ -76,7 +93,7 @@ namespace HawkEngine.Editor
 
     public class EditorViewport : EditorWindow
     {
-        public EditorViewport() : base(true, "Viewport")
+        public EditorViewport() : base(true, "Viewport", new(320f, 180f))
         {
 
         }
@@ -96,6 +113,12 @@ namespace HawkEngine.Editor
             Vector2 size = new(availSpace.X * Scalar.Min(aspect, 1f), availSpace.Y / Scalar.Max(aspect, 1f));
 
             Image((nint)Rendering.postProcessFB[FramebufferAttachment.ColorAttachment0].id, size, new(0f, 1f), new(1f, 0f));
+
+            if (IsItemClicked(ImGuiMouseButton.Middle) || IsItemClicked(ImGuiMouseButton.Right))
+            {
+                SetWindowFocus();
+                EditorGUI.activeWindow = this;
+            }
 
             if (IsItemClicked(ImGuiMouseButton.Left))
             {
@@ -139,7 +162,7 @@ namespace HawkEngine.Editor
 
     public class EditorSceneTree : EditorWindow
     {
-        public EditorSceneTree() : base(true, "Scene Tree")
+        public EditorSceneTree() : base(true, "Scene Tree", new(300f, 500f))
         {
 
         }
@@ -150,6 +173,8 @@ namespace HawkEngine.Editor
 
             foreach (SceneObject obj in objects)
             {
+
+
                 bool selected = HawkEditor.selectedObjects.Contains(obj);
                 Selectable(obj.name, ref selected);
 
@@ -185,14 +210,71 @@ namespace HawkEngine.Editor
     {
         private readonly List<EditorUtils.ConsoleMessage> messages = new();
 
-        public EditorConsole() : base(true, "Console")
+        private bool collapseAll;
+        private bool expandAll;
+
+        private bool showErrors = true;
+        private bool showWarnings = true;
+        private bool showInfos = true;
+
+        public EditorConsole() : base(true, "Console", new(400f, 150f))
         {
 
         }
-        protected override void ShowWindow()
+        protected override unsafe void ShowWindow()
         {
-            foreach (EditorUtils.ConsoleMessage message in messages)
+            if (Button("Clear")) Clear();
+            SameLine();
+            if (Button("Collapse All")) collapseAll = true;
+            SameLine();
+            if (Button("Expand All")) expandAll = true;
+
+            SameLine();
+            Checkbox("Show Infos", ref showInfos);
+            SameLine();
+            Checkbox("Show Warnings", ref showWarnings);
+            SameLine();
+            Checkbox("Show Errors", ref showErrors);
+            Separator();
+
+            for (int m = 0; m < messages.Count; m++)
             {
+                EditorUtils.ConsoleMessage message = messages[m];
+
+                float space = GetContentRegionAvail().X;
+                float textSize = CalcTextSize(message.message).X;
+
+                if (textSize > space)
+                {
+                    char[] chars = message.message.ToCharArray();
+                    int splitIndex = chars.Length - 1;
+
+                    for (int i = chars.Length - 1; i >= 0; i--)
+                    {
+                        if (chars[i] == ' ')
+                        {
+                            float newSize = CalcTextSize(new string(chars.Take(i + 1).ToArray())).X;
+
+                            if (newSize < space - 20f)
+                            {
+                                splitIndex = i;
+                                break;
+                            }
+                        }
+                    }
+
+                    message.message = new string(chars.Take(splitIndex).ToArray());
+                    message.extraInfo = new string(chars.Skip(splitIndex).ToArray()) + (message.extraInfo == null ? "" : $" | {message.extraInfo}");
+                }
+
+                if (message.severity == EditorUtils.MessageSeverity.Info && !showInfos) continue;
+                else if (message.severity == EditorUtils.MessageSeverity.Warning && !showWarnings) continue;
+                else if (message.severity == EditorUtils.MessageSeverity.Error && !showErrors) continue;
+
+                if (message.extraInfo == null) SetNextItemOpen(false);
+                else if (collapseAll) SetNextItemOpen(false);
+                else if (expandAll) SetNextItemOpen(true);
+
                 PushStyleColor(ImGuiCol.Text, message.severity switch
                 {
                     EditorUtils.MessageSeverity.Warning => new(1f, 1f, 0f, 1f),
@@ -200,16 +282,26 @@ namespace HawkEngine.Editor
                     _ => Vector4.One,
                 });
 
-                Text(message.message);
+                ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags.SpanFullWidth | ImGuiTreeNodeFlags.Framed;
+                bool expanded = TreeNodeEx(message.id, flags, message.message);
+
                 if (message.obj != null)
                 {
-                    SameLine(GetContentRegionAvail().X - CalcTextSize(message.obj.name).X);
-                    Text(message.obj.name);
+                    SameLine(space - CalcTextSize(message.obj.name).X);
+                    TextWrapped(message.obj.name);
                 }
 
-                if (message.stackTrace != null) Text(message.stackTrace);
+                if (expanded)
+                {
+                    if (message.extraInfo != null) TextWrapped(message.extraInfo);
+                    TreePop();
+                }
+
                 PopStyleColor();
             }
+
+            collapseAll = false;
+            expandAll = false;
         }
         public void PrintMessage(EditorUtils.ConsoleMessage message)
         {
@@ -223,7 +315,7 @@ namespace HawkEngine.Editor
 
     public class EditorStats : EditorWindow
     {
-        public EditorStats() : base(true, "Stats")
+        public EditorStats() : base(true, "Stats", new(100f, 75f))
         {
 
         }

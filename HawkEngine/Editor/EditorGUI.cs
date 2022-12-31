@@ -26,7 +26,6 @@ namespace HawkEngine.Editor
         public static ImGuiController imgui { get; private set; }
         public static ImGuiStylePtr style { get; private set; }
         public static ImGuiIOPtr io { get; private set; }
-        public static Vector2D<int> renderWindowSize { get; private set; }
         public static readonly List<EditorWindow> windows = new();
         public static EditorWindow activeWindow { get; set; }
 

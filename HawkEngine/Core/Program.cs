@@ -61,6 +61,9 @@ namespace HawkEngine.Core
                 mesh.shader.SetFloatCache("uRoughness", .1f);
                 mesh.shader.SetFloatCache("uMetallic", .1f);
 
+                meshG.transform.parent = mesh.transform;
+                mesh.transform.position += Vector3D<float>.UnitY * 10f;
+
                 LightComponent light = scene.CreateObject("Light").AddComponent<DirectionalLightComponent>();
                 light.color = new(.94f, .97f, .85f);
                 light.strength = 5f;

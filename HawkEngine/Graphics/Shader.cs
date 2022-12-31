@@ -33,7 +33,8 @@ namespace HawkEngine.Graphics
             compiledShaders.Add(path, shader);
 
             string infoLog = Rendering.gl.GetShaderInfoLog(id);
-            if (!string.IsNullOrEmpty(infoLog)) Editor.EditorUtils.PrintMessage(Editor.EditorUtils.MessageSeverity.Error, infoLog, shader);
+            if (!string.IsNullOrEmpty(infoLog)) Editor.EditorUtils.PrintMessage(Editor.EditorUtils.MessageSeverity.Error,
+                $"Could not compile shader at {path}", shader, infoLog);
 
             return shader;
         }
