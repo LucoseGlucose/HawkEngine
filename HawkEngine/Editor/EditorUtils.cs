@@ -85,6 +85,11 @@ namespace HawkEngine.Editor
         {
             PrintMessage(new ConsoleMessage(severity, message, obj, extraInfo));
         }
+        public static void PrintMessage(object obj)
+        {
+            PrintMessage(obj.ToString());
+        }
+
         public static void PrintException(Exception exception)
         {
             PrintMessage(new ConsoleMessage(MessageSeverity.Error, exception.Message, null, exception.StackTrace));

@@ -16,7 +16,7 @@ uniform samplerCube uIrradianceCubeB;
 uniform samplerCube uReflectionCubeB;
 uniform sampler2D uBrdfLutB;
 uniform float uMaxReflectionLod = 4.0;
-uniform vec3 uAmbientColor = vec3(.5);
+uniform vec3 uAmbientColor = vec3(1);
 
 uniform sampler2D uAlbedoTexW;
 uniform vec4 uAlbedo = vec4(1);

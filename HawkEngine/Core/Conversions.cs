@@ -40,7 +40,7 @@ namespace HawkEngine.Core
         }
 
         public const float degToRad = MathF.PI / 180f;
-        public const float radTodeg = 180f / MathF.PI;
+        public const float radToDeg = 180f / MathF.PI;
 
         public static Quaternion<float> ToQuaternion(this Vector3D<float> angles)
         {
@@ -83,7 +83,7 @@ namespace HawkEngine.Core
             double cosy_cosp = 1 - 2 * (q.Y * q.Y + q.Z * q.Z);
             angles.Z = (float)Scalar.Atan2(siny_cosp, cosy_cosp);
 
-            return radTodeg * angles;
+            return radToDeg * angles;
         }
         public static Quaternion<float> AsQuaternion(Vector3D<float> angles)
         {
@@ -92,6 +92,12 @@ namespace HawkEngine.Core
         public static Vector3D<float> AsEulerAngles(Quaternion<float> q)
         {
             return q.ToEulerAngles();
+        }
+
+        public static Matrix4X4<T> Inverse<T>(this Matrix4X4<T> m) where T : unmanaged, IFormattable, IEquatable<T>, IComparable<T>
+        {
+            if (!Matrix4X4.Invert(m, out Matrix4X4<T> inverse)) return m;
+            return inverse;
         }
     }
 }

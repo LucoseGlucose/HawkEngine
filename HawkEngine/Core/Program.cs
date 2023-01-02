@@ -11,6 +11,7 @@ using Silk.NET.GLFW;
 using Silk.NET.Windowing;
 using System.Drawing;
 using Silk.NET.Assimp;
+using Silk.NET.Input;
 
 namespace HawkEngine.Core
 {
@@ -27,42 +28,43 @@ namespace HawkEngine.Core
                 cam.transform.position = new(0f, 0f, -4f);
                 cam.owner.AddComponent<CameraControllerComponent>();
 
-                MeshComponent mesh1 = scene.CreateObject("Cube").AddComponent<MeshComponent>();
-                mesh1.shader = new("Shaders/Scene/LitVert.glsl", "Shaders/Scene/LitFrag.glsl");
-                mesh1.shader.SetTexture("uAlbedoTexW", new Texture2D("Images/brickwall.jpg"));
-                mesh1.shader.SetTexture("uNormalMapN", new Texture2D("Images/brickwall_normal.jpg", false));
-                mesh1.mesh = new("Models/Cube.obj");
-                mesh1.shader.SetFloatCache("uMetallic", .1f);
-                mesh1.shader.SetFloatCache("uRoughness", .8f);
+                MeshComponent cube = scene.CreateObject("Cube").AddComponent<MeshComponent>();
+                cube.shader = new("Shaders/Scene/LitVert.glsl", "Shaders/Scene/LitFrag.glsl");
+                cube.shader.SetTexture("uAlbedoTexW", new Texture2D("Images/brickwall.jpg"));
+                cube.shader.SetTexture("uNormalMapN", new Texture2D("Images/brickwall_normal.jpg", false));
+                cube.mesh = new("Models/Cube.obj");
+                cube.shader.SetFloatCache("uMetallic", .1f);
+                cube.shader.SetFloatCache("uRoughness", .8f);
 
-                MeshComponent mesh2 = scene.CreateObject("Monkey").AddComponent<MeshComponent>();
-                mesh2.shader = new("Shaders/Scene/LitVert.glsl", "Shaders/Scene/LitFrag.glsl");
-                mesh2.mesh = new("Models/Monkey.obj");
-                mesh2.transform.position = new(2f, 4f, 1f);
-                mesh2.shader.SetVec4Cache("uAlbedo", new(.5f, .5f, 1f, 1f));
-                mesh2.shader.SetFloatCache("uMetallic", .1f);
-                mesh2.shader.SetFloatCache("uRoughness", .9f);
+                MeshComponent monkey = scene.CreateObject("Monkey").AddComponent<MeshComponent>();
+                monkey.shader = new("Shaders/Scene/LitVert.glsl", "Shaders/Scene/LitFrag.glsl");
+                monkey.mesh = new("Models/Monkey.obj");
+                monkey.transform.position = new(2f, 4f, 1f);
+                monkey.shader.SetVec4Cache("uAlbedo", new(.5f, .5f, 1f, 1f));
+                monkey.shader.SetFloatCache("uMetallic", .1f);
+                monkey.shader.SetFloatCache("uRoughness", .9f);
+                monkey.transform.rotation = new(-90f, 0f, 0f);
 
-                MeshComponent meshG = scene.CreateObject("Ground").AddComponent<MeshComponent>();
-                meshG.shader = new("Shaders/Scene/LitVert.glsl", "Shaders/Scene/LitFrag.glsl");
-                meshG.shader.SetVec4Cache("uAlbedo", new(.5f, .5f, .5f, 1f));
-                meshG.mesh = new("Models/Quad.obj");
-                meshG.transform.position = new(0f, -2f, 0f);
-                meshG.transform.scale = new(50f);
-                meshG.transform.rotation = new(90f, 0f, 0f);
-                meshG.shader.SetFloatCache("uRoughness", 1f);
-                mesh2.shader.SetFloatCache("uMetallic", 0f);
+                MeshComponent ground = scene.CreateObject("Ground").AddComponent<MeshComponent>();
+                ground.shader = new("Shaders/Scene/LitVert.glsl", "Shaders/Scene/LitFrag.glsl");
+                ground.shader.SetVec4Cache("uAlbedo", new(.5f, .5f, .5f, 1f));
+                ground.mesh = new("Models/Quad.obj");
+                ground.transform.position = new(0f, -2f, 0f);
+                ground.transform.scale = new(50f);
+                ground.transform.rotation = new(90f, 0f, 0f);
+                ground.shader.SetFloatCache("uRoughness", .9f);
+                ground.shader.SetFloatCache("uMetallic", .1f);
 
-                MeshComponent mesh = scene.CreateObject("Ball").AddComponent<MeshComponent>();
-                mesh.shader = new("Shaders/Scene/LitVert.glsl", "Shaders/Scene/LitFrag.glsl");
-                mesh.shader.SetVec4Cache("uAlbedo", new(.05f, .2f, 1f, 1f));
-                mesh.mesh = new("Models/Smooth Sphere.obj");
-                mesh.transform.position = new(-4f, 1f, 0f);
-                mesh.shader.SetFloatCache("uRoughness", .1f);
-                mesh.shader.SetFloatCache("uMetallic", .1f);
+                MeshComponent ball = scene.CreateObject("Ball").AddComponent<MeshComponent>();
+                ball.shader = new("Shaders/Scene/LitVert.glsl", "Shaders/Scene/LitFrag.glsl");
+                ball.shader.SetVec4Cache("uAlbedo", new(.05f, .2f, 1f, 1f));
+                ball.mesh = new("Models/Smooth Sphere.obj");
+                ball.transform.position = new(-4f, 1f, 0f);
+                ball.shader.SetFloatCache("uRoughness", .1f);
+                ball.shader.SetFloatCache("uMetallic", .1f);
 
-                meshG.transform.parent = mesh.transform;
-                mesh.transform.position += Vector3D<float>.UnitY * 10f;
+                monkey.transform.parent = cube.transform;
+                ball.transform.parent = cube.transform;
 
                 LightComponent light = scene.CreateObject("Light").AddComponent<DirectionalLightComponent>();
                 light.color = new(.94f, .97f, .85f);

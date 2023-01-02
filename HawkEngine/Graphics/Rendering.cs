@@ -38,7 +38,7 @@ namespace HawkEngine.Graphics
         public static Model skyboxModel { get; set; }
 
         public static Skybox skybox { get; set; }
-        public static Vector3D<float> ambientColor { get; set; } = new(.5f);
+        public static Vector3D<float> ambientColor { get; set; } = new(1f);
 
         public static ShaderProgram colorAdjustmentsShader { get; private set; }
         public static Bloom bloom { get; private set; }
