@@ -28,7 +28,11 @@ namespace HawkEngine.Components
             if (mouse.IsButtonPressed(MouseButton.Right))
             {
                 if (mouseDelta.LengthSquared() > 0)
-                    transform.rotation += new Vector3D<float>(mouseDelta.Y, -mouseDelta.X, 0f) * Time.deltaTime * rotateSpeed;
+                {
+                    Vector3D<float> input = new Vector3D<float>(mouseDelta.Y, -mouseDelta.X, 0f) * Time.deltaTime * rotateSpeed * Conversions.degToRad;
+                    transform.rotation = Quaternion<float>.CreateFromAxisAngle(Vector3D<float>.UnitY, input.Y) * transform.rotation;
+                    transform.rotation = Quaternion<float>.CreateFromAxisAngle(transform.right, input.X) * transform.rotation;
+                }
 
                 IKeyboard keyboard = App.input.Keyboards[0];
                 if (keyboard.IsKeyPressed(Key.W)) transform.position += transform.forward * flySpeed * Time.deltaTime;

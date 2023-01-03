@@ -24,12 +24,12 @@ namespace HawkEngine.Core
             }
         }
 
-        private Vector3D<float> _rotation;
-        public Vector3D<float> rotation
+        private Quaternion<float> _rotation = Quaternion<float>.Identity;
+        public Quaternion<float> rotation
         {
             get
             {
-                if (_parent != null) _rotation = _localRotation;
+                if (_parent != null) _rotation = _parent.rotation * _localRotation;
                 return _rotation;
             }
             set
@@ -37,7 +37,7 @@ namespace HawkEngine.Core
                 _rotation = value;
 
                 if (_parent == null) _localRotation = _rotation;
-                else _localRotation = _rotation;
+                else _localRotation = Quaternion<float>.Inverse(_parent.rotation) * _rotation;
             }
         }
 
@@ -58,17 +58,17 @@ namespace HawkEngine.Core
             }
         }
 
-        public Quaternion<float> orientation
+        public Vector3D<float> eulerAngles
         {
-            get { return rotation.ToQuaternion(); }
-            set { rotation = value.ToEulerAngles(); }
+            get { return rotation.ToEulerAngles(); }
+            set { rotation = value.ToQuaternion(); }
         }
 
         public Matrix4X4<float> matrix
         {
             get
             {
-                if (_parent == null) return Matrix4X4.CreateScale(scale) * Matrix4X4.CreateFromQuaternion(orientation) * Matrix4X4.CreateTranslation(position);
+                if (_parent == null) return Matrix4X4.CreateScale(scale) * Matrix4X4.CreateFromQuaternion(rotation) * Matrix4X4.CreateTranslation(position);
                 return localMatrix * _parent.matrix;
             }
             set
@@ -76,25 +76,25 @@ namespace HawkEngine.Core
                 if (!Matrix4X4.Decompose(value, out Vector3D<float> s, out Quaternion<float> r, out Vector3D<float> t)) return;
 
                 position = t;
-                orientation = r;
+                rotation = r;
                 scale = s;
             }
         }
 
         public Vector3D<float> forward
         {
-            get { return Vector3D.Transform(Vector3D<float>.UnitZ, orientation); }
-            set { orientation = Quaternion<float>.CreateFromAxisAngle(value, 0f); }
+            get { return Vector3D.Transform(Vector3D<float>.UnitZ, rotation); }
+            set { rotation = Quaternion<float>.CreateFromAxisAngle(value, 0f); }
         }
         public Vector3D<float> up
         {
-            get { return Vector3D.Transform(Vector3D<float>.UnitY, orientation); }
-            set { orientation = Quaternion<float>.CreateFromAxisAngle(Vector3D.Cross(value, right), 0f); }
+            get { return Vector3D.Transform(Vector3D<float>.UnitY, rotation); }
+            set { rotation = Quaternion<float>.CreateFromAxisAngle(Vector3D.Cross(value, right), 0f); }
         }
         public Vector3D<float> right
         {
-            get { return Vector3D.Transform(Vector3D<float>.UnitX, orientation); }
-            set { orientation = Quaternion<float>.CreateFromAxisAngle(Vector3D.Cross(value, up), 0f); }
+            get { return Vector3D.Transform(Vector3D<float>.UnitX, rotation); }
+            set { rotation = Quaternion<float>.CreateFromAxisAngle(Vector3D.Cross(value, up), 0f); }
         }
 
         private Transform _parent;
@@ -104,7 +104,7 @@ namespace HawkEngine.Core
             set
             {
                 Vector3D<float> pos = position;
-                Vector3D<float> rot = rotation;
+                Quaternion<float> rot = rotation;
                 Vector3D<float> scl = scale;
 
                 _parent?.children.Remove(this);
@@ -123,7 +123,6 @@ namespace HawkEngine.Core
         {
             get
             {
-                if (_parent == null) _localPosition = _position;
                 return _localPosition;
             }
             set
@@ -135,12 +134,11 @@ namespace HawkEngine.Core
             }
         }
 
-        private Vector3D<float> _localRotation;
-        public Vector3D<float> localRotation
+        private Quaternion<float> _localRotation = Quaternion<float>.Identity;
+        public Quaternion<float> localRotation
         {
             get
             {
-                if (_parent != null) _localRotation = _rotation;
                 return _localRotation;
             }
             set
@@ -148,7 +146,7 @@ namespace HawkEngine.Core
                 _localRotation = value;
 
                 if (_parent == null) _rotation = _localRotation;
-                else _rotation = _localRotation;
+                else _rotation = _parent.rotation * _localRotation;
             }
         }
 
@@ -157,7 +155,6 @@ namespace HawkEngine.Core
         {
             get
             {
-                if (_parent != null) _localScale = _scale / _parent.scale;
                 return _localScale;
             }
             set
@@ -169,24 +166,24 @@ namespace HawkEngine.Core
             }
         }
 
-        public Quaternion<float> localOrientation
+        public Vector3D<float> localEulerAngles
         {
-            get { return localRotation.ToQuaternion(); }
-            set { localRotation = value.ToEulerAngles(); }
+            get { return localRotation.ToEulerAngles(); }
+            set { localRotation = value.ToQuaternion(); }
         }
 
         public Matrix4X4<float> localMatrix
         {
             get
             {
-                return Matrix4X4.CreateScale(localScale) * Matrix4X4.CreateFromQuaternion(localOrientation) * Matrix4X4.CreateTranslation(localPosition);
+                return Matrix4X4.CreateScale(localScale) * Matrix4X4.CreateFromQuaternion(localRotation) * Matrix4X4.CreateTranslation(localPosition);
             }
             set
             {
                 if (!Matrix4X4.Decompose(value, out Vector3D<float> s, out Quaternion<float> r, out Vector3D<float> t)) return;
 
                 localPosition = t;
-                localOrientation = r;
+                localRotation = r;
                 localScale = s;
             }
         }

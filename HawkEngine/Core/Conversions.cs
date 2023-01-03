@@ -42,48 +42,18 @@ namespace HawkEngine.Core
         public const float degToRad = MathF.PI / 180f;
         public const float radToDeg = 180f / MathF.PI;
 
-        public static Quaternion<float> ToQuaternion(this Vector3D<float> angles)
+        public static Quaternion<float> ToQuaternion(this Vector3D<float> eulerAngles)
         {
-            Vector3D<float> v = degToRad * angles;
-
-            float cy = Scalar.Cos(v.Z * 0.5f);
-            float sy = Scalar.Sin(v.Z * 0.5f);
-            float cp = Scalar.Cos(v.Y * 0.5f);
-            float sp = Scalar.Sin(v.Y * 0.5f);
-            float cr = Scalar.Cos(v.X * 0.5f);
-            float sr = Scalar.Sin(v.X * 0.5f);
-
-            return new Quaternion<float>
-            {
-                W = (cr * cp * cy + sr * sp * sy),
-                X = (sr * cp * cy - cr * sp * sy),
-                Y = (cr * sp * cy + sr * cp * sy),
-                Z = (cr * cp * sy - sr * sp * cy)
-            };
+            eulerAngles *= degToRad;
+            return Quaternion<float>.CreateFromYawPitchRoll(eulerAngles.Y, eulerAngles.X, eulerAngles.Z);
         }
-        public static Vector3D<float> ToEulerAngles(this Quaternion<float> q)
+        public static Vector3D<float> ToEulerAngles(this Quaternion<float> quat)
         {
-            Vector3D<float> angles = new();
+            float yaw = (float)Math.Atan2(2 * quat.Y * quat.W - 2 * quat.X * quat.Z, 1 - 2 * quat.Y * quat.Y - 2 * quat.Z * quat.Z);
+            float pitch = (float)Math.Asin(2 * quat.X * quat.Y + 2 * quat.Z * quat.W);
+            float roll = (float)Math.Atan2(2 * quat.X * quat.W - 2 * quat.Y * quat.Z, 1 - 2 * quat.X * quat.X - 2 * quat.Z * quat.Z);
 
-            double sinr_cosp = 2 * (q.W * q.X + q.Y * q.Z);
-            double cosr_cosp = 1 - 2 * (q.X * q.X + q.Y * q.Y);
-            angles.X = (float)Scalar.Atan2(sinr_cosp, cosr_cosp);
-
-            double sinp = 2 * (q.W * q.Y - q.Z * q.X);
-            if (Scalar.Abs(sinp) >= 1)
-            {
-                angles.Y = (float)Math.CopySign(Math.PI / 2, sinp);
-            }
-            else
-            {
-                angles.Y = (float)Scalar.Asin(sinp);
-            }
-
-            double siny_cosp = 2 * (q.W * q.Z + q.X * q.Y);
-            double cosy_cosp = 1 - 2 * (q.Y * q.Y + q.Z * q.Z);
-            angles.Z = (float)Scalar.Atan2(siny_cosp, cosy_cosp);
-
-            return radToDeg * angles;
+            return new Vector3D<float>(pitch, yaw, roll) * radToDeg;
         }
         public static Quaternion<float> AsQuaternion(Vector3D<float> angles)
         {

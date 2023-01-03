@@ -43,7 +43,6 @@ namespace HawkEngine.Core
                 monkey.shader.SetVec4Cache("uAlbedo", new(.5f, .5f, 1f, 1f));
                 monkey.shader.SetFloatCache("uMetallic", .1f);
                 monkey.shader.SetFloatCache("uRoughness", .9f);
-                monkey.transform.rotation = new(-90f, 0f, 0f);
 
                 MeshComponent ground = scene.CreateObject("Ground").AddComponent<MeshComponent>();
                 ground.shader = new("Shaders/Scene/LitVert.glsl", "Shaders/Scene/LitFrag.glsl");
@@ -51,7 +50,7 @@ namespace HawkEngine.Core
                 ground.mesh = new("Models/Quad.obj");
                 ground.transform.position = new(0f, -2f, 0f);
                 ground.transform.scale = new(50f);
-                ground.transform.rotation = new(90f, 0f, 0f);
+                ground.transform.eulerAngles = new(90f, 0f, 0f);
                 ground.shader.SetFloatCache("uRoughness", .9f);
                 ground.shader.SetFloatCache("uMetallic", .1f);
 
@@ -63,13 +62,10 @@ namespace HawkEngine.Core
                 ball.shader.SetFloatCache("uRoughness", .1f);
                 ball.shader.SetFloatCache("uMetallic", .1f);
 
-                monkey.transform.parent = cube.transform;
-                ball.transform.parent = cube.transform;
-
                 LightComponent light = scene.CreateObject("Light").AddComponent<DirectionalLightComponent>();
                 light.color = new(.94f, .97f, .85f);
                 light.strength = 5f;
-                light.transform.rotation = new(60f, 230f, 0f);
+                light.transform.eulerAngles = new(60f, 230f, 0f);
                 light.transform.position = new(0f, 5f, -2f);
 
                 return scene;
