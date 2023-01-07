@@ -162,46 +162,117 @@ namespace HawkEngine.Editor
 
     public class EditorSceneTree : EditorWindow
     {
+        private IEnumerable<SceneObject> rootObjects;
+        private readonly Dictionary<ulong, bool> expandedTable = new();
+        private List<SceneObject> allObjects;
+        //private SceneObject draggedObject;
+
         public EditorSceneTree() : base(true, "Scene Tree", new(300f, 500f))
         {
 
         }
         protected override void ShowWindow()
         {
-            List<SceneObject> objects = App.scene?.objects;
-            if (objects == null) return;
+            allObjects = App.scene?.objects;
+            if (allObjects == null) return;
 
-            foreach (SceneObject obj in objects)
+            rootObjects = allObjects.Where(o => o.transform.parent == null);
+
+            foreach (SceneObject obj in rootObjects)
             {
+                ShowObjectInTree(obj);
+            }
+        }
+        private void ShowObjectInTree(SceneObject obj)
+        {
+            ImGuiTreeNodeFlags flags = (HawkEditor.selectedObjects.Contains(obj) ? ImGuiTreeNodeFlags.Selected : 0) |
+                (obj.transform.children.Count <= 0 ? ImGuiTreeNodeFlags.Bullet : 0) | ImGuiTreeNodeFlags.SpanFullWidth | ImGuiTreeNodeFlags.OpenOnArrow;
+            bool expanded = TreeNodeEx((nint)obj.engineID, flags, obj.name);
 
+            if (!expandedTable.ContainsKey(obj.engineID)) expandedTable.Add(obj.engineID, expanded);
+            else expandedTable[obj.engineID] = expanded;
 
-                bool selected = HawkEditor.selectedObjects.Contains(obj);
-                Selectable(obj.name, ref selected);
+            if (IsMouseHoveringRect(GetItemRectMin() + (obj.transform.children.Count <= 0 ? new Vector2(0f) : new Vector2(24f, 0f)),
+                GetItemRectMax()) && IsMouseClicked(ImGuiMouseButton.Left))
+            {
+                //draggedObject = obj;
 
-                if (selected)
+                if (!EditorGUI.io.KeyShift && !EditorGUI.io.KeyCtrl)
                 {
-                    if (!HawkEditor.selectedObjects.Contains(obj))
+                    HawkEditor.selectedObjects.Clear();
+                    HawkEditor.selectedObjects.Add(obj);
+                }
+                else if (EditorGUI.io.KeyCtrl && !EditorGUI.io.KeyShift)
+                {
+                    if (!HawkEditor.selectedObjects.Contains(obj)) HawkEditor.selectedObjects.Add(obj);
+                    else HawkEditor.selectedObjects.Remove(obj);
+                }
+                else if (EditorGUI.io.KeyShift && HawkEditor.selectedObjects.Count > 0)
+                {
+                    int startIndex = allObjects.IndexOf(obj);
+                    int endIndex = allObjects.IndexOf(HawkEditor.selectedObjects.Last() as SceneObject);
+                    int diff = endIndex - startIndex;
+
+                    if (diff == 0)
                     {
-                        if (HawkEditor.selectedObjects.Count > 0 && EditorGUI.io.KeyShift)
-                        {
-                            int lastIndex = objects.IndexOf((SceneObject)HawkEditor.selectedObjects.Last());
-                            int currentIndex = objects.IndexOf(obj);
+                        if (!HawkEditor.selectedObjects.Contains(obj)) HawkEditor.selectedObjects.Add(obj);
+                        else HawkEditor.selectedObjects.Remove(obj);
+                    }
+                    else
+                    {
+                        int sign = (int)Math.CopySign(1, diff);
+                        int index = startIndex;
 
-                            int diff = lastIndex - currentIndex;
-                            int sign = Scalar.Sign(diff);
-
-                            for (int i = 0; i < diff * sign; i++)
-                            {
-                                SceneObject toSelect = objects[lastIndex - i * sign];
-                                if (!HawkEditor.selectedObjects.Contains(toSelect)) HawkEditor.selectedObjects.Add(toSelect);
-                            }
-                        }
-                        else if (!EditorGUI.io.KeyCtrl) HawkEditor.selectedObjects.Clear();
-
-                        HawkEditor.selectedObjects.Add(obj);
+                        ShiftSelectObject(ref index, endIndex, sign, obj);
                     }
                 }
-                else if (HawkEditor.selectedObjects.Contains(obj)) HawkEditor.selectedObjects.Remove(obj);
+            }
+
+            /*if (IsMouseHoveringRect(GetItemRectMin(), GetItemRectMax()) && IsMouseReleased(ImGuiMouseButton.Left))
+            {
+                if (draggedObject != obj) draggedObject.transform.parent = obj.transform;
+            }*/
+
+            if (expanded)
+            {
+                for (int i = 0; i < obj.transform.children.Count; i++)
+                {
+                    ShowObjectInTree(obj.transform.children[i].owner);
+                }
+
+                TreePop();
+            }
+        }
+        private void ShiftSelectObject(ref int index, int endIndex, int sign, SceneObject obj)
+        {
+            if (!HawkEditor.selectedObjects.Contains(obj)) HawkEditor.selectedObjects.Add(obj);
+            index += sign;
+
+            if (index == endIndex) return;
+
+            if (expandedTable.TryGetValue(obj.engineID, out bool value) && value)
+            {
+                for (int i = 0; i < obj.transform.children.Count && index != endIndex; i++)
+                {
+                    ShiftSelectObject(ref index, endIndex, sign, obj.transform.children[i].owner);
+                }
+            }
+            else if (index < allObjects.Count)
+            {
+                List<SceneObject> nextObjs = allObjects.Where(o => o.transform.parent == obj.transform.parent).ToList();
+                SceneObject next;
+
+                if (nextObjs.Count <= 0) next = allObjects[index];
+                else
+                {
+                    int thisIndex = nextObjs.IndexOf(obj);
+                    int nextIndex = thisIndex + sign;
+
+                    if (nextIndex < 0 || nextIndex >= nextObjs.Count) next = allObjects[index];
+                    else next = nextObjs[nextIndex];
+                }
+
+                ShiftSelectObject(ref index, endIndex, sign, next);
             }
         }
     }
@@ -217,7 +288,13 @@ namespace HawkEngine.Editor
         private bool showWarnings = true;
         private bool showInfos = true;
 
-        public EditorConsole() : base(true, "Console", new(400f, 150f))
+        private int maxMessages = 10000;
+        private bool autoScroll = true;
+
+        private bool scrollToTop;
+        private bool scrollToBottom;
+
+        public EditorConsole() : base(true, "Console", new(1000f, 250f))
         {
 
         }
@@ -228,80 +305,119 @@ namespace HawkEngine.Editor
             if (Button("Collapse All")) collapseAll = true;
             SameLine();
             if (Button("Expand All")) expandAll = true;
+            SameLine();
+            if (Button("Scroll to Top")) scrollToTop = true;
+            SameLine();
+            if (Button("Scroll to Bottom")) scrollToBottom = true;
 
-            SameLine();
-            Checkbox("Show Infos", ref showInfos);
-            SameLine();
-            Checkbox("Show Warnings", ref showWarnings);
-            SameLine();
-            Checkbox("Show Errors", ref showErrors);
-            Separator();
+            bool showSettings = TreeNodeEx("Settings", ImGuiTreeNodeFlags.Framed | ImGuiTreeNodeFlags.SpanFullWidth);
 
-            for (int m = 0; m < messages.Count; m++)
+            if (showSettings)
             {
-                EditorUtils.ConsoleMessage message = messages[m];
+                Spacing();
+                Checkbox("Auto Scroll", ref autoScroll);
+                SameLine();
+                SetNextItemWidth(CalcTextSize(maxMessages.ToString()).X + 10f);
+                DragInt("Max Messages", ref maxMessages, 15f, 0, int.MaxValue);
 
-                float space = GetContentRegionAvail().X;
-                float textSize = CalcTextSize(message.message).X;
+                Spacing();
 
-                if (textSize > space)
-                {
-                    char[] chars = message.message.ToCharArray();
-                    int splitIndex = chars.Length - 1;
+                Text("Show: ");
+                SameLine();
+                Checkbox("Infos", ref showInfos);
+                SameLine();
+                Checkbox("Warnings", ref showWarnings);
+                SameLine();
+                Checkbox("Errors", ref showErrors);
 
-                    for (int i = chars.Length - 1; i >= 0; i--)
-                    {
-                        if (chars[i] == ' ')
-                        {
-                            float newSize = CalcTextSize(new string(chars.Take(i + 1).ToArray())).X;
-
-                            if (newSize < space - 20f)
-                            {
-                                splitIndex = i;
-                                break;
-                            }
-                        }
-                    }
-
-                    message.message = new string(chars.Take(splitIndex).ToArray());
-                    message.extraInfo = new string(chars.Skip(splitIndex).ToArray()) + (message.extraInfo == null ? "" : $" | {message.extraInfo}");
-                }
-
-                if (message.severity == EditorUtils.MessageSeverity.Info && !showInfos) continue;
-                else if (message.severity == EditorUtils.MessageSeverity.Warning && !showWarnings) continue;
-                else if (message.severity == EditorUtils.MessageSeverity.Error && !showErrors) continue;
-
-                if (message.extraInfo == null) SetNextItemOpen(false);
-                else if (collapseAll) SetNextItemOpen(false);
-                else if (expandAll) SetNextItemOpen(true);
-
-                PushStyleColor(ImGuiCol.Text, message.severity switch
-                {
-                    EditorUtils.MessageSeverity.Warning => new(1f, 1f, 0f, 1f),
-                    EditorUtils.MessageSeverity.Error => new(1f, 0f, 0f, 1f),
-                    _ => Vector4.One,
-                });
-
-                ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags.SpanFullWidth | ImGuiTreeNodeFlags.Framed;
-                bool expanded = TreeNodeEx(message.id, flags, message.message);
-
-                if (message.obj != null)
-                {
-                    SameLine(space - CalcTextSize(message.obj.name).X);
-                    TextWrapped(message.obj.name);
-                }
-
-                if (expanded)
-                {
-                    if (message.extraInfo != null) TextWrapped(message.extraInfo);
-                    TreePop();
-                }
-
-                PopStyleColor();
+                TreePop();
             }
 
-            collapseAll = false;
-            expandAll = false;
+            Separator();
+            if (messages.Count > maxMessages) messages.RemoveRange(0, messages.Count - maxMessages);
+            bool autoScrollToBottom = autoScroll;
+
+            if (BeginChild("Console Messages"))
+            {
+                for (int m = 0; m < messages.Count; m++)
+                {
+                    EditorUtils.ConsoleMessage message = messages[m];
+
+                    float space = GetContentRegionAvail().X;
+                    float textSize = CalcTextSize(message.message).X;
+
+                    if (textSize > space)
+                    {
+                        char[] chars = message.message.ToCharArray();
+                        int splitIndex = chars.Length - 1;
+
+                        for (int i = chars.Length - 1; i >= 0; i--)
+                        {
+                            if (chars[i] == ' ')
+                            {
+                                float newSize = CalcTextSize(new string(chars.Take(i + 1).ToArray())).X;
+
+                                if (newSize < space - 20f)
+                                {
+                                    splitIndex = i;
+                                    break;
+                                }
+                            }
+                        }
+
+                        message.message = new string(chars.Take(splitIndex).ToArray());
+                        message.extraInfo = new string(chars.Skip(splitIndex).ToArray()) + (message.extraInfo == null ? "" : $" | {message.extraInfo}");
+                    }
+
+                    if (message.severity == EditorUtils.MessageSeverity.Info && !showInfos) continue;
+                    else if (message.severity == EditorUtils.MessageSeverity.Warning && !showWarnings) continue;
+                    else if (message.severity == EditorUtils.MessageSeverity.Error && !showErrors) continue;
+
+                    if (message.extraInfo == null) SetNextItemOpen(false);
+                    else if (collapseAll) SetNextItemOpen(false);
+                    else if (expandAll) SetNextItemOpen(true);
+
+                    PushStyleColor(ImGuiCol.Text, message.severity switch
+                    {
+                        EditorUtils.MessageSeverity.Warning => new(1f, 1f, 0f, 1f),
+                        EditorUtils.MessageSeverity.Error => new(1f, 0f, 0f, 1f),
+                        _ => Vector4.One,
+                    });
+
+                    //PushFont(EditorGUI.availableFonts["Calibri"][EditorUtils.FontStyle.Bold, EditorUtils.FontSize.Medium].Value);
+                    
+                    ImGuiTreeNodeFlags flags = (message.extraInfo == null ? ImGuiTreeNodeFlags.Bullet : 0) | ImGuiTreeNodeFlags.SpanFullWidth;
+                    bool expanded = TreeNodeEx(message.id, flags, message.message);
+
+                    //PopFont();
+
+                    if (IsItemClicked(ImGuiMouseButton.Left)) autoScrollToBottom = false;
+
+                    if (message.obj != null)
+                    {
+                        SameLine(space - CalcTextSize(message.obj.name).X);
+                        TextWrapped(message.obj.name);
+                    }
+
+                    if (expanded)
+                    {
+                        if (message.extraInfo != null) TextWrapped(message.extraInfo);
+                        TreePop();
+                    }
+
+                    PopStyleColor();
+                }
+
+                if (scrollToTop) SetScrollY(0f);
+                else if (scrollToBottom || (autoScrollToBottom && GetScrollY() >= GetScrollMaxY() && autoScroll)) SetScrollHereY();
+
+                collapseAll = false;
+                expandAll = false;
+
+                scrollToTop = false;
+                scrollToBottom = false;
+            }
+            EndChild();
         }
         public void PrintMessage(EditorUtils.ConsoleMessage message)
         {

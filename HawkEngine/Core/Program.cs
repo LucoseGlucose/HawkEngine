@@ -68,6 +68,8 @@ namespace HawkEngine.Core
                 light.transform.eulerAngles = new(60f, 230f, 0f);
                 light.transform.position = new(0f, 5f, -2f);
 
+                Editor.EditorUtils.PrintMessage("pooooop");
+
                 return scene;
             });
         }

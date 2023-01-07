@@ -1,8 +1,11 @@
 ﻿using HawkEngine.Core;
+using ImGuiNET;
 using Silk.NET.Maths;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -93,6 +96,55 @@ namespace HawkEngine.Editor
         public static void PrintException(Exception exception)
         {
             PrintMessage(new ConsoleMessage(MessageSeverity.Error, exception.Message, null, exception.StackTrace));
+        }
+
+        public enum FontStyle
+        {
+            Regular,
+            Bold,
+            Italic,
+            BoldItalic,
+        }
+        public enum FontSize
+        {
+            Medium,
+            Small,
+            Large,
+        }
+        public struct EditorFontData
+        {
+            public FontStyle fontStyle;
+            public FontSize fontSize;
+            public ImFontPtr fontPtr;
+            private ushort[] range;
+
+            public EditorFontData(FontStyle fontStyle, FontSize fontSize, ImFontPtr fontPtr)
+            {
+                this.fontStyle = fontStyle;
+                this.fontSize = fontSize;
+                this.fontPtr = fontPtr;
+            }
+            public EditorFontData(string path, float pixelSize, FontStyle style, FontSize size)
+                : this(style, size, EditorGUI.io.Fonts.AddFontFromFileTTF(path, pixelSize))
+            {
+
+            }
+            public unsafe EditorFontData MergeFonts(string path, float pixelSize, int min, int max)
+            {
+                ImFontConfig config = new()
+                {
+                    MergeMode = 1,
+                };
+
+                range = new ushort[2] { (ushort)min, (ushort)max };
+                fixed (ushort* rangePtr = range)
+                {
+                    config.GlyphRanges = rangePtr;
+                }
+
+                EditorGUI.io.Fonts.AddFontFromFileTTF(path, pixelSize, &config);
+                return this;
+            }
         }
     }
 }

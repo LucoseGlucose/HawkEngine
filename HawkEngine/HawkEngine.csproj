@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\Fonts\" />
+    <Folder Include="Resources\Fonts\Icons\" />
   </ItemGroup>
 
 </Project>

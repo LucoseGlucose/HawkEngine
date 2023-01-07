@@ -50,7 +50,7 @@ namespace HawkEngine.Graphics
         }
         public Texture this[FramebufferAttachment attachment]
         {
-            get { return attachments.FirstOrDefault(t => t.attachment == attachment)?.texture; }
+            get { return attachments.FirstOrDefault(t => t.attachment == attachment).texture; }
         }
         public void Dispose()
         {
@@ -59,7 +59,7 @@ namespace HawkEngine.Graphics
         }
     }
 
-    public sealed class FramebufferTexture
+    public readonly struct FramebufferTexture
     {
         public readonly FramebufferAttachment attachment;
         public readonly Texture texture;
