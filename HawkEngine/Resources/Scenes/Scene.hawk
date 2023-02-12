@@ -1,0 +1,2634 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Root>
+  <Start
+    Name="Scene"
+    Type="HawkEngine.Core.Scene, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">994195556029073446</Start>
+  <Reference
+    Name="Scene"
+    Type="HawkEngine.Core.Scene, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="objects"
+      Type="System.Collections.Generic.List`1[[HawkEngine.Core.SceneObject, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      Length="3">
+      <Item
+        Name="0"
+        Type="HawkEngine.Core.SceneObject, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">3483847296350593021</Item>
+      <Item
+        Name="1"
+        Type="HawkEngine.Core.SceneObject, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">2746350320185398158</Item>
+      <Item
+        Name="2"
+        Type="HawkEngine.Core.SceneObject, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">2400458570603588845</Item>
+    </Field>
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Scene</Field>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">994195556029073446</Property>
+  </Reference>
+  <Reference
+    Name="Camera"
+    Type="HawkEngine.Core.SceneObject, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="components"
+      Type="System.Collections.Generic.List`1[[HawkEngine.Core.Component, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      Length="2">
+      <Item
+        Name="0"
+        Type="HawkEngine.Components.CameraComponent, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">1782834518813782975</Item>
+      <Item
+        Name="1"
+        Type="HawkEngine.Components.CameraControllerComponent, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">7626744000823415622</Item>
+    </Field>
+    <Field
+      Name="enabled"
+      Type="System.Boolean, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">True</Field>
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Camera</Field>
+    <Property
+      Name="transform"
+      Type="HawkEngine.Core.Transform, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">2258596737482977200</Property>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">3483847296350593021</Property>
+  </Reference>
+  <Reference
+    Name="Cube"
+    Type="HawkEngine.Core.SceneObject, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="components"
+      Type="System.Collections.Generic.List`1[[HawkEngine.Core.Component, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      Length="1">
+      <Item
+        Name="0"
+        Type="HawkEngine.Components.MeshComponent, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">5452841493999426425</Item>
+    </Field>
+    <Field
+      Name="enabled"
+      Type="System.Boolean, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">True</Field>
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Cube</Field>
+    <Property
+      Name="transform"
+      Type="HawkEngine.Core.Transform, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">4581577780976766630</Property>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">2746350320185398158</Property>
+  </Reference>
+  <Reference
+    Name="Ground"
+    Type="HawkEngine.Core.SceneObject, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="components"
+      Type="System.Collections.Generic.List`1[[HawkEngine.Core.Component, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      Length="1">
+      <Item
+        Name="0"
+        Type="HawkEngine.Components.MeshComponent, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">8598037365458314586</Item>
+    </Field>
+    <Field
+      Name="enabled"
+      Type="System.Boolean, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">True</Field>
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Ground</Field>
+    <Property
+      Name="transform"
+      Type="HawkEngine.Core.Transform, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">4511430680211980679</Property>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">2400458570603588845</Property>
+  </Reference>
+  <Reference
+    Name="Camera : CameraComponent"
+    Type="HawkEngine.Components.CameraComponent, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="matchScreen"
+      Type="System.Boolean, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">True</Field>
+    <Field
+      Name="fov"
+      Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">60</Field>
+    <Field
+      Name="nearClip"
+      Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0.1</Field>
+    <Field
+      Name="farClip"
+      Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">100</Field>
+    <Field
+      Name="size"
+      Type="Silk.NET.Maths.Vector2D`1[[System.Int32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Int32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1260</X>
+      <Y
+        Name="Y"
+        Type="System.Int32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">685</Y>
+    </Field>
+    <Field
+      Name="enabled"
+      Type="System.Boolean, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">True</Field>
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Camera : CameraComponent</Field>
+    <Property
+      Name="multisamples"
+      Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">4</Property>
+    <Property
+      Name="owner"
+      Type="HawkEngine.Core.SceneObject, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">3483847296350593021</Property>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1782834518813782975</Property>
+  </Reference>
+  <Reference
+    Name="Camera : CameraControllerComponent"
+    Type="HawkEngine.Components.CameraControllerComponent, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="scrollSpeed"
+      Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1.5</Field>
+    <Field
+      Name="panSpeed"
+      Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Field>
+    <Field
+      Name="rotateSpeed"
+      Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">50</Field>
+    <Field
+      Name="flySpeed"
+      Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">25</Field>
+    <Field
+      Name="enabled"
+      Type="System.Boolean, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">True</Field>
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Camera : CameraControllerComponent</Field>
+    <Property
+      Name="owner"
+      Type="HawkEngine.Core.SceneObject, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">3483847296350593021</Property>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">7626744000823415622</Property>
+  </Reference>
+  <Reference
+    Name="SceneObject : Transform"
+    Type="HawkEngine.Core.Transform, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="owner"
+      Type="HawkEngine.Core.SceneObject, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">3483847296350593021</Field>
+    <Field
+      Name="children"
+      Type="System.Collections.Generic.List`1[[HawkEngine.Core.Transform, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      Length="0" />
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">SceneObject : Transform</Field>
+    <Property
+      Name="position"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-4</Z>
+    </Property>
+    <Property
+      Name="rotation"
+      Type="Silk.NET.Maths.Quaternion`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      <W
+        Name="W"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</W>
+    </Property>
+    <Property
+      Name="scale"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+    </Property>
+    <Property
+      Name="parent"
+      Type="HawkEngine.Core.Transform, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">null</Property>
+    <Property
+      Name="localPosition"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-4</Z>
+    </Property>
+    <Property
+      Name="localRotation"
+      Type="Silk.NET.Maths.Quaternion`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      <W
+        Name="W"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</W>
+    </Property>
+    <Property
+      Name="localScale"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+    </Property>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">2258596737482977200</Property>
+  </Reference>
+  <Reference
+    Name="Cube : MeshComponent"
+    Type="HawkEngine.Components.MeshComponent, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="shader"
+      Type="HawkEngine.Graphics.ShaderProgram, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">8711560264234487977</Field>
+    <Field
+      Name="mesh"
+      Type="HawkEngine.Graphics.Mesh, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Field
+        Name="meshData"
+        Type="HawkEngine.Graphics.MeshData, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">7069487945291054273</Field>
+    </Field>
+    <Field
+      Name="lightingEnabled"
+      Type="System.Boolean, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">True</Field>
+    <Field
+      Name="castShadows"
+      Type="System.Boolean, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">True</Field>
+    <Field
+      Name="recieveShadows"
+      Type="System.Boolean, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">True</Field>
+    <Field
+      Name="enabled"
+      Type="System.Boolean, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">True</Field>
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Cube : MeshComponent</Field>
+    <Property
+      Name="owner"
+      Type="HawkEngine.Core.SceneObject, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">2746350320185398158</Property>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">5452841493999426425</Property>
+  </Reference>
+  <Reference
+    Name="SceneObject : Transform"
+    Type="HawkEngine.Core.Transform, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="owner"
+      Type="HawkEngine.Core.SceneObject, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">2746350320185398158</Field>
+    <Field
+      Name="children"
+      Type="System.Collections.Generic.List`1[[HawkEngine.Core.Transform, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      Length="0" />
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">SceneObject : Transform</Field>
+    <Property
+      Name="position"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+    </Property>
+    <Property
+      Name="rotation"
+      Type="Silk.NET.Maths.Quaternion`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      <W
+        Name="W"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</W>
+    </Property>
+    <Property
+      Name="scale"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+    </Property>
+    <Property
+      Name="parent"
+      Type="HawkEngine.Core.Transform, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">null</Property>
+    <Property
+      Name="localPosition"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+    </Property>
+    <Property
+      Name="localRotation"
+      Type="Silk.NET.Maths.Quaternion`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      <W
+        Name="W"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</W>
+    </Property>
+    <Property
+      Name="localScale"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+    </Property>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">4581577780976766630</Property>
+  </Reference>
+  <Reference
+    Name="Ground : MeshComponent"
+    Type="HawkEngine.Components.MeshComponent, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="shader"
+      Type="HawkEngine.Graphics.ShaderProgram, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">3383278561408140815</Field>
+    <Field
+      Name="mesh"
+      Type="HawkEngine.Graphics.Mesh, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Field
+        Name="meshData"
+        Type="HawkEngine.Graphics.MeshData, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">8777244264792681635</Field>
+    </Field>
+    <Field
+      Name="lightingEnabled"
+      Type="System.Boolean, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">True</Field>
+    <Field
+      Name="castShadows"
+      Type="System.Boolean, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">True</Field>
+    <Field
+      Name="recieveShadows"
+      Type="System.Boolean, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">True</Field>
+    <Field
+      Name="enabled"
+      Type="System.Boolean, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">True</Field>
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Ground : MeshComponent</Field>
+    <Property
+      Name="owner"
+      Type="HawkEngine.Core.SceneObject, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">2400458570603588845</Property>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">8598037365458314586</Property>
+  </Reference>
+  <Reference
+    Name="SceneObject : Transform"
+    Type="HawkEngine.Core.Transform, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="owner"
+      Type="HawkEngine.Core.SceneObject, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">2400458570603588845</Field>
+    <Field
+      Name="children"
+      Type="System.Collections.Generic.List`1[[HawkEngine.Core.Transform, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      Length="0" />
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">SceneObject : Transform</Field>
+    <Property
+      Name="position"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-2</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+    </Property>
+    <Property
+      Name="rotation"
+      Type="Silk.NET.Maths.Quaternion`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0.70710677</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      <W
+        Name="W"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0.70710677</W>
+    </Property>
+    <Property
+      Name="scale"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">50</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">50</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">50</Z>
+    </Property>
+    <Property
+      Name="parent"
+      Type="HawkEngine.Core.Transform, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">null</Property>
+    <Property
+      Name="localPosition"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-2</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+    </Property>
+    <Property
+      Name="localRotation"
+      Type="Silk.NET.Maths.Quaternion`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0.70710677</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      <W
+        Name="W"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0.70710677</W>
+    </Property>
+    <Property
+      Name="localScale"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <X
+        Name="X"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">50</X>
+      <Y
+        Name="Y"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">50</Y>
+      <Z
+        Name="Z"
+        Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">50</Z>
+    </Property>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">4511430680211980679</Property>
+  </Reference>
+  <Reference
+    Name="Shaders/Scene/LitVert.glsl : Shaders/Scene/LitFrag.glsl : "
+    Type="HawkEngine.Graphics.ShaderProgram, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="compiledShaders"
+      Type="HawkEngine.Graphics.Shader[], HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      ElementType="HawkEngine.Graphics.Shader, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      Length="2">
+      <Item
+        Name="0"
+        Type="HawkEngine.Graphics.Shader, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">2475847896802606544</Item>
+      <Item
+        Name="1"
+        Type="HawkEngine.Graphics.Shader, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">2570889808914505290</Item>
+    </Field>
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Shaders/Scene/LitVert.glsl : Shaders/Scene/LitFrag.glsl : </Field>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">8711560264234487977</Property>
+  </Reference>
+  <Reference
+    Name="Models/Cube.obj"
+    Type="HawkEngine.Graphics.MeshData, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="indices"
+      Type="System.UInt32[], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      ElementType="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      Length="36">
+      <Item
+        Name="0"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Item>
+      <Item
+        Name="1"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Item>
+      <Item
+        Name="2"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">2</Item>
+      <Item
+        Name="3"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">3</Item>
+      <Item
+        Name="4"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">4</Item>
+      <Item
+        Name="5"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">5</Item>
+      <Item
+        Name="6"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">6</Item>
+      <Item
+        Name="7"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">7</Item>
+      <Item
+        Name="8"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">8</Item>
+      <Item
+        Name="9"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">9</Item>
+      <Item
+        Name="10"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">10</Item>
+      <Item
+        Name="11"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">11</Item>
+      <Item
+        Name="12"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">12</Item>
+      <Item
+        Name="13"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">13</Item>
+      <Item
+        Name="14"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">14</Item>
+      <Item
+        Name="15"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">15</Item>
+      <Item
+        Name="16"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">16</Item>
+      <Item
+        Name="17"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">17</Item>
+      <Item
+        Name="18"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Item>
+      <Item
+        Name="19"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">18</Item>
+      <Item
+        Name="20"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Item>
+      <Item
+        Name="21"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">3</Item>
+      <Item
+        Name="22"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">19</Item>
+      <Item
+        Name="23"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">4</Item>
+      <Item
+        Name="24"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">6</Item>
+      <Item
+        Name="25"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">20</Item>
+      <Item
+        Name="26"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">7</Item>
+      <Item
+        Name="27"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">9</Item>
+      <Item
+        Name="28"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">21</Item>
+      <Item
+        Name="29"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">10</Item>
+      <Item
+        Name="30"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">12</Item>
+      <Item
+        Name="31"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">22</Item>
+      <Item
+        Name="32"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">13</Item>
+      <Item
+        Name="33"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">15</Item>
+      <Item
+        Name="34"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">23</Item>
+      <Item
+        Name="35"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">16</Item>
+    </Field>
+    <Field
+      Name="verts"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]][], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      ElementType="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      Length="24">
+      <Item
+        Name="0"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="1"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="2"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="3"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="4"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="5"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="6"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="7"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="8"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="9"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="10"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="11"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="12"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="13"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="14"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="15"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="16"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="17"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="18"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="19"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="20"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="21"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="22"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="23"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+    </Field>
+    <Field
+      Name="normals"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]][], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      ElementType="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      Length="24">
+      <Item
+        Name="0"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Z>
+      </Item>
+      <Item
+        Name="1"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Z>
+      </Item>
+      <Item
+        Name="2"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Z>
+      </Item>
+      <Item
+        Name="3"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="4"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="5"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="6"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Z>
+      </Item>
+      <Item
+        Name="7"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Z>
+      </Item>
+      <Item
+        Name="8"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Z>
+      </Item>
+      <Item
+        Name="9"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Z>
+      </Item>
+      <Item
+        Name="10"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Z>
+      </Item>
+      <Item
+        Name="11"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Z>
+      </Item>
+      <Item
+        Name="12"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Z>
+      </Item>
+      <Item
+        Name="13"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Z>
+      </Item>
+      <Item
+        Name="14"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Z>
+      </Item>
+      <Item
+        Name="15"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="16"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="17"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="18"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Z>
+      </Item>
+      <Item
+        Name="19"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="20"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Z>
+      </Item>
+      <Item
+        Name="21"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Z>
+      </Item>
+      <Item
+        Name="22"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Z>
+      </Item>
+      <Item
+        Name="23"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+    </Field>
+    <Field
+      Name="uvs"
+      Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]][], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      ElementType="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      Length="24">
+      <Item
+        Name="0"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      </Item>
+      <Item
+        Name="1"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      </Item>
+      <Item
+        Name="2"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      </Item>
+      <Item
+        Name="3"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      </Item>
+      <Item
+        Name="4"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      </Item>
+      <Item
+        Name="5"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      </Item>
+      <Item
+        Name="6"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      </Item>
+      <Item
+        Name="7"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      </Item>
+      <Item
+        Name="8"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      </Item>
+      <Item
+        Name="9"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      </Item>
+      <Item
+        Name="10"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      </Item>
+      <Item
+        Name="11"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      </Item>
+      <Item
+        Name="12"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      </Item>
+      <Item
+        Name="13"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      </Item>
+      <Item
+        Name="14"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      </Item>
+      <Item
+        Name="15"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      </Item>
+      <Item
+        Name="16"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      </Item>
+      <Item
+        Name="17"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      </Item>
+      <Item
+        Name="18"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      </Item>
+      <Item
+        Name="19"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      </Item>
+      <Item
+        Name="20"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      </Item>
+      <Item
+        Name="21"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      </Item>
+      <Item
+        Name="22"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      </Item>
+      <Item
+        Name="23"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      </Item>
+    </Field>
+    <Field
+      Name="tangents"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]][], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      ElementType="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      Length="24">
+      <Item
+        Name="0"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="1"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="2"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="3"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="4"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="5"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="6"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="7"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="8"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="9"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="10"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="11"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="12"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="13"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="14"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="15"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="16"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="17"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="18"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="19"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="20"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="21"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="22"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="23"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+    </Field>
+    <Field
+      Name="bitangents"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]][], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      ElementType="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      Length="24">
+      <Item
+        Name="0"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="1"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="2"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="3"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="4"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="5"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="6"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="7"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="8"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="9"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="10"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="11"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="12"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="13"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="14"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="15"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="16"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="17"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="18"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Z>
+      </Item>
+      <Item
+        Name="19"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="20"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="21"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="22"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="23"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+    </Field>
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Models/Cube.obj</Field>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">7069487945291054273</Property>
+  </Reference>
+  <Reference
+    Name="Shaders/Scene/LitVert.glsl : Shaders/Scene/LitFrag.glsl : "
+    Type="HawkEngine.Graphics.ShaderProgram, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="compiledShaders"
+      Type="HawkEngine.Graphics.Shader[], HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      ElementType="HawkEngine.Graphics.Shader, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      Length="2">
+      <Item
+        Name="0"
+        Type="HawkEngine.Graphics.Shader, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">9203021278608601677</Item>
+      <Item
+        Name="1"
+        Type="HawkEngine.Graphics.Shader, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">3834648127937388990</Item>
+    </Field>
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Shaders/Scene/LitVert.glsl : Shaders/Scene/LitFrag.glsl : </Field>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">3383278561408140815</Property>
+  </Reference>
+  <Reference
+    Name="Models/Quad.obj"
+    Type="HawkEngine.Graphics.MeshData, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="indices"
+      Type="System.UInt32[], System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      ElementType="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      Length="6">
+      <Item
+        Name="0"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Item>
+      <Item
+        Name="1"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Item>
+      <Item
+        Name="2"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">2</Item>
+      <Item
+        Name="3"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Item>
+      <Item
+        Name="4"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">3</Item>
+      <Item
+        Name="5"
+        Type="System.UInt32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Item>
+    </Field>
+    <Field
+      Name="verts"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]][], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      ElementType="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      Length="4">
+      <Item
+        Name="0"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="1"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="2"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="3"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+    </Field>
+    <Field
+      Name="normals"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]][], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      ElementType="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      Length="4">
+      <Item
+        Name="0"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="1"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="2"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+      <Item
+        Name="3"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</Z>
+      </Item>
+    </Field>
+    <Field
+      Name="uvs"
+      Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]][], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      ElementType="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      Length="4">
+      <Item
+        Name="0"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      </Item>
+      <Item
+        Name="1"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      </Item>
+      <Item
+        Name="2"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+      </Item>
+      <Item
+        Name="3"
+        Type="Silk.NET.Maths.Vector2D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+      </Item>
+    </Field>
+    <Field
+      Name="tangents"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]][], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      ElementType="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      Length="4">
+      <Item
+        Name="0"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="1"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="2"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="3"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">-1</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+    </Field>
+    <Field
+      Name="bitangents"
+      Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]][], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      ElementType="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null"
+      Length="4">
+      <Item
+        Name="0"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="1"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="2"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+      <Item
+        Name="3"
+        Type="Silk.NET.Maths.Vector3D`1[[System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], Silk.NET.Maths, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+        <X
+          Name="X"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</X>
+        <Y
+          Name="Y"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">1</Y>
+        <Z
+          Name="Z"
+          Type="System.Single, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">0</Z>
+      </Item>
+    </Field>
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Models/Quad.obj</Field>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">8777244264792681635</Property>
+  </Reference>
+  <Reference
+    Name="Shaders/Scene/LitVert.glsl"
+    Type="HawkEngine.Graphics.Shader, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="filePath"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Shaders/Scene/LitVert.glsl</Field>
+    <Field
+      Name="type"
+      Type="Silk.NET.OpenGL.ShaderType, Silk.NET.OpenGL, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <Field
+        Name="value__"
+        Type="System.Int32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">35633</Field>
+    </Field>
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Shaders/Scene/LitVert.glsl</Field>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">2475847896802606544</Property>
+  </Reference>
+  <Reference
+    Name="Shaders/Scene/LitFrag.glsl"
+    Type="HawkEngine.Graphics.Shader, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="filePath"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Shaders/Scene/LitFrag.glsl</Field>
+    <Field
+      Name="type"
+      Type="Silk.NET.OpenGL.ShaderType, Silk.NET.OpenGL, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <Field
+        Name="value__"
+        Type="System.Int32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">35632</Field>
+    </Field>
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Shaders/Scene/LitFrag.glsl</Field>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">2570889808914505290</Property>
+  </Reference>
+  <Reference
+    Name="Shaders/Scene/LitVert.glsl"
+    Type="HawkEngine.Graphics.Shader, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="filePath"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Shaders/Scene/LitVert.glsl</Field>
+    <Field
+      Name="type"
+      Type="Silk.NET.OpenGL.ShaderType, Silk.NET.OpenGL, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <Field
+        Name="value__"
+        Type="System.Int32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">35633</Field>
+    </Field>
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Shaders/Scene/LitVert.glsl</Field>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">9203021278608601677</Property>
+  </Reference>
+  <Reference
+    Name="Shaders/Scene/LitFrag.glsl"
+    Type="HawkEngine.Graphics.Shader, HawkEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Field
+      Name="filePath"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Shaders/Scene/LitFrag.glsl</Field>
+    <Field
+      Name="type"
+      Type="Silk.NET.OpenGL.ShaderType, Silk.NET.OpenGL, Version=2.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <Field
+        Name="value__"
+        Type="System.Int32, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">35632</Field>
+    </Field>
+    <Field
+      Name="name"
+      Type="System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">Shaders/Scene/LitFrag.glsl</Field>
+    <Property
+      Name="engineID"
+      Type="System.UInt64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">3834648127937388990</Property>
+  </Reference>
+</Root>

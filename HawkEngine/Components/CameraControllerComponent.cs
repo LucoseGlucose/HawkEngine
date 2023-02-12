@@ -4,12 +4,13 @@ using HawkEngine.Core;
 using Silk.NET.Input;
 using System.Numerics;
 using Silk.NET.Maths;
+using System.Xml.Serialization;
 
 namespace HawkEngine.Components
 {
     public class CameraControllerComponent : Component
     {
-        private Vector2 lastMousePos;        
+        [Utils.DontSerialize] private Vector2 lastMousePos;        
 
         public float scrollSpeed = 1.5f;
         public float panSpeed = 1f;
@@ -18,6 +19,8 @@ namespace HawkEngine.Components
 
         public override void Update()
         {
+            base.Update();
+
             IMouse mouse = App.input.Mice[0];
             Vector2 mouseDelta = mouse.Position - lastMousePos;
             lastMousePos = mouse.Position;

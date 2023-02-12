@@ -12,6 +12,8 @@ using Silk.NET.Windowing;
 using System.Drawing;
 using Silk.NET.Assimp;
 using Silk.NET.Input;
+using System.Runtime.Intrinsics;
+using System.IO;
 
 namespace HawkEngine.Core
 {
@@ -36,14 +38,6 @@ namespace HawkEngine.Core
                 cube.shader.SetFloatCache("uMetallic", .1f);
                 cube.shader.SetFloatCache("uRoughness", .8f);
 
-                MeshComponent monkey = scene.CreateObject("Monkey").AddComponent<MeshComponent>();
-                monkey.shader = new("Shaders/Scene/LitVert.glsl", "Shaders/Scene/LitFrag.glsl");
-                monkey.mesh = new("Models/Monkey.obj");
-                monkey.transform.position = new(2f, 4f, 1f);
-                monkey.shader.SetVec4Cache("uAlbedo", new(.5f, .5f, 1f, 1f));
-                monkey.shader.SetFloatCache("uMetallic", .1f);
-                monkey.shader.SetFloatCache("uRoughness", .9f);
-
                 MeshComponent ground = scene.CreateObject("Ground").AddComponent<MeshComponent>();
                 ground.shader = new("Shaders/Scene/LitVert.glsl", "Shaders/Scene/LitFrag.glsl");
                 ground.shader.SetVec4Cache("uAlbedo", new(.5f, .5f, .5f, 1f));
@@ -53,22 +47,6 @@ namespace HawkEngine.Core
                 ground.transform.eulerAngles = new(90f, 0f, 0f);
                 ground.shader.SetFloatCache("uRoughness", .9f);
                 ground.shader.SetFloatCache("uMetallic", .1f);
-
-                MeshComponent ball = scene.CreateObject("Ball").AddComponent<MeshComponent>();
-                ball.shader = new("Shaders/Scene/LitVert.glsl", "Shaders/Scene/LitFrag.glsl");
-                ball.shader.SetVec4Cache("uAlbedo", new(.05f, .2f, 1f, 1f));
-                ball.mesh = new("Models/Smooth Sphere.obj");
-                ball.transform.position = new(-4f, 1f, 0f);
-                ball.shader.SetFloatCache("uRoughness", .1f);
-                ball.shader.SetFloatCache("uMetallic", .1f);
-
-                LightComponent light = scene.CreateObject("Light").AddComponent<DirectionalLightComponent>();
-                light.color = new(.94f, .97f, .85f);
-                light.strength = 5f;
-                light.transform.eulerAngles = new(60f, 230f, 0f);
-                light.transform.position = new(0f, 5f, -2f);
-
-                Editor.EditorUtils.PrintMessage("pooooop");
 
                 return scene;
             });

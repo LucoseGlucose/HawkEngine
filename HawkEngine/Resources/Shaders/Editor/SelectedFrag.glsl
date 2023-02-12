@@ -1,8 +1,10 @@
 #version 460
 
-layout(location=0) out float outDepth;
+uniform float uIndex;
+
+layout(location=0) out vec2 outResult;
 
 void main()
 {
-	outDepth = gl_FragCoord.z * gl_FragCoord.w;
+	outResult = vec2(uIndex, 1 - gl_FragCoord.z * gl_FragCoord.w);
 }

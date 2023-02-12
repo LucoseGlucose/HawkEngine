@@ -11,7 +11,7 @@ namespace HawkEngine.Graphics
 {
     public class MeshData : HawkObject
     {
-        public static PostProcessSteps postProcessSteps { get; set; } = PostProcessSteps.CalculateTangentSpace | PostProcessSteps.JoinIdenticalVertices
+        public const PostProcessSteps postProcessSteps = PostProcessSteps.CalculateTangentSpace | PostProcessSteps.JoinIdenticalVertices
             | PostProcessSteps.Triangulate | PostProcessSteps.OptimizeMeshes;
 
         public readonly uint[] indices;
@@ -21,6 +21,10 @@ namespace HawkEngine.Graphics
         public readonly Vector3D<float>[] tangents;
         public readonly Vector3D<float>[] bitangents;
 
+        public MeshData() : base()
+        {
+
+        }
         public MeshData(uint[] indices, Vector3D<float>[] verts, Vector3D<float>[] normals,
             Vector2D<float>[] uvs, Vector3D<float>[] tangents, Vector3D<float>[] bitangents, string name = nameof(MeshData)) : base(name)
         {

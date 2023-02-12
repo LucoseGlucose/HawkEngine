@@ -33,8 +33,8 @@ namespace HawkEngine.Editor
 
         public static void Init()
         {
-            objectIDShader = Graphics.Shader.Create("Shaders/Editor/ObjectIDFrag.glsl", ShaderType.FragmentShader);
-            selectShader = Graphics.Shader.Create("Shaders/Editor/SelectedFrag.glsl", ShaderType.FragmentShader);
+            objectIDShader = new("Shaders/Editor/ObjectIDFrag.glsl", ShaderType.FragmentShader);
+            selectShader = new("Shaders/Editor/SelectedFrag.glsl", ShaderType.FragmentShader);
 
             outlineModel = new(new("Shaders/Post Processing/OutputVert.glsl", "Shaders/Editor/OutlineFrag.glsl"), Rendering.quad);
 
@@ -55,17 +55,17 @@ namespace HawkEngine.Editor
                 new FramebufferTexture(new Texture2D((uint)Rendering.outputCam.size.X, (uint)Rendering.outputCam.size.Y,
                     InternalFormat.RG32f, PixelFormat.RG), FramebufferAttachment.ColorAttachment1),
                 new FramebufferTexture(new Texture2D((uint)Rendering.outputCam.size.X, (uint)Rendering.outputCam.size.Y,
-                    InternalFormat.R32f, PixelFormat.Red, wrap: GLEnum.ClampToEdge), FramebufferAttachment.ColorAttachment2),
-                new FramebufferTexture(new Texture2D((uint)Rendering.outputCam.size.X, (uint)Rendering.outputCam.size.Y, InternalFormat.DepthComponent24,
-                    PixelFormat.DepthComponent, 1, GLEnum.Nearest), FramebufferAttachment.DepthAttachment)
+                    InternalFormat.R32f, PixelFormat.Red), FramebufferAttachment.ColorAttachment2),
+                new FramebufferTexture(new Texture2D((uint)Rendering.outputCam.size.X, (uint)Rendering.outputCam.size.Y,
+                    InternalFormat.DepthComponent24, PixelFormat.DepthComponent, 1, GLEnum.Nearest), FramebufferAttachment.DepthAttachment)
             );
 
             outlineFB = new
             (
                 new FramebufferTexture(new Texture2D((uint)Rendering.outputCam.size.X, (uint)Rendering.outputCam.size.Y,
-                    InternalFormat.R32f, PixelFormat.Red, wrap: GLEnum.ClampToEdge), FramebufferAttachment.ColorAttachment0),
-                new FramebufferTexture(new Texture2D((uint)Rendering.outputCam.size.X, (uint)Rendering.outputCam.size.Y, InternalFormat.DepthComponent24,
-                    PixelFormat.DepthComponent, 1, GLEnum.Nearest), FramebufferAttachment.DepthAttachment)
+                    InternalFormat.RG32f, PixelFormat.RG), FramebufferAttachment.ColorAttachment0),
+                new FramebufferTexture(new Texture2D((uint)Rendering.outputCam.size.X, (uint)Rendering.outputCam.size.Y,
+                    InternalFormat.DepthComponent24, PixelFormat.DepthComponent, 1, GLEnum.Nearest), FramebufferAttachment.DepthAttachment)
             );
         }
         public static void Update()
@@ -85,6 +85,7 @@ namespace HawkEngine.Editor
         {
             objectIDFB.Bind();
             Rendering.gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            Rendering.gl.ClearTexImage(objectIDFB[FramebufferAttachment.ColorAttachment2].glID, 0, PixelFormat.Red, PixelType.Float, 1f);
 
             for (int m = 0; m < meshes.Count; m++)
             {
@@ -93,7 +94,8 @@ namespace HawkEngine.Editor
 
                 if (newShader == null)
                 {
-                    newShader = new(meshShader[ShaderType.VertexShader], objectIDShader);
+                    Graphics.Shader s = meshShader[ShaderType.VertexShader];
+                    newShader = new(s, objectIDShader);
                     objectIDShaders.Add(newShader);
                 }
                 meshes[m].shader = newShader;
@@ -109,6 +111,8 @@ namespace HawkEngine.Editor
 
             outlineFB.Bind();
             Rendering.gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            Rendering.gl.ClearTexImage<float>(outlineFB[FramebufferAttachment.ColorAttachment0].glID,
+                0, PixelFormat.RG, PixelType.Float, stackalloc float[2] { 0f, 1f });
 
             for (int m = 0; m < meshes.Count; m++)
             {
@@ -123,6 +127,8 @@ namespace HawkEngine.Editor
                     selectShaders.Add(newShader);
                 }
                 meshes[m].shader = newShader;
+
+                newShader.SetFloatCache("uIndex", m + 1);
 
                 meshes[m].SetUniforms();
                 meshes[m].Render();

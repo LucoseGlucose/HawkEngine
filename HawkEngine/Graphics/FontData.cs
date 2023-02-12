@@ -25,6 +25,10 @@ namespace HawkEngine.Graphics
 
         private readonly StbTrueType.stbtt_pack_context context;
 
+        public Font() : base()
+        {
+
+        }
         public Font(int width, int height, string path, float fontPixelHeight, params CharacterRange[] characterRanges) : base(path)
         {
             bitmapWidth = width;

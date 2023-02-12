@@ -2,27 +2,29 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using HawkEngine.Core;
 using Silk.NET.OpenGL;
+using System.Xml.Serialization;
 
 namespace HawkEngine.Graphics
 {
     public unsafe class Buffer : IDisposable
     {
-        public readonly uint id;
+        [Utils.DontSerialize] public readonly uint glID;
         protected readonly GLEnum bufferType;
 
-        public Buffer(uint id, GLEnum bufferType)
+        protected Buffer(uint id, GLEnum bufferType)
         {
-            this.id = id;
+            glID = id;
             this.bufferType = bufferType;
         }
         ~Buffer()
         {
-            Rendering.deletedObjects.Enqueue(() => Rendering.gl.DeleteBuffer(id));
+            Rendering.deletedObjects.Enqueue(() => Rendering.gl.DeleteBuffer(glID));
         }
         public virtual void Bind()
         {
-            Rendering.gl.BindBuffer(bufferType, id);
+            Rendering.gl.BindBuffer(bufferType, glID);
         }
         public virtual void Unbind()
         {
@@ -31,7 +33,7 @@ namespace HawkEngine.Graphics
         public void Dispose()
         {
             GC.SuppressFinalize(this);
-            Rendering.gl.DeleteBuffer(id);
+            Rendering.gl.DeleteBuffer(glID);
         }
     }
 

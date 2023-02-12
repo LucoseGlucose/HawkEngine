@@ -83,6 +83,13 @@ namespace HawkEngine.Editor
             imgui.Update(Time.unscaledDeltaTime);
 
             BeginMainMenuBar();
+
+            if (BeginMenu("File"))
+            {
+                if (Button("Save")) App.scene.Save("../../../Resources/Scenes/Scene.hawk");
+                EndMenu();
+            }
+
             if (BeginMenu("Window"))
             {
                 foreach (EditorWindow window in windows)
@@ -91,6 +98,7 @@ namespace HawkEngine.Editor
                 }
                 EndMenu();
             }
+
             EndMainMenuBar();
 
             DockSpaceOverViewport();
@@ -99,6 +107,8 @@ namespace HawkEngine.Editor
             {
                 window.Update();
             }
+
+            //ShowDemoWindow();
         }
         public static void Render()
         {
@@ -198,16 +208,16 @@ namespace HawkEngine.Editor
             colors[(int)ImGuiCol.SliderGrabActive] = new Vector4(0.90f, 0.90f, 0.90f, 1.00f);
             colors[(int)ImGuiCol.Button] = new Vector4(0.39f, 0.39f, 0.39f, 1.00f);
             colors[(int)ImGuiCol.ButtonHovered] = new Vector4(1.00f, 0.59f, 0.00f, 1.00f);
-            colors[(int)ImGuiCol.ButtonActive] = new Vector4(1.00f, 0.00f, 0.00f, 1.00f);
+            colors[(int)ImGuiCol.ButtonActive] = new Vector4(0.90f, 0.00f, 0.00f, 1.00f);
             colors[(int)ImGuiCol.Header] = new Vector4(0.39f, 0.39f, 0.39f, 1.00f);
-            colors[(int)ImGuiCol.HeaderHovered] = new Vector4(1.00f, 0.59f, 0.00f, 1.00f);
-            colors[(int)ImGuiCol.HeaderActive] = new Vector4(1.00f, 0.00f, 0.00f, 1.00f);
+            colors[(int)ImGuiCol.HeaderHovered] = new Vector4(0.00f, 0.90f, 0.00f, 1.00f);
+            colors[(int)ImGuiCol.HeaderActive] = new Vector4(0.90f, 0.90f, 0.00f, 1.00f);
             colors[(int)ImGuiCol.Separator] = new Vector4(0.39f, 0.39f, 0.39f, 1.00f);
             colors[(int)ImGuiCol.SeparatorHovered] = new Vector4(0.59f, 0.00f, 1.00f, 1.00f);
             colors[(int)ImGuiCol.SeparatorActive] = new Vector4(0.90f, 0.00f, 0.90f, 1.00f);
             colors[(int)ImGuiCol.ResizeGrip] = new Vector4(0.39f, 0.39f, 0.39f, 1.00f);
-            colors[(int)ImGuiCol.ResizeGripHovered] = new Vector4(0.90f, 0.59f, 0.00f, 1.00f);
-            colors[(int)ImGuiCol.ResizeGripActive] = new Vector4(0.90f, 0.00f, 0.00f, 1.00f);
+            colors[(int)ImGuiCol.ResizeGripHovered] = new Vector4(0.00f, 0.90f, 0.00f, 1.00f);
+            colors[(int)ImGuiCol.ResizeGripActive] = new Vector4(0.90f, 0.90f, 0.00f, 1.00f);
             colors[(int)ImGuiCol.Tab] = new Vector4(0.39f, 0.39f, 0.39f, 1.00f);
             colors[(int)ImGuiCol.TabHovered] = new Vector4(0.00f, 0.90f, 0.00f, 1.00f);
             colors[(int)ImGuiCol.TabActive] = new Vector4(0.90f, 0.00f, 0.00f, 1.00f);

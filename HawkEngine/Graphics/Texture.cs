@@ -5,34 +5,40 @@ using Silk.NET.OpenGL;
 using HawkEngine.Core;
 using StbImageSharp;
 using System.IO;
+using System.Xml.Serialization;
 
 namespace HawkEngine.Graphics
 {
     public class Texture : HawkObject, IDisposable
     {
-        public readonly uint id;
+        [Utils.DontSerialize] public readonly uint glID;
         public readonly TextureTarget textureType;
         public readonly InternalFormat internalFormat;
         public readonly PixelFormat pixelFormat;
         public readonly Vector2D<uint> size;
 
-        public Texture(TextureTarget textureType, InternalFormat internalFormat, PixelFormat pixelFormat, Vector2D<uint> size, string name) : base(name)
+        public Texture() : base()
+        {
+
+        }
+        public Texture(TextureTarget textureType, InternalFormat internalFormat, PixelFormat pixelFormat, Vector2D<uint> size, string name)
+            : base(name)
         {
             this.textureType = textureType;
             this.internalFormat = internalFormat;
             this.pixelFormat = pixelFormat;
             this.size = size;
 
-            id = Rendering.gl.GenTexture();
+            glID = Rendering.gl.GenTexture();
         }
         ~Texture()
         {
-            Rendering.deletedObjects.Enqueue(() => Rendering.gl.DeleteTexture(id));
+            Rendering.deletedObjects.Enqueue(() => Rendering.gl.DeleteTexture(glID));
         }
         public void Bind(int unit)
         {
             Rendering.gl.ActiveTexture(TextureUnit.Texture0 + unit);
-            Rendering.gl.BindTexture(textureType, id);
+            Rendering.gl.BindTexture(textureType, glID);
         }
         public void Unbind(int unit)
         {
@@ -42,7 +48,13 @@ namespace HawkEngine.Graphics
         public void Dispose()
         {
             GC.SuppressFinalize(this);
-            Rendering.gl.DeleteTexture(id);
+            Rendering.gl.DeleteTexture(glID);
+        }
+        protected override void Create()
+        {
+            base.Create();
+
+            GetType().GetField("glID").SetValue(this, Rendering.gl.GenTexture());
         }
     }
 
@@ -55,7 +67,7 @@ namespace HawkEngine.Graphics
         public static readonly Texture2D brdfTex = new("Images/ibl_brdf_lut.png", false, wrap: GLEnum.ClampToEdge);
 
         public Texture2D(uint width, uint height, byte[] data, InternalFormat internalFormat = InternalFormat.Rgba8, PixelFormat pixelFormat = PixelFormat.Rgba,
-            uint samples = 1, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat, bool mipmap = false, PixelType pixelType = PixelType.UnsignedByte,
+            uint samples = 1, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.ClampToEdge, bool mipmap = false, PixelType pixelType = PixelType.UnsignedByte,
             string name = nameof(Texture2D)) : base(samples <= 1 ? TextureTarget.Texture2D : TextureTarget.Texture2DMultisample, internalFormat,
                 pixelFormat, new(width, height), name)
         {
@@ -78,7 +90,7 @@ namespace HawkEngine.Graphics
             Unbind(0);
         }
         public Texture2D(uint width, uint height, InternalFormat internalFormat = InternalFormat.Rgba8, PixelFormat pixelFormat = PixelFormat.Rgba,
-            uint samples = 1, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.Repeat, bool mipmap = false, PixelType pixelType = PixelType.UnsignedByte,
+            uint samples = 1, GLEnum filter = GLEnum.Linear, GLEnum wrap = GLEnum.ClampToEdge, bool mipmap = false, PixelType pixelType = PixelType.UnsignedByte,
             string name = nameof(Texture2D)) : this(width, height, null, internalFormat, pixelFormat, samples, filter, wrap, mipmap, pixelType, name)
         {
 

@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using Silk.NET.Maths;
 using HawkEngine.Core;
 using Silk.NET.OpenGL;
+using System.Xml.Serialization;
 
 namespace HawkEngine.Graphics
 {
     public class VertexArray : IDisposable
     {
-        public readonly uint id;
+        [Utils.DontSerialize] public readonly uint glID;
         public readonly Buffer indexBuffer;
         public readonly AttribBuffer[] attribBuffers;
 
         public unsafe VertexArray(Buffer indexBuffer, params AttribBuffer[] attribBuffers)
         {
-            id = Rendering.gl.GenVertexArray();
+            glID = Rendering.gl.GenVertexArray();
 
             this.attribBuffers = attribBuffers;
             this.indexBuffer = indexBuffer;
@@ -43,17 +44,17 @@ namespace HawkEngine.Graphics
         }
         ~VertexArray()
         {
-            Rendering.deletedObjects.Enqueue(() => Rendering.gl.DeleteVertexArray(id));
+            Rendering.deletedObjects.Enqueue(() => Rendering.gl.DeleteVertexArray(glID));
         }
         public void Bind()
         {
-            Rendering.gl.BindVertexArray(id);
+            Rendering.gl.BindVertexArray(glID);
             indexBuffer.Bind();
         }
         public void Dispose()
         {
             GC.SuppressFinalize(this);
-            Rendering.gl.DeleteVertexArray(id);
+            Rendering.gl.DeleteVertexArray(glID);
         }
     }
 }

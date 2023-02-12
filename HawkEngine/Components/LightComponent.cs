@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
+using System.Xml.Serialization;
 
 namespace HawkEngine.Components
 {
@@ -17,7 +18,7 @@ namespace HawkEngine.Components
         public int shadowResolution;
         public float shadowDistance;
 
-        public Graphics.Framebuffer shadowMapBuffer { get; protected set; }
+        [Utils.DontSerialize] public Graphics.Framebuffer shadowMapBuffer { get; protected set; }
         protected Graphics.Shader shadowFragmentShader;
 
         public Vector2D<float> shadowNormalBias;

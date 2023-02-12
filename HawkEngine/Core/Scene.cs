@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
 
 namespace HawkEngine.Core
 {
@@ -11,6 +10,10 @@ namespace HawkEngine.Core
     {
         public readonly List<SceneObject> objects = new();
 
+        public Scene() : base()
+        {
+
+        }
         public Scene(string name) : base(name)
         {
 
@@ -65,6 +68,11 @@ namespace HawkEngine.Core
             }
 
             return list;
+        }
+
+        public void Save(string path)
+        {
+            HawkSerializer.Serialize(path, this);
         }
     }
 }

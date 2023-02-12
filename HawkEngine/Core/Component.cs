@@ -8,12 +8,19 @@ namespace HawkEngine.Core
 {
     public class Component : HawkObject
     {
-        public SceneObject owner { get; private set; }
+        public SceneObject owner { get; protected set; }
         public Transform transform { get { return owner.transform; } }
+        public bool enabled = true;
 
         public Component() : base(nameof(Component))
         {
 
+        }
+        protected override void Create()
+        {
+            base.Create();
+
+            name = $"{owner.name} : {GetType().Name}";
         }
         public virtual void Create(SceneObject owner)
         {
@@ -26,7 +33,7 @@ namespace HawkEngine.Core
         }
         public virtual void Update()
         {
-
+            if (!enabled) return;
         }
     }
 }

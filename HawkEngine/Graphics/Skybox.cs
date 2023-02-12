@@ -1,8 +1,10 @@
-﻿using Silk.NET.Maths;
+﻿using HawkEngine.Core;
+using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 using Silk.NET.Vulkan;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,10 +29,9 @@ namespace HawkEngine.Graphics
         };
 
         public Skybox(string path, uint resolution, uint irradianceResolution, uint reflectionResolution)
+            : this(EquirectToCubemap(new(path, hdr: true), resolution), irradianceResolution, reflectionResolution)
         {
-            skybox = EquirectToCubemap(new(path, hdr: true), resolution);
-            irradiance = ComputeIrradiance(skybox, irradianceResolution);
-            specularReflections = ComputeSpecularReflectionMap(skybox, reflectionResolution);
+
         }
         public Skybox(string[] paths, uint irradianceResolution, uint reflectionResolution)
             : this(new TextureCubemap(paths, mipmap: true), irradianceResolution, reflectionResolution)
@@ -40,7 +41,7 @@ namespace HawkEngine.Graphics
         public Skybox(TextureCubemap baseCubemap, uint irradianceResolution, uint reflectionResolution)
         {
             skybox = baseCubemap;
-            Rendering.gl.TextureParameterI(skybox.id, TextureParameterName.TextureMinFilter, (uint)GLEnum.LinearMipmapLinear);
+            Rendering.gl.TextureParameterI(skybox.glID, TextureParameterName.TextureMinFilter, (uint)GLEnum.LinearMipmapLinear);
 
             irradiance = ComputeIrradiance(skybox, irradianceResolution);
             specularReflections = ComputeSpecularReflectionMap(skybox, reflectionResolution);
@@ -53,7 +54,7 @@ namespace HawkEngine.Graphics
 
             ShaderProgram shader = new("Shaders/Skybox/RectToCubemapVert.glsl", "Shaders/Skybox/RectToCubemapFrag.glsl");
 
-            Rendering.gl.TextureParameterI(cubemap.id, TextureParameterName.TextureMinFilter, (uint)GLEnum.LinearMipmapLinear);
+            Rendering.gl.TextureParameterI(cubemap.glID, TextureParameterName.TextureMinFilter, (uint)GLEnum.LinearMipmapLinear);
             Rendering.gl.Viewport(new Vector2D<int>((int)resolution));
 
             shader.Bind();
@@ -64,14 +65,14 @@ namespace HawkEngine.Graphics
             {
                 shader.SetMat4Cache("uMat", viewMats[i] * projMat);
                 Rendering.gl.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0,
-                    TextureTarget.TextureCubeMapPositiveX + i, cubemap.id, 0);
+                    TextureTarget.TextureCubeMapPositiveX + i, cubemap.glID, 0);
 
                 Rendering.gl.Clear(ClearBufferMask.ColorBufferBit);
                 Rendering.skyboxMesh.vertexArray.Bind();
                 Rendering.gl.DrawElements(PrimitiveType.Triangles, (uint)Rendering.skyboxMesh.meshData.indices.Length, DrawElementsType.UnsignedInt, null);
             }
 
-            Rendering.gl.GenerateTextureMipmap(cubemap.id);
+            Rendering.gl.GenerateTextureMipmap(cubemap.glID);
 
             Rendering.gl.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             Rendering.gl.DeleteFramebuffer(fbId);
@@ -97,7 +98,7 @@ namespace HawkEngine.Graphics
             {
                 shader.SetMat4Cache("uMat", viewMats[i] * projMat);
                 Rendering.gl.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0,
-                    TextureTarget.TextureCubeMapPositiveX + i, cubemap.id, 0);
+                    TextureTarget.TextureCubeMapPositiveX + i, cubemap.glID, 0);
 
                 Rendering.gl.Clear(ClearBufferMask.ColorBufferBit);
                 Rendering.skyboxMesh.vertexArray.Bind();
@@ -113,7 +114,7 @@ namespace HawkEngine.Graphics
             TextureCubemap cubemap = new(resolution, resolution, InternalFormat.Rgb16f, PixelFormat.Rgb, mipmap: true);
             ShaderProgram shader = new("Shaders/Skybox/RectToCubemapVert.glsl", "Shaders/Skybox/SpecularReflectionFilter.glsl");
 
-            Rendering.gl.TextureParameterI(cubemap.id, TextureParameterName.TextureMinFilter, (uint)GLEnum.LinearMipmapLinear);
+            Rendering.gl.TextureParameterI(cubemap.glID, TextureParameterName.TextureMinFilter, (uint)GLEnum.LinearMipmapLinear);
 
             uint fbId = Rendering.gl.GenFramebuffer();
             Rendering.gl.BindFramebuffer(FramebufferTarget.Framebuffer, fbId);
@@ -136,7 +137,7 @@ namespace HawkEngine.Graphics
                 {
                     shader.SetMat4Cache("uMat", viewMats[i] * projMat);
                     Rendering.gl.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0,
-                        TextureTarget.TextureCubeMapPositiveX + i, cubemap.id, mip);
+                        TextureTarget.TextureCubeMapPositiveX + i, cubemap.glID, mip);
 
                     Rendering.gl.Clear(ClearBufferMask.ColorBufferBit);
                     Rendering.skyboxMesh.vertexArray.Bind();

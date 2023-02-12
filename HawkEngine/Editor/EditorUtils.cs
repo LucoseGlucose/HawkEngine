@@ -90,7 +90,7 @@ namespace HawkEngine.Editor
         }
         public static void PrintMessage(object obj)
         {
-            PrintMessage(obj.ToString());
+            PrintMessage(obj?.ToString() ?? "null");
         }
 
         public static void PrintException(Exception exception)
@@ -98,6 +98,7 @@ namespace HawkEngine.Editor
             PrintMessage(new ConsoleMessage(MessageSeverity.Error, exception.Message, null, exception.StackTrace));
         }
 
+#if DEBUG
         public enum FontStyle
         {
             Regular,
@@ -146,5 +147,6 @@ namespace HawkEngine.Editor
                 return this;
             }
         }
+#endif
     }
 }

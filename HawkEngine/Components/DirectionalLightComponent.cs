@@ -91,7 +91,7 @@ namespace HawkEngine.Components
             shadowSoftness = .65f;
             shadowNoise = 8000f;
 
-            shadowFragmentShader = Graphics.Shader.Create("Shaders/EmptyFrag.glsl", ShaderType.FragmentShader);
+            shadowFragmentShader = new("Shaders/EmptyFrag.glsl", ShaderType.FragmentShader);
             CreateShadowBuffer();
         }
         public override void CreateShadowBuffer()
@@ -99,7 +99,7 @@ namespace HawkEngine.Components
             FramebufferTexture tex = new(new Texture2D((uint)shadowResolution, (uint)shadowResolution,
                 InternalFormat.DepthComponent24, PixelFormat.DepthComponent, wrap: GLEnum.ClampToBorder), FramebufferAttachment.DepthAttachment);
             Span<float> col = stackalloc float[4] { 1f, 1f, 1f, 1f };
-            Rendering.gl.TextureParameter(tex.texture.id, TextureParameterName.TextureBorderColor, col);
+            Rendering.gl.TextureParameter(tex.texture.glID, TextureParameterName.TextureBorderColor, col);
 
             shadowMapBuffer = new(tex);
         }

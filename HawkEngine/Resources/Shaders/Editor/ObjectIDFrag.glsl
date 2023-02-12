@@ -12,5 +12,5 @@ void main()
 	outIDColor0 = uIDColor.xy;
 	outIDColor1 = uIDColor.zw;
 
-	outDepth = gl_FragCoord.z * gl_FragCoord.w;
+	outDepth = 1 - gl_FragCoord.z * gl_FragCoord.w;
 }

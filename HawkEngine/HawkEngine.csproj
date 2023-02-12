@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="Resources\Fonts\Icons\" />
+    <Folder Include="Resources\Scenes\" />
   </ItemGroup>
 
 </Project>

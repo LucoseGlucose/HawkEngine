@@ -9,11 +9,18 @@ namespace HawkEngine.Core
     public class SceneObject : HawkObject
     {
         public readonly List<Component> components = new();
-        public Transform transform { get; protected set; }
+        [field: Utils.DontSerialize] public Transform transform { get; protected set; }
+        public bool enabled = true;
 
-        public SceneObject() : base("")
+        public SceneObject() : base(nameof(SceneObject))
         {
 
+        }
+        protected override void Create()
+        {
+            base.Create();
+
+            transform = new(this);
         }
         public virtual void Create(string name)
         {
@@ -30,8 +37,10 @@ namespace HawkEngine.Core
             components.Clear();
         }
 
-        public void Update()
+        public virtual void Update()
         {
+            if (!enabled) return;
+
             foreach (Component c in components)
             {
                 c.Update();

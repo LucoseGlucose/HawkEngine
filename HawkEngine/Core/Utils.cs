@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Silk.NET.Maths;
@@ -41,6 +42,36 @@ namespace HawkEngine.Core
         public static float Lerp(float a, float b, float t)
         {
             return a + (b - a) * t;
+        }
+        public static Type GetRootType(Type t)
+        {
+            Type type = t;
+
+            while (type.BaseType != typeof(object))
+            {
+                type = type.BaseType;
+            }
+
+            return type;
+        }
+        public static Type GetRootType(this object obj)
+        {
+            return GetRootType(obj.GetType());
+        }
+
+        [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+        public class DontSerializeAttribute : Attribute
+        {
+
+        }
+
+        public static void SetFieldWithReflection(object obj, string field, object value)
+        {
+            obj.GetType()?.GetField(field)?.SetValue(obj, value);
+        }
+        public static void SetPropertyWithReflection(object obj, string property, object value)
+        {
+            obj.GetType()?.GetProperty(property)?.SetValue(obj, value);
         }
     }
 }

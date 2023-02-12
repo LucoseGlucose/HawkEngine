@@ -1,5 +1,6 @@
 ﻿using Silk.NET.Maths;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace HawkEngine.Core
 {
@@ -7,7 +8,7 @@ namespace HawkEngine.Core
     {
         public readonly SceneObject owner;
 
-        private Vector3D<float> _position;
+        [Utils.DontSerialize] private Vector3D<float> _position;
         public Vector3D<float> position
         {
             get
@@ -24,7 +25,7 @@ namespace HawkEngine.Core
             }
         }
 
-        private Quaternion<float> _rotation = Quaternion<float>.Identity;
+        [Utils.DontSerialize] private Quaternion<float> _rotation = Quaternion<float>.Identity;
         public Quaternion<float> rotation
         {
             get
@@ -41,7 +42,7 @@ namespace HawkEngine.Core
             }
         }
 
-        private Vector3D<float> _scale = Vector3D<float>.One;
+        [Utils.DontSerialize] private Vector3D<float> _scale = Vector3D<float>.One;
         public Vector3D<float> scale
         {
             get
@@ -58,12 +59,14 @@ namespace HawkEngine.Core
             }
         }
 
+        [Utils.DontSerialize]
         public Vector3D<float> eulerAngles
         {
             get { return rotation.ToEulerAngles(); }
             set { rotation = value.ToQuaternion(); }
         }
 
+        [Utils.DontSerialize]
         public Matrix4X4<float> matrix
         {
             get
@@ -81,23 +84,28 @@ namespace HawkEngine.Core
             }
         }
 
+        [Utils.DontSerialize]
         public Vector3D<float> forward
         {
             get { return Vector3D.Transform(Vector3D<float>.UnitZ, rotation); }
             set { rotation = Quaternion<float>.CreateFromAxisAngle(value, 0f); }
         }
+
+        [Utils.DontSerialize]
         public Vector3D<float> up
         {
             get { return Vector3D.Transform(Vector3D<float>.UnitY, rotation); }
             set { rotation = Quaternion<float>.CreateFromAxisAngle(Vector3D.Cross(value, right), 0f); }
         }
+
+        [Utils.DontSerialize]
         public Vector3D<float> right
         {
             get { return Vector3D.Transform(Vector3D<float>.UnitX, rotation); }
             set { rotation = Quaternion<float>.CreateFromAxisAngle(Vector3D.Cross(value, up), 0f); }
         }
 
-        private Transform _parent;
+        [Utils.DontSerialize] private Transform _parent;
         public Transform parent
         {
             get { return _parent; }
@@ -118,7 +126,7 @@ namespace HawkEngine.Core
         }
         public readonly List<Transform> children = new();
 
-        private Vector3D<float> _localPosition;
+        [Utils.DontSerialize] private Vector3D<float> _localPosition;
         public Vector3D<float> localPosition
         {
             get
@@ -134,7 +142,7 @@ namespace HawkEngine.Core
             }
         }
 
-        private Quaternion<float> _localRotation = Quaternion<float>.Identity;
+        [Utils.DontSerialize] private Quaternion<float> _localRotation = Quaternion<float>.Identity;
         public Quaternion<float> localRotation
         {
             get
@@ -150,7 +158,7 @@ namespace HawkEngine.Core
             }
         }
 
-        private Vector3D<float> _localScale = Vector3D<float>.One;
+        [Utils.DontSerialize] private Vector3D<float> _localScale = Vector3D<float>.One;
         public Vector3D<float> localScale
         {
             get
@@ -166,12 +174,14 @@ namespace HawkEngine.Core
             }
         }
 
+        [Utils.DontSerialize]
         public Vector3D<float> localEulerAngles
         {
             get { return localRotation.ToEulerAngles(); }
             set { localRotation = value.ToQuaternion(); }
         }
 
+        [Utils.DontSerialize]
         public Matrix4X4<float> localMatrix
         {
             get
@@ -188,7 +198,11 @@ namespace HawkEngine.Core
             }
         }
 
-        public Transform(SceneObject owner) : base(nameof(Transform))
+        public Transform() : base()
+        {
+
+        }
+        public Transform(SceneObject owner) : base($"{owner.name} : {nameof(Transform)}")
         {
             this.owner = owner;
         }

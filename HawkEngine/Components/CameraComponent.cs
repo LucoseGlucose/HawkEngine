@@ -4,6 +4,7 @@ using Silk.NET.Maths;
 using HawkEngine.Core;
 using HawkEngine.Graphics;
 using Silk.NET.OpenGL;
+using System.Xml.Serialization;
 
 namespace HawkEngine.Components
 {
@@ -21,7 +22,7 @@ namespace HawkEngine.Components
             {
                 Graphics.Texture tex = framebuffer[FramebufferAttachment.ColorAttachment0];
                 if (tex.textureType != TextureTarget.Texture2DMultisample) return 1;
-                Rendering.gl.GetTextureLevelParameter(tex.id, 0, GLEnum.TextureSamples, out int samples);
+                Rendering.gl.GetTextureLevelParameter(tex.glID, 0, GLEnum.TextureSamples, out int samples);
                 return Scalar.Max((uint)samples, 1u);
             }
             set
@@ -30,6 +31,8 @@ namespace HawkEngine.Components
             }
         }
 
+        [Utils.DontSerialize]
+        [field: Utils.DontSerialize]
         public Graphics.Framebuffer framebuffer { get; protected set; }
 
         public Matrix4X4<float> projectionMat

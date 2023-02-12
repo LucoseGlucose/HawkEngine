@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Xml.Serialization;
 using HawkEngine.Core;
 using HawkEngine.Graphics;
 using Silk.NET.Maths;
@@ -12,10 +13,10 @@ namespace HawkEngine.Components
 {
     public class TextComponent : MeshComponent
     {
-        private Font _font;
+        [Utils.DontSerialize] private Font _font;
         public Font font { get => _font; set { _font = value; shader.SetTexture("uFontAtlasB", _font.fontAtlas); } }
 
-        private string _text;
+        [Utils.DontSerialize] private string _text;
         public string text { get => _text; set => SetText(value); }
 
         public override void Create(SceneObject owner)

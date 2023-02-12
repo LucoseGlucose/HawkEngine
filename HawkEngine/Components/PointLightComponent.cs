@@ -48,8 +48,8 @@ namespace HawkEngine.Components
             shadowResolution = 2048;
             shadowNormalBias = new(.02f, .08f);
 
-            shadowFragmentShader = Graphics.Shader.Create("Shaders/Scene/PointShadowFrag.glsl", ShaderType.FragmentShader);
-            shadowGeometryShader = Graphics.Shader.Create("Shaders/Skybox/CubemapGeom.glsl", ShaderType.GeometryShader);
+            shadowFragmentShader = new("Shaders/Scene/PointShadowFrag.glsl", ShaderType.FragmentShader);
+            shadowGeometryShader = new("Shaders/Skybox/CubemapGeom.glsl", ShaderType.GeometryShader);
 
             CreateShadowBuffer();
         }
@@ -58,7 +58,7 @@ namespace HawkEngine.Components
             FramebufferTexture tex = new(new TextureCubemap((uint)shadowResolution, (uint)shadowResolution,
                 InternalFormat.DepthComponent24, PixelFormat.DepthComponent, wrap: GLEnum.ClampToBorder), FramebufferAttachment.DepthAttachment);
             Span<float> col = stackalloc float[4] { 1f, 1f, 1f, 1f };
-            Rendering.gl.TextureParameter(tex.texture.id, TextureParameterName.TextureBorderColor, col);
+            Rendering.gl.TextureParameter(tex.texture.glID, TextureParameterName.TextureBorderColor, col);
 
             shadowMapBuffer = new(tex);
         }

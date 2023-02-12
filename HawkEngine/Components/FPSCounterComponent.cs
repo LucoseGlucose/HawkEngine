@@ -23,6 +23,8 @@ namespace HawkEngine.Components
         }
         public override void Update()
         {
+            base.Update();
+
             mesh.Dispose();
             text = Math.Round(1f / Time.smoothUnscaledDeltaTime).ToString() + " FPS";
 

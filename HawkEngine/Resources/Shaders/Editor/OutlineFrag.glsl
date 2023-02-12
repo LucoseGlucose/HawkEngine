@@ -7,48 +7,60 @@ uniform sampler2D uDepthTexB;
 uniform sampler2D uSceneTexB;
 
 uniform vec4 uOutlineColor = vec4(1, .12, .02, 1);
-uniform vec2 uOutlineWidth = vec2(2, .00000001);
-uniform vec2 uThreshold = vec2(.000001, .1);
+uniform float uOutlineWidth = 3;
 
 out vec4 outColor;
 
-void getNeighbors(in float width, in vec2 texelSize, out vec2 right, out vec2 left, out vec2 up, out vec2 down)
-{
-	right = outUV + vec2(width, 0) * texelSize;
-	left = outUV + vec2(-width, 0) * texelSize;
-	up = outUV + vec2(0, width) * texelSize;
-	down = outUV + vec2(0, -width) * texelSize;
-}
+vec2 texelSize;
 
-float getDepth(in vec2 uv)
+struct PixelInfo
 {
-	return texture(uStencilTexB, uv).r;
+	float index;
+	float depth;
+	vec2 coord;
+};
+
+PixelInfo sampleTextures(vec2 offset)
+{
+	vec2 coords = outUV + offset * uOutlineWidth * texelSize;
+	vec2 texData = texture(uStencilTexB, coords).rg;
+	return PixelInfo(texData.r, texData.g, coords);
 }
 
 void main()
 {
-	float centerDepth = getDepth(outUV);
-	float sceneDepth = texture(uDepthTexB, outUV).r;
+	texelSize = 1.0 / textureSize(uSceneTexB, 0);
 
-	if (sceneDepth != centerDepth) 
+	PixelInfo center = sampleTextures(vec2(0));
+
+	PixelInfo up = sampleTextures(vec2(0, 1));
+	PixelInfo down = sampleTextures(vec2(0, -1));
+	PixelInfo right = sampleTextures(vec2(1, 0));
+	PixelInfo left = sampleTextures(vec2(-1, 0));
+	PixelInfo upRight = sampleTextures(vec2(1, 1));
+	PixelInfo downRight = sampleTextures(vec2(1, -1));
+	PixelInfo upLeft = sampleTextures(vec2(-1, 1));
+	PixelInfo downLeft = sampleTextures(vec2(-1, -1));
+
+	PixelInfo pixels[8] = PixelInfo[](up, down, right, left, upRight, downRight, upLeft, downLeft);
+
+	PixelInfo edgePixel = center;
+	for (int i = 0; i < 8; i++)
 	{
-		outColor = texture(uSceneTexB, outUV);
-		return;
+		PixelInfo pixel = pixels[i];
+		if (pixel.index != center.index)
+		{
+			edgePixel = pixels[i];
+			break;
+		}
 	}
 
-	vec2 texelSize = 1.0 / textureSize(uSceneTexB, 0);
-
-	vec2 right;
-	vec2 left;
-	vec2 up;
-	vec2 down;
-
-	getNeighbors(uOutlineWidth.x, texelSize, right, left, up, down);
-	float widthDepth = min(min(min(getDepth(right), getDepth(left)), min(getDepth(up), getDepth(down))), centerDepth);
-	
-	float width = mix(uOutlineWidth.x, uOutlineWidth.y, widthDepth);
-	getNeighbors(width, texelSize, right, left, up, down);
-
-	float variation = abs(getDepth(right) + getDepth(left) + getDepth(up) + getDepth(down) - 4.0 * centerDepth);
-	outColor = mix(texture(uSceneTexB, outUV), uOutlineColor, step(mix(uThreshold.x, uThreshold.y, centerDepth), variation));
+	if (edgePixel == center || center.depth > texture(uDepthTexB, edgePixel.coord).r)
+	{
+		outColor = texture(uSceneTexB, outUV);
+	}
+	else
+	{
+		outColor = uOutlineColor;
+	}
 }

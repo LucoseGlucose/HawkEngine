@@ -112,7 +112,7 @@ namespace HawkEngine.Editor
             float aspect = srcAspect / availAspect;
             Vector2 size = new(availSpace.X * Scalar.Min(aspect, 1f), availSpace.Y / Scalar.Max(aspect, 1f));
 
-            Image((nint)Rendering.postProcessFB[FramebufferAttachment.ColorAttachment0].id, size, new(0f, 1f), new(1f, 0f));
+            Image((nint)Rendering.postProcessFB[FramebufferAttachment.ColorAttachment0].glID, size, new(0f, 1f), new(1f, 0f));
 
             if (IsItemClicked(ImGuiMouseButton.Middle) || IsItemClicked(ImGuiMouseButton.Right))
             {
@@ -128,10 +128,10 @@ namespace HawkEngine.Editor
                 Span<float> firstHalf = stackalloc float[2];
                 Span<float> secondHalf = stackalloc float[2];
 
-                Rendering.gl.GetTextureSubImage(HawkEditor.objectIDFB[FramebufferAttachment.ColorAttachment0].id, 0, (int)relativeMousePos.X,
+                Rendering.gl.GetTextureSubImage(HawkEditor.objectIDFB[FramebufferAttachment.ColorAttachment0].glID, 0, (int)relativeMousePos.X,
                     (int)relativeMousePos.Y, 0, 1, 1, 1, PixelFormat.RG, PixelType.Float, 64u, firstHalf);
 
-                Rendering.gl.GetTextureSubImage(HawkEditor.objectIDFB[FramebufferAttachment.ColorAttachment1].id, 0, (int)relativeMousePos.X,
+                Rendering.gl.GetTextureSubImage(HawkEditor.objectIDFB[FramebufferAttachment.ColorAttachment1].glID, 0, (int)relativeMousePos.X,
                     (int)relativeMousePos.Y, 0, 1, 1, 1, PixelFormat.RG, PixelType.Float, 64u, secondHalf);
 
                 Vector4D<float> col = new(firstHalf[0], firstHalf[1], secondHalf[0], secondHalf[1]);
@@ -185,7 +185,9 @@ namespace HawkEngine.Editor
         }
         private void ShowObjectInTree(SceneObject obj)
         {
-            ImGuiTreeNodeFlags flags = (HawkEditor.selectedObjects.Contains(obj) ? ImGuiTreeNodeFlags.Selected : 0) |
+            if (!obj.enabled) PushStyleColor(ImGuiCol.Text, new Vector4(.75f, .75f, .75f, 1f));
+
+            ImGuiTreeNodeFlags flags = (HawkEditor.selectedObjects.Contains(obj)/* || draggedObject == obj*/ ? ImGuiTreeNodeFlags.Selected : 0) |
                 (obj.transform.children.Count <= 0 ? ImGuiTreeNodeFlags.Bullet : 0) | ImGuiTreeNodeFlags.SpanFullWidth | ImGuiTreeNodeFlags.OpenOnArrow;
             bool expanded = TreeNodeEx((nint)obj.engineID, flags, obj.name);
 
@@ -242,6 +244,8 @@ namespace HawkEngine.Editor
 
                 TreePop();
             }
+
+            if (!obj.enabled) PopStyleColor();
         }
         private void ShiftSelectObject(ref int index, int endIndex, int sign, SceneObject obj)
         {
@@ -279,7 +283,7 @@ namespace HawkEngine.Editor
 
     public class EditorConsole : EditorWindow
     {
-        private readonly List<EditorUtils.ConsoleMessage> messages = new();
+        private readonly List<EditorUtils.ConsoleMessage> messages = new(short.MaxValue);
 
         private bool collapseAll;
         private bool expandAll;
@@ -288,7 +292,7 @@ namespace HawkEngine.Editor
         private bool showWarnings = true;
         private bool showInfos = true;
 
-        private int maxMessages = 10000;
+        private int maxMessages = 1000;
         private bool autoScroll = true;
 
         private bool scrollToTop;
@@ -334,12 +338,11 @@ namespace HawkEngine.Editor
             }
 
             Separator();
-            if (messages.Count > maxMessages) messages.RemoveRange(0, messages.Count - maxMessages);
             bool autoScrollToBottom = autoScroll;
 
             if (BeginChild("Console Messages"))
             {
-                for (int m = 0; m < messages.Count; m++)
+                for (int m = 0; m < messages.Count && m < maxMessages; m++)
                 {
                     EditorUtils.ConsoleMessage message = messages[m];
 

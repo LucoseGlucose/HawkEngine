@@ -68,7 +68,7 @@ namespace HawkEngine.Graphics
                 Texture2D tex = textures[i];
                 Rendering.gl.Viewport(tex.size.As<int>());
 
-                Rendering.gl.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, tex.id, 0);
+                Rendering.gl.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, tex.glID, 0);
                 downModel.Render();
 
                 downsampleShader.SetVec2Cache("uResolution", tex.size.As<float>());
@@ -86,7 +86,7 @@ namespace HawkEngine.Graphics
                 upsampleShader.SetTexture("uTexture", currentTex);
 
                 Rendering.gl.Viewport(nextTex.size.As<int>());
-                Rendering.gl.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, nextTex.id, 0);
+                Rendering.gl.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, nextTex.glID, 0);
 
                 upModel.Render();
             }

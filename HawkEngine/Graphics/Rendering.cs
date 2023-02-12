@@ -163,7 +163,7 @@ namespace HawkEngine.Graphics
             gl.Enable(EnableCap.DepthTest);
             for (int l = 0; l < lights.Count; l++)
             {
-                if (lights[l].shadowsEnabled) lights[l].RenderShadowMap(meshes);
+                if (lights[l].enabled && lights[l].owner.enabled && lights[l].shadowsEnabled) lights[l].RenderShadowMap(meshes);
             }
         };
 
@@ -186,6 +186,8 @@ namespace HawkEngine.Graphics
         {
             for (int m = 0; m < meshes.Count; m++)
             {
+                if (!meshes[m].enabled) continue;
+
                 if (meshes[m].lightingEnabled)
                 {
                     meshes[m].shader.SetTexture("uIrradianceCubeB", skybox.irradiance);
@@ -198,7 +200,9 @@ namespace HawkEngine.Graphics
 
                     for (int l = 0; l < 5; l++)
                     {
-                        if (orderedLights.Count() > l) orderedLights.ElementAt(l).SetUniforms($"uLights[{l}]", meshes[m].shader);
+                        LightComponent light = orderedLights.ElementAtOrDefault(l);
+
+                        if (light != null && light.enabled && lights[l].owner.enabled) light.SetUniforms($"uLights[{l}]", meshes[m].shader);
                         else meshes[m].shader.SetIntCache($"uLights[{l}].uType", 0);
                     }
                 }
@@ -211,7 +215,7 @@ namespace HawkEngine.Graphics
 
         public static readonly Pass prePostProcessPass = (_, _) =>
         {
-            gl.BlitNamedFramebuffer(outputCam.framebuffer.id, postProcessFB.id, 0, 0, outputCam.size.X, outputCam.size.Y, 0, 0,
+            gl.BlitNamedFramebuffer(outputCam.framebuffer.glID, postProcessFB.glID, 0, 0, outputCam.size.X, outputCam.size.Y, 0, 0,
                 outputCam.size.X, outputCam.size.Y, ClearBufferMask.ColorBufferBit |
                 ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit, BlitFramebufferFilter.Nearest);
             gl.Disable(EnableCap.DepthTest);
@@ -221,7 +225,7 @@ namespace HawkEngine.Graphics
 #if !DEBUG
         public static readonly Pass outputPass = (_, _) =>
         {
-            postProcessFB.Unbind();
+            Framebuffer.Unbind();
             gl.Clear(ClearBufferMask.ColorBufferBit);
 
             Model outputModel = new(outputShader, quad);
@@ -235,7 +239,7 @@ namespace HawkEngine.Graphics
             outputModel.shader.SetTexture("uColorTex", postProcessFB[FramebufferAttachment.ColorAttachment0]);
             outputModel.Render();
 
-            postProcessFB.Unbind();
+            Framebuffer.Unbind();
             gl.Clear(ClearBufferMask.ColorBufferBit);
             gl.Viewport(App.window.FramebufferSize);
         };
